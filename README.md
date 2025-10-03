@@ -1,33 +1,28 @@
+```
 # BookBuddy
-.idea/ #This folder is an IntelJ added resource
+
+.idea/                  # This folder is an IntelliJ added resource
 backend/
-│── java/ #distinguish task by programming language
-│   ├── client/ #Have the APi's (Google Books and Open Library)
-│   │   ├── 
-│   │   ├──
-│   │   ├── 
-│   │   ├── 
-│   │   └──              
+├── java/               # Distinguish tasks by programming language
+│   ├── client/         # Have the APIs (Google Books and Open Library)
+│   │   ├── ...
+│   │   └── ...
 │   │
-│   ├── controller/ #Will call mappings (GET, POST, DELETE, PUT)
-│   │   ├──
-│   │   ├──
-│   │   └──
+│   ├── controller/     # Will call mappings (GET, POST, DELETE, PUT)
+│   │   ├── ...
+│   │   └── ...
 │   │
-│   ├── repository/ #Will grab data from the database (Supabase)
-│   │   ├──
-│   │   ├──
-│   │   ├──
-│   │   └──
+│   ├── repository/     # Will grab data from the database (Supabase)
+│   │   ├── ...
+│   │   └── ...
 │   │
-│   ├── service/ #Will handle all backend logic
-│   │   ├──
-│   │   ├──
-│   │   └──
+│   ├── service/        # Will handle all backend logic
+│   │   ├── ...
+│   │   └── ...
 │
 ├── python/
-│   ├──
-│   ├──
-│   ├──
-│   └──
+│   ├── ...
+│   └── ...
+│
 └── README.md
+```
