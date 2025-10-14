@@ -1,0 +1,9 @@
+.login-page {
+    background: linear-gradient(to bottom, #7db3f7, #74a6e6);
+    min-height: 100vh;       /* ensures at least full viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
