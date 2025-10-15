@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bookbuddy</groupId>
-	<artifactId>bookbuddy</artifactId>
+	<artifactId>bookbuddy-springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BookBuddy</name>
 	<description>A Spring Boot project to help users find books they may enjoy</description>
