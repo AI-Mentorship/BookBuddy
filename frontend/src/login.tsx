@@ -16,7 +16,7 @@ const Login: React.FC = () => {
     <div className="login-page">
       <h1 className="app-title">BookBuddy</h1>
       <div className="login-box">
-        <h2>Log-in</h2>
+        <h2>Sign-in</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -39,16 +39,16 @@ const Login: React.FC = () => {
           </div>
 
           <button type="submit" className="login-button">
-            Log-In
+            Sign-In
           </button>
         </form>
       </div>
 
       <footer className="footer">
-        <a href="#">Discord</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Instagram</a>
-        <a href="#">Github</a>
+        <a href="#">Discord          </a>
+        <a href="#">LinkedIn         </a>
+        <a href="#">Instagram        </a>
+        <a href="#">Github            </a>
       </footer>
     </div>
   );
