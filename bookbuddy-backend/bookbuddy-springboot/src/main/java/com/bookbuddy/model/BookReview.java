@@ -20,10 +20,14 @@ public class BookReview {
     @JoinColumn(name = "user_id", nullable = false) //linking user_id in bb_users to user_id in book_review; linking primary key of bb_users to this one
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String review;
 
     @Column(nullable = false)
     private String googleBooksId;
+
+    @Column(nullable = true)
+    private double rating;
+
 
 }

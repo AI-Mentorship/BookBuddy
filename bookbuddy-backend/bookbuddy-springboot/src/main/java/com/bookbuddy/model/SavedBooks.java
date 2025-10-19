@@ -30,7 +30,4 @@ public class SavedBooks {
     @Column(nullable = false)
     private String googleBooksId;
 
-    
-
-
 }
