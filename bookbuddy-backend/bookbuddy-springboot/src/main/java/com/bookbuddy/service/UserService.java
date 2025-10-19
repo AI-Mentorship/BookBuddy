@@ -1,6 +1,7 @@
 package com.bookbuddy.service;
 
 import com.bookbuddy.exception.EmailAlreadyExistsException;
+import com.bookbuddy.exception.UserNotFoundException;
 import com.bookbuddy.model.User;
 import com.bookbuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,10 @@ public class UserService {
         //This is an object of the User Table
         return userRepository.save(user);
     }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
 }
