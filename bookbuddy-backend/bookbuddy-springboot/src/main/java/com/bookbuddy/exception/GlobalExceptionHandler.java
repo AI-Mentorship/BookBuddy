@@ -28,4 +28,13 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    // Handle the case where a requested user does not exist in the database
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
+        // Return HTTP 404 NOT_FOUND to indicate that the requested resource (user) does not exist
+        // ex.getMessage() contains the error message we set in the UserNotFoundException constructor
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
 }

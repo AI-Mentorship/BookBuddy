@@ -10,15 +10,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "saved_books")
+@Table(name = "saved_book")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavedBooks {
+@Builder
+public class SavedBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long savedBookId;
