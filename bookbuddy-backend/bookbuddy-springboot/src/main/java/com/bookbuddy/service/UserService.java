@@ -1,11 +1,13 @@
 package com.bookbuddy.service;
 
 import com.bookbuddy.exception.EmailAlreadyExistsException;
-import com.bookbuddy.exception.UserNotFoundException;
+import com.bookbuddy.exception.ResourceNotFoundException;
 import com.bookbuddy.model.User;
 import com.bookbuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.lang.module.ResolutionException;
 
 @Service
 public class UserService {
@@ -28,7 +30,7 @@ public class UserService {
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
     }
 
 }

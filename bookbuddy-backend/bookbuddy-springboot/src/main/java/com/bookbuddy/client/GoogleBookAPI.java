@@ -1,7 +1,7 @@
 package com.bookbuddy.client;
 
 import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.GoogleBookAPIByIdResponse;
+import com.bookbuddy.dto.GoogleBookAPIResponse;
 import com.bookbuddy.exception.GoogleBookAPIException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,10 +22,10 @@ public class GoogleBookAPI {
 
     public BookDTO getGoogleBookById(String googleBooksId) {
         try {
-            GoogleBookAPIByIdResponse response = webClient.get().
+            GoogleBookAPIResponse response = webClient.get().
                     uri("/{id}", googleBooksId)// dynamic path variable
                     .retrieve()// send request and prepare to handle response
-                    .bodyToMono(GoogleBookAPIByIdResponse.class) // convert JSON to String
+                    .bodyToMono(GoogleBookAPIResponse.class) // convert JSON to String
                     .block(); //makes this sync and not async (not good for scaling)
 
             if (response == null || response.getVolumeInfo() == null) {
