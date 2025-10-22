@@ -40,11 +40,11 @@ frontend/
 │ │ └── common/ # Buttons, Modals, Inputs
 │ │
 │ ├── pages/ # Route-based views
-│ │ ├── Home.tsx
-│ │ ├── Search.tsx
-│ │ ├── Recommendations.tsx
+│ │ ├── Dashboard.tsx
+│ │ ├── Favorites.tsx
 │ │ ├── Profile.tsx
-│ │ └── Login.tsx
+│ │ ├── login.tsx
+│ │ └── questionnaire.tsx
 │ │
 │ ├── hooks/ # Custom React hooks
 │ │ ├── useAuth.ts # Authentication state
@@ -71,4 +71,5 @@ frontend/
 ├── vite.config.ts
 └── README.md
 ```
+
 #bookbuddy

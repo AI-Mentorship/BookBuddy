@@ -1,5 +1,6 @@
 import React from "react";
 import profilePic from "../assets/profile.jpg";
+import "../css/Profile.css";
 export default function Profile() {
   const user = {
     name: "Sai Sasank Achanta",
