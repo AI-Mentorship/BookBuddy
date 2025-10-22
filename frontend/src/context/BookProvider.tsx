@@ -1,14 +1,22 @@
-// src/context/BookProvider.jsx
 import { useState, useEffect } from "react";
+import type { ReactNode } from "react";
 import { BookContext } from "./BookContext";
+import type { Book } from "./BookContext";
 
-export const BookProvider = ({ children }) => {
-  const [favorites, setFavorites] = useState([]);
+export const BookProvider = ({ children }: { children: ReactNode }) => {
+  const [favorites, setFavorites] = useState<Book[]>([]);
 
   // Load favorites from localStorage when app starts
   useEffect(() => {
     const storedFavs = localStorage.getItem("favorites");
-    if (storedFavs) setFavorites(JSON.parse(storedFavs));
+    if (storedFavs) {
+      try {
+        const parsed: Book[] = JSON.parse(storedFavs);
+        setFavorites(parsed);
+      } catch (error) {
+        console.error("Failed to parse favorites:", error);
+      }
+    }
   }, []);
 
   // Save favorites whenever they change
@@ -17,7 +25,7 @@ export const BookProvider = ({ children }) => {
   }, [favorites]);
 
   // Add book to favorites
-  const addToFavorites = (book) => {
+  const addToFavorites = (book: Book) => {
     setFavorites((prev) => {
       if (prev.some((b) => b.id === book.id)) return prev; // avoid duplicates
       return [...prev, book];
@@ -25,12 +33,12 @@ export const BookProvider = ({ children }) => {
   };
 
   // Remove book from favorites
-  const removeFromFavorites = (bookId) => {
+  const removeFromFavorites = (bookId: number) => {
     setFavorites((prev) => prev.filter((book) => book.id !== bookId));
   };
 
   // Check if a book is favorited
-  const isFavorite = (bookId) => favorites.some((b) => b.id === bookId);
+  const isFavorite = (bookId: number) => favorites.some((b) => b.id === bookId);
 
   // Value shared across the app
   const value = {

@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import "./Login.css";
+import { useNavigate } from "react-router-dom";
+import "../css/Login.css";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("Email:", email);
     console.log("Password:", password);
-    // TODO: connect to backend API
+
+    // TODO: replace with real auth
+    // Navigate to Questionnaire after login
+    navigate("/questionnaire");
   };
 
   return (
@@ -45,10 +51,10 @@ const Login: React.FC = () => {
       </div>
 
       <footer className="footer">
-        <a href="#">Discord          </a>
-        <a href="#">LinkedIn         </a>
-        <a href="#">Instagram        </a>
-        <a href="#">Github            </a>
+        <a href="#">Discord</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+        <a href="#">Github</a>
       </footer>
     </div>
   );

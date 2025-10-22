@@ -1,45 +1,46 @@
-import React, { useState } from "react";
-import SignIn from "./SignIn";
-import Questionnaire from "./Questionnaire";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { BookProvider } from "./context/BookProvider";
+import NavBar from "./components/NavBar";
+import Dashboard from "./pages/Dashboard";
+import Favorites from "./pages/Favorites";
+import Profile from "./pages/Profile";
+import Login from "./pages/login";
+import Questionnaire from "./pages/questionnaire";
+import "./css/App.css";
+import "./css/index.css";
 
 const App: React.FC = () => {
-  const [page, setPage] = useState<"signin" | "questionnaire" | "dashboard">("signin");
+  return (
+    <BookProvider>
+      <Routes>
+        {/* Authentication / Onboarding */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/questionnaire" element={<Questionnaire />} />
 
-  if (page === "questionnaire") {
-    return (
-      <Questionnaire
-        onDashboard={() => setPage("dashboard")}
-        onBack={() => setPage("signin")}
-      />
-    );
-  }
+        {/* Main App Pages with Navbar */}
+        <Route
+          path="/*"
+          element={
+            <>
+              <NavBar />
+              <main className="main-content">
+                <Routes>
+                  <Route path="/" element={<Login />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                </Routes>
+              </main>
+            </>
+          }
+        />
 
-  if (page === "dashboard") {
-    return (
-      <div style={{ textAlign: "center", color: "white", marginTop: "5rem" }}>
-        <h1>Dashboard</h1>
-        <p>This will be merged with sai's dashboard later.</p>
-        <button
-          style={{
-            marginTop: "2rem",
-            padding: "0.8rem 1.2rem",
-            backgroundColor: "#3b82f6",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontWeight: "600",
-            cursor: "pointer",
-            transition: "all 0.3s ease",
-          }}
-          onClick={() => setPage("questionnaire")}
-        >
-          Back to Questionnaire
-        </button>
-      </div>
-    );
-  }
-
-  return <SignIn onSignIn={() => setPage("questionnaire")} />;
+        {/* Fallback Route */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </BookProvider>
+  );
 };
 
 export default App;

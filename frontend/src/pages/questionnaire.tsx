@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./questionnaire.css";
+import { useNavigate } from "react-router-dom";
+import "../css/questionnaire.css";
 
 const genres = [
   "Fiction",
@@ -26,16 +27,12 @@ const genres = [
   "Adventure",
   "Cooking / Food & Drink",
   "Humor",
-  "Education / Academic"
+  "Education / Academic",
 ];
 
-interface QuestionnaireProps {
-  onDashboard: () => void;
-  onBack: () => void;
-}
-
-const Questionnaire: React.FC<QuestionnaireProps> = ({ onDashboard, onBack }) => {
+const Questionnaire: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const toggleGenre = (genre: string) => {
     setSelected((prev) =>
@@ -43,16 +40,30 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onDashboard, onBack }) =>
     );
   };
 
+  const goToDashboard = () => {
+    // Here you can also save `selected` to context if needed
+    navigate("/dashboard");
+  };
+
+  const goBackToLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="questionnaire-container">
       <h1 className="title">BookBuddy</h1>
       <div className="question-box frosted-glass">
-        <h2>Select all the genres you love. We’ll tailor recommendations just for you.</h2>
+        <h2>
+          Select all the genres you love. We’ll tailor recommendations just for
+          you.
+        </h2>
         <div className="genres-grid">
           {genres.map((genre) => (
             <button
               key={genre}
-              className={`genre-btn ${selected.includes(genre) ? "selected" : ""}`}
+              className={`genre-btn ${
+                selected.includes(genre) ? "selected" : ""
+              }`}
               onClick={() => toggleGenre(genre)}
             >
               {genre}
@@ -60,12 +71,12 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onDashboard, onBack }) =>
           ))}
         </div>
         <div className="btn-group">
-          <button className="back-btn" onClick={onBack}>
+          <button className="back-btn" onClick={goBackToLogin}>
             Back to Sign In
           </button>
           <button
             className={`dashboard-btn ${selected.length ? "" : "disabled"}`}
-            onClick={selected.length ? onDashboard : undefined}
+            onClick={selected.length ? goToDashboard : undefined}
           >
             Dashboard
           </button>

@@ -17,13 +17,11 @@ export default function Profile() {
       <div className="bg-gray-800 w-80 rounded-xl shadow-md p-6 text-center">
         {/* Profile Picture */}
         <img
-          img src={profilePic}
+          src={profilePic}
           alt="Profile"
           className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
         />
-        <div className="text-white">
-          N/A
-        </div>
+        <div className="text-white">N/A</div>
 
         {/* User Info */}
         <h1 className="text-xl font-semibold text-white">{user.name}</h1>
@@ -37,7 +35,4 @@ export default function Profile() {
       </div>
     </div>
   );
-
-  
-};
-
+}

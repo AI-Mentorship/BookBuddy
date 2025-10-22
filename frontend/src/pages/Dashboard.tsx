@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import "../css/Home.css";
+import type { Book } from "../context/BookContext";
+
+interface OpenLibraryBook {
+  title: string;
+  author_name?: string[];
+  first_publish_year?: number;
+  cover_i?: number;
+}
 
 function Dashboard() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  // 🔹 Function to fetch books from Open Library
-  const fetchBooks = async (query) => {
+  const fetchBooks = async (query: string): Promise<void> => {
     if (!query.trim()) return;
 
     setLoading(true);
@@ -22,13 +29,17 @@ function Dashboard() {
       );
       const data = await response.json();
 
-      const mappedBooks = data.docs.slice(0, 40).map((book, index) => ({
-        id: index,
-        title: book.title,
-        author: book.author_name?.join(", ") || "Unknown Author",
-        year: book.first_publish_year || "N/A",
-        cover_id: book.cover_i,
-      }));
+      const mappedBooks: Book[] = data.docs
+        .slice(0, 40)
+        .map((book: OpenLibraryBook, index: number) => ({
+          id: index,
+          title: book.title,
+          author: book.author_name?.join(", ") || "Unknown Author",
+          year: book.first_publish_year?.toString() || "N/A",
+          cover_url: book.cover_i
+            ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+            : "https://via.placeholder.com/150x200?text=No+Cover",
+        }));
 
       setBooks(mappedBooks);
     } catch (err) {
@@ -39,13 +50,11 @@ function Dashboard() {
     }
   };
 
-  // 🔹 Load popular books on first render
   useEffect(() => {
-    fetchBooks("horror"); // default query
+    fetchBooks("horror");
   }, []);
 
-  // 🔹 Handle user search
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
     await fetchBooks(searchQuery);
@@ -63,7 +72,6 @@ function Dashboard() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          
 
           <button type="submit" className="search_button">
             Search
@@ -75,21 +83,11 @@ function Dashboard() {
       {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
       <div className="books-grid">
-        {books.length > 0 ? (
-          books.map((book) => (
-            <MovieCard
-              key={book.id}
-              book={{
-                ...book,
-                cover_url: book.cover_id
-                  ? `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`
-                  : "https://via.placeholder.com/150x200?text=No+Cover",
-              }}
-            />
-          ))
-        ) : (
-          !loading && <p style={{ textAlign: "center" }}>No books to display</p>
-        )}
+        {books.length > 0
+          ? books.map((book) => <MovieCard key={book.id} book={book} />)
+          : !loading && (
+              <p style={{ textAlign: "center" }}>No books to display</p>
+            )}
       </div>
     </div>
   );
