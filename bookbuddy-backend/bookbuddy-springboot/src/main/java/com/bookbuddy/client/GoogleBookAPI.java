@@ -3,6 +3,7 @@ package com.bookbuddy.client;
 import com.bookbuddy.dto.BookDTO;
 import com.bookbuddy.dto.GoogleBookAPIResponse;
 import com.bookbuddy.exception.GoogleBookAPIException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -10,7 +11,10 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Component
 public class GoogleBookAPI {
 
+    @Value("${google.api.key}")
+    private String googleApiKey;
     private final WebClient webClient;
+
 
     // Spring automatically provides a WebClient.Builder
     public GoogleBookAPI(WebClient.Builder webClientBuilder) {
@@ -22,11 +26,16 @@ public class GoogleBookAPI {
 
     public BookDTO getGoogleBookById(String googleBooksId) {
         try {
-            GoogleBookAPIResponse response = webClient.get().
-                    uri("/{id}", googleBooksId)// dynamic path variable
-                    .retrieve()// send request and prepare to handle response
-                    .bodyToMono(GoogleBookAPIResponse.class) // convert JSON to String
-                    .block(); //makes this sync and not async (not good for scaling)
+            GoogleBookAPIResponse response = webClient.get()
+                    // Build the request URI dynamically
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/{id}")                // dynamic path variable for the book ID
+                            .queryParam("key", googleApiKey) // append ?key=YOUR_API_KEY as query parameter
+                            .build(googleBooksId))        // replace {id} with actual Google Books ID
+                    .retrieve()                           // send the GET request and prepare to handle the response
+                    .bodyToMono(GoogleBookAPIResponse.class) // convert the JSON body to a GoogleBookAPIResponse object
+                    .block();                             // make the call synchronous (blocks until response arrives)
+
 
             if (response == null || response.getVolumeInfo() == null) {
                 throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
