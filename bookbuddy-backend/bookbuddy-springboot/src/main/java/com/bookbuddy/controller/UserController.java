@@ -1,5 +1,6 @@
 package com.bookbuddy.controller;
 
+import com.bookbuddy.dto.LoginRequest;
 import com.bookbuddy.dto.UserRequest;
 import com.bookbuddy.dto.UserResponse;
 import com.bookbuddy.model.User;
@@ -26,26 +27,14 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
-        //convert request -> entity
-        User user = User.builder().
-                email(userRequest.getEmail())
-                .password(userRequest.getPassword())
-                .firstName(userRequest.getFirstName())
-                .lastName(userRequest.getLastName())
-                .birthDate(userRequest.getBirthDate())
-                .build();
+        UserResponse savedUser = userService.createUser(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    }
 
-        User savedUser = userService.createUser(user);
-
-        UserResponse userResponse = UserResponse.builder().
-                userId(savedUser.getUserId())
-                .email(savedUser.getEmail())
-                .firstName(savedUser.getFirstName())
-                .lastName(savedUser.getLastName()).
-                birthDate(savedUser.getBirthDate()).
-                build();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+    @PostMapping("/signIn")
+    public ResponseEntity<UserResponse> signIn(@RequestBody LoginRequest loginRequest) {
+        UserResponse response = userService.signIn(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
