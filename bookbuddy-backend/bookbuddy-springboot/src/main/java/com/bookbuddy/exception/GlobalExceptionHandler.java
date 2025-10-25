@@ -77,6 +77,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
+    // Handles cases where user credentials are invalid (e.g., wrong password or email)
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException ex, HttpServletRequest request) {
+        ErrorResponse response = ErrorResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())                   // 401 status code for unauthorized access
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())           // "Unauthorized"
+                .message(ex.getMessage())                                   // custom message from the thrown exception
+                .timestamp(System.currentTimeMillis())                      // capture time of error
+                .path(request.getRequestURI())                              // record which endpoint caused the error
+                .build();
 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
 
 }
