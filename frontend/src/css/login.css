@@ -7,13 +7,13 @@
     animation: fadeIn 1s ease;
     font-family: "Poppins", sans-serif;
   }
-  
+
   .title-wrapper.large-title {
     display: flex;
     justify-content: center;
     margin-bottom: 2rem;
   }
-  
+
   .large-title .title-letter {
     font-size: 5rem;
     font-weight: 900;
@@ -21,16 +21,16 @@
     display: inline-block;
     text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   }
-  
+
   .title-letter.jump {
     animation: jumpIn 0.4s ease forwards;
   }
-  
+
   @keyframes jumpIn {
     0% { transform: translateY(40px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
   }
-  
+
   .form-box {
     padding: 2rem;
     border-radius: 1rem;
@@ -42,18 +42,18 @@
     transition: all 0.3s ease;
     font-weight: 600;
   }
-  
+
   .form-box:hover {
     transform: scale(1.02);
   }
-  
+
   .tagline {
     color: white;
     margin-bottom: 1rem;
     font-size: 1.1rem;
     font-weight: 600;
   }
-  
+
   input {
     display: block;
     width: 100%;
@@ -66,31 +66,31 @@
     font-family: "Poppins", sans-serif;
     font-weight: 600;
   }
-  
+
   input:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 8px #3b82f6;
     outline: none;
   }
-  
+
   .links {
     display: flex;
     justify-content: flex-end;
     font-size: 0.85rem;
     margin-bottom: 1rem;
   }
-  
+
   .links a {
     color: white;
     text-decoration: none;
     transition: color 0.3s ease;
     font-weight: 600;
   }
-  
+
   .links a:hover {
     color: #3b82f6;
   }
-  
+
   .signin-btn {
     width: 100%;
     padding: 0.8rem;
@@ -103,12 +103,12 @@
     transition: all 0.3s ease;
     font-family: "Poppins", sans-serif;
   }
-  
+
   .signin-btn:hover {
     background-color: #2563eb;
     transform: scale(1.05);
   }
-  
+
   .footer {
     position: absolute;
     bottom: 0;
@@ -118,28 +118,28 @@
     padding: 1rem 0;
     font-size: 0.95rem;
   }
-  
+
   .connect-text {
     font-weight: 700;
     font-size: 1rem;
     color: #0a1a44;
     font-family: "Poppins", sans-serif;
   }
-  
+
   .social-links {
     display: flex;
     justify-content: center;
     gap: 1.5rem;
     margin-top: 0.5rem;
   }
-  
+
   .social-links a {
     color: #0a1a44;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease, transform 0.2s ease;
   }
-  
+
   .social-links a:hover {
     color: #3b82f6;
     transform: scale(1.1);
