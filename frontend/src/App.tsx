@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { BookProvider } from "./context/BookProvider";
 import NavBar from "./components/NavBar";
 import Dashboard from "./pages/Dashboard";
@@ -11,36 +11,37 @@ import "./css/App.css";
 import "./css/index.css";
 
 const App: React.FC = () => {
-  return (
-    <BookProvider>
-      <Routes>
-        {/* Authentication / Onboarding */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/questionnaire" element={<Questionnaire />} />
+    const location = useLocation();
 
-        {/* Main App Pages with Navbar */}
-        <Route
-          path="/*"
-          element={
-            <>
-              <NavBar />
-              <main className="main-content">
+    // List of routes that should NOT show the navbar
+    const hideNavbarRoutes = ["/login", "/questionnaire"];
+    const showNavbar = !hideNavbarRoutes.includes(location.pathname);
+
+    return (
+        <BookProvider>
+            {/* Conditionally render Navbar */}
+            {showNavbar && <NavBar />}
+
+            <main className="main-content">
                 <Routes>
-                  <Route path="/" element={<Login />} />
-                  <Route path="/favorites" element={<Favorites />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                </Routes>
-              </main>
-            </>
-          }
-        />
+                    {/* Authentication / Onboarding */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/questionnaire" element={<Questionnaire />} />
 
-        {/* Fallback Route */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </BookProvider>
-  );
+                    {/* Main App Pages */}
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/profile" element={<Profile />} />
+
+                    {/* Redirect base path to login */}
+                    <Route path="/" element={<Navigate to="/login" />} />
+
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/login" />} />
+                </Routes>
+            </main>
+        </BookProvider>
+    );
 };
 
 export default App;
