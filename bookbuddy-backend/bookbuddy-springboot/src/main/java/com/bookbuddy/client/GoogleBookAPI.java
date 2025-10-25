@@ -144,6 +144,5 @@ public class GoogleBookAPI {
             throw new GoogleBookAPIException("Failed to search books: " + e.getMessage());
         }
 
-
     }
 }
