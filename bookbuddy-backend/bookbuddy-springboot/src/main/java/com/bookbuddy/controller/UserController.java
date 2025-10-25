@@ -3,7 +3,6 @@ package com.bookbuddy.controller;
 import com.bookbuddy.dto.LoginRequest;
 import com.bookbuddy.dto.UserRequest;
 import com.bookbuddy.dto.UserResponse;
-import com.bookbuddy.model.User;
 import com.bookbuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
