@@ -5,16 +5,17 @@ import NavBar from "./components/NavBar";
 import Dashboard from "./pages/Dashboard";
 import Favorites from "./pages/Favorites";
 import Profile from "./pages/Profile";
-import Login from "./pages/login";
-import Questionnaire from "./pages/questionnaire";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Questionnaire from "./pages/Questionnaire";
 import "./css/App.css";
 import "./css/index.css";
 
 const App: React.FC = () => {
     const location = useLocation();
 
-    // List of routes that should NOT show the navbar
-    const hideNavbarRoutes = ["/login", "/questionnaire"];
+    // Hide navbar on signin, signup, and questionnaire pages
+    const hideNavbarRoutes = ["/signin", "/signup", "/questionnaire"];
     const showNavbar = !hideNavbarRoutes.includes(location.pathname);
 
     return (
@@ -25,7 +26,8 @@ const App: React.FC = () => {
             <main className="main-content">
                 <Routes>
                     {/* Authentication / Onboarding */}
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
                     <Route path="/questionnaire" element={<Questionnaire />} />
 
                     {/* Main App Pages */}
@@ -33,11 +35,11 @@ const App: React.FC = () => {
                     <Route path="/favorites" element={<Favorites />} />
                     <Route path="/profile" element={<Profile />} />
 
-                    {/* Redirect base path to login */}
-                    <Route path="/" element={<Navigate to="/login" />} />
+                    {/* Redirect base path to signin */}
+                    <Route path="/" element={<Navigate to="/signin" />} />
 
-                    {/* Fallback */}
-                    <Route path="*" element={<Navigate to="/login" />} />
+                    {/* Fallback - catch all undefined routes */}
+                    <Route path="*" element={<Navigate to="/signin" />} />
                 </Routes>
             </main>
         </BookProvider>

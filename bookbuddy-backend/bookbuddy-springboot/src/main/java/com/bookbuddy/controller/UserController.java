@@ -23,7 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/signUp")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
         UserResponse savedUser = userService.createUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
