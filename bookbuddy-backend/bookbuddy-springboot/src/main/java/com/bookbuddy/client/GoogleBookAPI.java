@@ -1,12 +1,17 @@
 package com.bookbuddy.client;
 
-import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.GoogleBookAPIResponse;
-import com.bookbuddy.exception.GoogleBookAPIException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import com.bookbuddy.dto.BookDTO;
+import com.bookbuddy.dto.GoogleBookAPIByIdResponse;
+import com.bookbuddy.dto.GoogleBookAPISearchResponse;
+import com.bookbuddy.exception.GoogleBookAPIException;
+
+import java.util.List;
+
 
 @Component
 public class GoogleBookAPI {
@@ -26,14 +31,14 @@ public class GoogleBookAPI {
 
     public BookDTO getGoogleBookById(String googleBooksId) {
         try {
-            GoogleBookAPIResponse response = webClient.get()
+            GoogleBookAPIByIdResponse response = webClient.get()
                     // Build the request URI dynamically
                     .uri(uriBuilder -> uriBuilder
                             .path("/{id}")                // dynamic path variable for the book ID
                             .queryParam("key", googleApiKey) // append ?key=YOUR_API_KEY as query parameter
                             .build(googleBooksId))        // replace {id} with actual Google Books ID
                     .retrieve()                           // send the GET request and prepare to handle the response
-                    .bodyToMono(GoogleBookAPIResponse.class) // convert the JSON body to a GoogleBookAPIResponse object
+                    .bodyToMono(GoogleBookAPIByIdResponse.class) // convert the JSON body to a GoogleBookAPIResponse object
                     .block();                             // make the call synchronous (blocks until response arrives)
 
 
@@ -67,5 +72,55 @@ public class GoogleBookAPI {
 
     }
 
+    public List<BookDTO> searchBooks(String query) {
+        try {
+        GoogleBookAPISearchResponse response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("q", query)
+                        .queryParam("maxResults", 20) // limit results if you want
+                        .build())
+                .retrieve()
+                .bodyToMono(GoogleBookAPISearchResponse.class)
+                .block();
+
+        // where response is empty or invalid 
+        if (response == null || response.getItems() == null) {
+            throw new GoogleBookAPIException("No results found for query: " + query);
+        }
+
+        // Map each Google result → BookDTO
+        return response.getItems().stream()
+                .map(item -> {
+                    GoogleBookAPISearchResponse.VolumeInfo info = item.getVolumeInfo();
+                    if (info == null) return null;
+                    return BookDTO.builder()
+                            .googleBooksId(item.getId())
+                            .title(info.getTitle())
+                            .authors(info.getAuthors())
+                            .publisher(info.getPublisher())
+                            .publishedDate(info.getPublishedDate())
+                            .description(info.getDescription())
+                            .pageCount(info.getPageCount())
+                            .categories(info.getCategories())
+                            .averageRating(info.getAverageRating())
+                            .maturityRating(info.getMaturityRating())
+                            .thumbnail(info.getImageLinks() != null ? info.getImageLinks().getThumbnail() : null)
+                            .language(info.getLanguage())
+                            .previewLink(info.getPreviewLink())
+                            .build();
+                })
+                .filter(dto -> dto != null)
+                .toList();
+
+        } catch (WebClientResponseException e) {
+            // if there is http errors: invalid id, API key issues
+            throw new GoogleBookAPIException("Google Books API error: " + e.getStatusCode());
+        } catch (Exception e) {
+            // runtime error: network, parsing
+            throw new GoogleBookAPIException("Failed to search books: " + e.getMessage());
+    }
+
+
+    }
 
 }
