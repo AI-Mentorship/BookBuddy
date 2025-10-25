@@ -98,17 +98,18 @@ public class GoogleBookAPI {
         }
     }
 
-    public List<BookDTO> searchBooks(String query) {
+    public List<BookDTO> searchBooks(String query, int startIndex, int maxResults) {
         try {
             GoogleBookAPISearchResponse response = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("q", query)
-                            .queryParam("maxResults", 20) // limit results if you want
+                            .queryParam("startIndex", startIndex)
+                            .queryParam("maxResults", maxResults) // limit results if wanted
                             .build())
                     .retrieve()
                     .bodyToMono(GoogleBookAPISearchResponse.class)
                     .block();
-
+                
             // where response is empty or invalid
             if (response == null || response.getItems() == null) {
                 throw new GoogleBookAPIException("No results found for query: " + query);
@@ -146,5 +147,21 @@ public class GoogleBookAPI {
             throw new GoogleBookAPIException("Failed to search books: " + e.getMessage());
         }
 
+    }
+
+    public GoogleBookAPISearchResponse rawSearch(String query, int startIndex, int maxResults) {
+        try {
+            return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("q", query)
+                        .queryParam("startIndex", startIndex)
+                        .queryParam("maxResults", Math.min(maxResults, 40)) // Google API limit
+                        .build())
+                .retrieve()
+                .bodyToMono(GoogleBookAPISearchResponse.class)
+                .block();
+        } catch (Exception e) {
+            throw new GoogleBookAPIException("Failed to fetch books: " + e.getMessage());
+        }
     }
 }
