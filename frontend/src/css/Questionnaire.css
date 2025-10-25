@@ -1,0 +1,357 @@
+/* ===== Questionnaire Page ===== */
+.questionnaire-container {
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 1;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #0f172a);
+    background-size: 200% 200%;
+    background-attachment: fixed;
+    animation: gradientShift 15s ease infinite;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Animated Background Blobs */
+.questionnaire-container::before,
+.questionnaire-container::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    animation: float 20s ease-in-out infinite;
+    z-index: 0;
+}
+
+.questionnaire-container::before {
+    width: 400px;
+    height: 400px;
+    background: #3b82f6;
+    top: -200px;
+    right: -200px;
+    animation-delay: 0s;
+}
+
+.questionnaire-container::after {
+    width: 350px;
+    height: 350px;
+    background: #8b5cf6;
+    bottom: -150px;
+    left: -150px;
+    animation-delay: 7s;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* ===== Title ===== */
+.title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+    animation: fadeInDown 0.8s ease;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #ffffff, #bfdbfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== Question Box - Modern Wide Layout ===== */
+.question-box {
+    width: 100%;
+    max-width: 900px;
+    padding: 3rem;
+    border-radius: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.8s ease 0.2s backwards;
+    position: relative;
+    z-index: 1;
+}
+
+.question-box h2 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 2.5rem;
+    font-weight: 600;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* ===== Modern Genres Grid - Bento Style ===== */
+.genres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+/* ===== Genre Buttons - Card Style ===== */
+.genre-btn {
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(191, 219, 254, 1);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.genre-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.2));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.genre-btn:hover:not(:disabled) {
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+}
+
+.genre-btn:hover:not(:disabled)::before {
+    opacity: 1;
+}
+
+.genre-btn.selected {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.genre-btn.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.genre-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== Error Message ===== */
+.error-message {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fecaca;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    animation: shake 0.5s ease;
+    text-align: center;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* ===== Button Group - Modern Split ===== */
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.back-btn,
+.dashboard-btn {
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: "Poppins", sans-serif;
+}
+
+.back-btn {
+    background: transparent;
+    color: rgba(191, 219, 254, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex: 0 0 auto;
+}
+
+.back-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    transform: translateX(-4px);
+}
+
+.back-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.dashboard-btn {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.dashboard-btn:hover:not(.disabled):not(:disabled)::before {
+    width: 300px;
+    height: 300px;
+}
+
+.dashboard-btn:hover:not(.disabled):not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+}
+
+.dashboard-btn:active:not(.disabled):not(:disabled) {
+    transform: translateY(0);
+}
+
+.dashboard-btn.disabled,
+.dashboard-btn:disabled {
+    background: rgba(59, 130, 246, 0.3);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== Loading Spinner ===== */
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .question-box {
+        padding: 2rem;
+    }
+
+    .genres-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .genre-btn {
+        padding: 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .question-box {
+        padding: 1.5rem;
+    }
+
+    .genres-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .back-btn,
+    .dashboard-btn {
+        width: 100%;
+    }
+}

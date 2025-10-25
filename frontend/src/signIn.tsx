@@ -5,7 +5,7 @@ interface SignInProps {
   onSignIn: () => void;
 }
 
-const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
+const signIn: React.FC<SignInProps> = ({ onSignIn }) => {
   const [titleAnimated, setTitleAnimated] = useState(false);
   const [email, setEmail] = useState("dummyuser@example.com");
   const [password, setPassword] = useState("password123");
@@ -70,4 +70,4 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
   );
 };
 
-export default SignIn;
+export default signIn;

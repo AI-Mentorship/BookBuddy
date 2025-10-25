@@ -21,4 +21,10 @@ public class BooksRead {
 
     @Column(nullable = false)
     private String googleBooksId;
+
+    @Column(nullable = true)
+    private String private_review;
+
+    @Column(nullable = false)
+    private double private_rating;
 }
