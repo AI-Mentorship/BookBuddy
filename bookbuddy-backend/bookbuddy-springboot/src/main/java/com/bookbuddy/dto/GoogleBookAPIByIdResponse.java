@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GoogleBookAPIResponse  {
+public class GoogleBookAPIByIdResponse  {
     private String id;
     private VolumeInfo volumeInfo;
 
