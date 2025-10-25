@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GoogleBookAPISearchResponse {
+    private int totalItems; // <-- add this
     private List<Item> items;
 
     @Data
