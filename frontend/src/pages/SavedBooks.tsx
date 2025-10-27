@@ -17,6 +17,7 @@ const SavedBooks: React.FC = () => {
         setLoading(true);
         try {
             const response = await fetch(`http://localhost:8080/saved-books/user/${userId}`);
+            console.log(response);
             if (!response.ok) throw new Error("Failed to fetch saved books");
             const data: BookDTO[] = await response.json();
             setSavedBooks(data);
