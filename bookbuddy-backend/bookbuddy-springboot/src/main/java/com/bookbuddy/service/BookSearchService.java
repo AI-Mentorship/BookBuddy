@@ -1,15 +1,15 @@
 package com.bookbuddy.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.stereotype.Service;
+
 import com.bookbuddy.client.GoogleBookAPI;
 import com.bookbuddy.dto.BookDTO;
 import com.bookbuddy.dto.GoogleBookAPISearchResponse;
 import com.bookbuddy.dto.PagedBookResponseDTO;
-
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class BookSearchService {
@@ -21,7 +21,7 @@ public class BookSearchService {
     }
 
     public PagedBookResponseDTO searchBooks(String query) {
-        return searchBooksPaged(query, 1, 20);
+        return searchBooksPaged(query, 1, 5);
     }
 
     public PagedBookResponseDTO searchBooksPaged(String query, int page, int pageSize) {

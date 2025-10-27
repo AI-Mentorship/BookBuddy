@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import com.bookbuddy.dto.BookDTO;
 import com.bookbuddy.dto.PagedBookResponseDTO;
 import com.bookbuddy.service.BookSearchService;
 
@@ -31,14 +28,27 @@ public class BookSearchController {
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(
         @RequestParam("q") String query,
-        @RequestParam(value = "page", defaultValue = "1") int page,
-        @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        
-            if (query == null || query.trim().isEmpty()) {
-                return ResponseEntity.badRequest().body("Query parameter 'q' cannot be empty.");
+        @RequestParam(value = "page", defaultValue = "1") int page) {
+            
+        if (query == null || query.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Query parameter 'q' cannot be empty.");
         }
 
-        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), page, pageSize);
+        // Fixed page size = 20
+        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), page, 20);
+        return ResponseEntity.ok(results);
+    }
+
+    // Endpoint: /api/books/search/compact?q=harry+potter
+    @GetMapping("/search/compact")
+    public ResponseEntity<?> searchBooksCompact(@RequestParam("q") String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Query parameter 'q' cannot be empty.");
+        }
+        
+        // adjustable number of books returned, currently: 5
+        // modify "searchBooks" in service
+        PagedBookResponseDTO results = bookSearchService.searchBooks(query.trim());
         return ResponseEntity.ok(results);
     }
 
