@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useNavigate, Link} from "react-router-dom";
+import {useAuth} from "../context/AuthContext";
 import "../css/Authentication.css";
 
 const SignUp: React.FC = () => {
@@ -12,6 +13,15 @@ const SignUp: React.FC = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const {setUserId, isAuthenticated} = useAuth();
+
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/genre-preference");
+        }
+    }, [isAuthenticated, navigate]);
+
 
     // Validation helpers
     const isEmailValid = email.includes("@") && email.includes(".");
@@ -50,8 +60,8 @@ const SignUp: React.FC = () => {
         try {
             const response = await fetch("http://localhost:8080/users/signUp", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password, firstName, lastName, birthDate }),
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email, password, firstName, lastName, birthDate}),
             });
 
             if (!response.ok) {
@@ -60,15 +70,16 @@ const SignUp: React.FC = () => {
             }
 
             const data = await response.json();
-            // Store only userId
+
+            // Store userId using AuthContext
             if (data.userId) {
-                localStorage.setItem("userId", data.userId);
+                setUserId(data.userId);
             }
 
-            console.log("Signup successful" + data + "\nUserId: " + data.userId);
+            console.log("Signup successful, userId:", data.userId);
 
             // After successful signup, go to questionnaire
-            navigate("/questionnaire");
+            navigate("/genre-preference");
 
         } catch (error) {
             setError((error as Error).message);
@@ -79,152 +90,140 @@ const SignUp: React.FC = () => {
 
     return (
         <div className="login-page">
-            {/* Title Section */}
             <div>
+                {/* Title Section */}
                 <h1 className="app-title">BookBuddy</h1>
                 <p className="app-subtitle">Join your reading community</p>
-            </div>
 
-            {/* Signup Box */}
-            <div className="login-box">
-                <h2>Create Account</h2>
+                {/* Signup Box */}
+                <div className="login-box">
+                    <h2>Create Account</h2>
 
-                <form onSubmit={handleSubmit}>
-                    {/* Email Input */}
-                    <div className="input-group">
-                        <label className="input-label">Email</label>
-                        <input
-                            type="email"
-                            placeholder="your@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                        {email.length > 0 && (
-                            <p className={`validation-hint ${isEmailValid ? 'valid' : 'invalid'}`}>
-                                {isEmailValid ? '✓ Valid email' : '✗ Must contain @ and domain'}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* First Name Input */}
-                    <div className="input-group">
-                        <label className="input-label">First Name</label>
-                        <input
-                            type="text"
-                            placeholder="John"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                    </div>
-
-                    {/* Last Name Input */}
-                    <div className="input-group">
-                        <label className="input-label">Last Name</label>
-                        <input
-                            type="text"
-                            placeholder="Appleseed"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                    </div>
-
-                    {/* Birth Date Input */}
-                    <div className="input-group">
-                        <label className="input-label">Birth Date</label>
-                        <input
-                            type="date"
-                            value={birthDate}
-                            onChange={(e) => setBirthDate(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            max={new Date().toISOString().split('T')[0]}
-                            required
-                        />
-                    </div>
-
-                    {/* Password Input */}
-                    <div className="input-group">
-                        <label className="input-label">Password</label>
-                        <input
-                            type="password"
-                            placeholder="Create a strong password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                        {password.length > 0 && (
-                            <div className="validation-hints">
-                                <p className={`validation-hint ${isPasswordLongEnough ? 'valid' : 'invalid'}`}>
-                                    {isPasswordLongEnough ? '✓' : '✗'} At least 6 characters
+                    <form onSubmit={handleSubmit}>
+                        {/* Email Input */}
+                        <div className="input-group">
+                            <label className="input-label">Email</label>
+                            <input
+                                type="email"
+                                placeholder="your@email.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="login-input"
+                                disabled={loading}
+                                required
+                            />
+                            {email.length > 0 && (
+                                <p className={`validation-hint ${isEmailValid ? 'valid' : 'invalid'}`}>
+                                    {isEmailValid ? '✓ Valid email' : '✗ Must contain @ and domain'}
                                 </p>
-                                <p className={`validation-hint ${hasUpperCase ? 'valid' : 'invalid'}`}>
-                                    {hasUpperCase ? '✓' : '✗'} One uppercase letter
-                                </p>
-                                <p className={`validation-hint ${hasNumber ? 'valid' : 'invalid'}`}>
-                                    {hasNumber ? '✓' : '✗'} One number
-                                </p>
+                            )}
+                        </div>
+
+                        {/* First and Last Name Row */}
+                        <div className="form-row">
+                            <div className="input-group">
+                                <label className="input-label">First Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="John"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    className="login-input"
+                                    disabled={loading}
+                                    required
+                                />
                             </div>
-                        )}
-                    </div>
 
-                    {/* Confirm Password Input */}
-                    <div className="input-group">
-                        <label className="input-label">Confirm Password</label>
-                        <input
-                            type="password"
-                            placeholder="Re-enter password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                        {confirmPassword.length > 0 && (
-                            <p className={`validation-hint ${passwordsMatch ? 'valid' : 'invalid'}`}>
-                                {passwordsMatch ? '✓ Passwords match' : '✗ Passwords must match'}
-                            </p>
-                        )}
-                    </div>
+                            <div className="input-group">
+                                <label className="input-label">Last Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Appleseed"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    className="login-input"
+                                    disabled={loading}
+                                    required
+                                />
+                            </div>
+                        </div>
 
-                    {/* Error Message */}
-                    {error && <p className="error-message">{error}</p>}
+                        {/* Birth Date Input */}
+                        <div className="input-group">
+                            <label className="input-label">Birth Date</label>
+                            <input
+                                type="date"
+                                value={birthDate}
+                                onChange={(e) => setBirthDate(e.target.value)}
+                                className="login-input"
+                                disabled={loading}
+                                max={new Date().toISOString().split('T')[0]}
+                                required
+                            />
+                        </div>
 
-                    {/* Submit Button */}
-                    <button type="submit" className="login-button" disabled={loading}>
-                        {loading && <span className="loading-spinner"></span>}
-                        {loading ? "Creating account..." : "Create Account"}
-                    </button>
-                </form>
+                        {/* Password Input */}
+                        <div className="input-group">
+                            <label className="input-label">Password</label>
+                            <input
+                                type="password"
+                                placeholder="Create a strong password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="login-input"
+                                disabled={loading}
+                                required
+                            />
+                            {password.length > 0 && (
+                                <div className="validation-hints">
+                                    <p className={`validation-hint ${isPasswordLongEnough ? 'valid' : 'invalid'}`}>
+                                        {isPasswordLongEnough ? '✓' : '✗'} At least 6 characters
+                                    </p>
+                                    <p className={`validation-hint ${hasUpperCase ? 'valid' : 'invalid'}`}>
+                                        {hasUpperCase ? '✓' : '✗'} One uppercase letter
+                                    </p>
+                                    <p className={`validation-hint ${hasNumber ? 'valid' : 'invalid'}`}>
+                                        {hasNumber ? '✓' : '✗'} One number
+                                    </p>
+                                </div>
+                            )}
+                        </div>
 
-                {/* Divider */}
-                <div className="divider">
-                    <span>Connect with us</span>
-                </div>
+                        {/* Confirm Password Input */}
+                        <div className="input-group">
+                            <label className="input-label">Confirm Password</label>
+                            <input
+                                type="password"
+                                placeholder="Re-enter password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="login-input"
+                                disabled={loading}
+                                required
+                            />
+                            {confirmPassword.length > 0 && (
+                                <p className={`validation-hint ${passwordsMatch ? 'valid' : 'invalid'}`}>
+                                    {passwordsMatch ? '✓ Passwords match' : '✗ Passwords must match'}
+                                </p>
+                            )}
+                        </div>
 
-                {/* Social Links */}
-                <div className="social-links">
-                    <button className="social-btn" title="Discord" type="button">D</button>
-                    <button className="social-btn" title="LinkedIn" type="button">L</button>
-                    <button className="social-btn" title="Instagram" type="button">I</button>
-                    <button className="social-btn" title="Github" type="button">G</button>
+                        {/* Error Message */}
+                        {error && <p className="error-message">{error}</p>}
+
+                        {/* Submit Button */}
+                        <button type="submit" className="login-button" disabled={loading}>
+                            {loading && <span className="loading-spinner"></span>}
+                            {loading ? "Creating account..." : "Create Account"}
+                        </button>
+                    </form>
+
+                    {/* Footer */}
+                    <p className="footer-text">
+                        Already have an account? <Link to="/signin">Sign in</Link>
+                    </p>
                 </div>
             </div>
-
-            {/* Footer */}
-            <p className="footer-text">
-                Already have an account? <Link to="/signin">Sign in</Link>
-            </p>
         </div>
     );
 };

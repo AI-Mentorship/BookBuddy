@@ -1,39 +1,28 @@
 import React from "react";
-import profilePic from "../assets/profile.jpg";
-import "../css/Profile.css";
-export default function Profile() {
-  const user = {
-    name: "Sai Sasank Achanta",
-    username: "@SasnakAchanta",
-    age: 19,
+import { useAuth } from "../context/AuthContext";
+import "../css/Pages.css";
 
-    bio: "I like games",
-    email: "sasank.achanta06@gmail.com",
-    favoriteBook: "Harry Potter and the Sorcerer's Stone",
-    location: "United States",
-  };
+const Profile: React.FC = () => {
+    const { userId, logout } = useAuth();
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-gray-800 w-80 rounded-xl shadow-md p-6 text-center">
-        {/* Profile Picture */}
-        <img
-          src={profilePic}
-          alt="Profile"
-          className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-        />
-        <div className="text-white">N/A</div>
-
-        {/* User Info */}
-        <h1 className="text-xl font-semibold text-white">{user.name}</h1>
-        <p className="text-gray-300">{user.username}</p>
-
-        <div className="text-white">
-          <p>{user.age}</p>
-          <p>{user.location}</p>
-          <p>{user.favoriteBook}</p>
+    return (
+        <div className="page-container">
+            <h1 className="page-title">Profile</h1>
+            <div className="dropdown-section">
+                <p>Manage your profile settings here.</p>
+                <p style={{ marginTop: '1rem', fontSize: '0.9rem', opacity: 0.7 }}>
+                    User ID: {userId}
+                </p>
+                <button
+                    onClick={logout}
+                    className="login-button"
+                    style={{ marginTop: '2rem' }}
+                >
+                    Logout
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-}
+    );
+};
+
+export default Profile;

@@ -355,6 +355,32 @@ body::after {
     margin-right: 0.5rem;
 }
 
+/* ===== ADD THIS TO YOUR Authentication.css FILE ===== */
+
+/* Form Row for First/Last Name side by side */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-row .input-group {
+    margin-bottom: 0;
+}
+
+/* Responsive - Stack on mobile */
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .form-row .input-group {
+        margin-bottom: 0;
+    }
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
