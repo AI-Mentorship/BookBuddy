@@ -1,29 +1,21 @@
-import "../css/Favorites.css";
-import { useBookContext } from "../context/BookContext";
-import MovieCard from "../components/MovieCard";
+import React from "react";
+import { useAuth } from "../context/AuthContext";
+import "../css/Pages.css";
 
-function Favorites() {
-  const { favorites } = useBookContext();
+const Favorites: React.FC = () => {
+    const { userId } = useAuth();
 
-  if (favorites) {
     return (
-      <div className="favorites">
-        <h2>Your Favorites</h2>
-        <div className="books-grid">
-          {favorites.map((book) => (
-            <MovieCard book={book} key={book.id} />
-          ))}
+        <div className="page-container">
+            <h1 className="page-title">Favorites</h1>
+            <div className="dropdown-section">
+                <p>Your favorite books will appear here.</p>
+                <p style={{ marginTop: '1rem', fontSize: '0.9rem', opacity: 0.7 }}>
+                    User ID: {userId}
+                </p>
+            </div>
         </div>
-      </div>
     );
-  }
-
-  return (
-    <div className="favorites-empty">
-      <h2>No Favorite Books Yet</h2>
-      <p>Start adding books to your favorites and they will appear here!</p>
-    </div>
-  );
-}
+};
 
 export default Favorites;

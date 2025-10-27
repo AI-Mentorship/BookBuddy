@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../css/Authentication.css";
 
 const SignIn: React.FC = () => {
@@ -8,6 +9,14 @@ const SignIn: React.FC = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { setUserId, isAuthenticated } = useAuth();
+
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/dashboard");
+        }
+    }, [isAuthenticated, navigate]);
 
     // Validation helpers
     const isEmailValid = email.includes("@") && email.includes(".");
@@ -39,12 +48,12 @@ const SignIn: React.FC = () => {
             const data = await response.json();
             console.log("Login successful");
 
-            // Store userId for later use (like in questionnaire)
+            // Store userId using AuthContext
             if (data.userId) {
-                localStorage.setItem("userId", data.userId);
+                setUserId(data.userId);
             }
 
-            // Login goes straight to dashboard (skip questionnaire)
+            // Navigate to dashboard
             navigate("/dashboard");
         } catch (error) {
             setError((error as Error).message);
@@ -55,84 +64,65 @@ const SignIn: React.FC = () => {
 
     return (
         <div className="login-page">
-            {/* Title Section */}
             <div>
+                {/* Title Section */}
                 <h1 className="app-title">BookBuddy</h1>
                 <p className="app-subtitle">Your reading companion</p>
-            </div>
 
-            {/* Login Box */}
-            <div className="login-box">
-                <h2>Welcome back</h2>
+                {/* Login Box */}
+                <div className="login-box">
+                    <h2>Welcome back</h2>
 
-                <form onSubmit={handleSubmit}>
-                    {/* Email Input */}
-                    <div className="input-group">
-                        <label className="input-label">Email</label>
-                        <input
-                            type="email"
-                            placeholder="your@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                        {email.length > 0 && (
-                            <p className={`validation-hint ${isEmailValid ? 'valid' : 'invalid'}`}>
-                                {isEmailValid ? '✓ Valid email' : '✗ Must contain @ and domain'}
-                            </p>
-                        )}
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        {/* Email Input */}
+                        <div className="input-group">
+                            <label className="input-label">Email</label>
+                            <input
+                                type="email"
+                                placeholder="your@email.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="login-input"
+                                disabled={loading}
+                                required
+                            />
+                            {email.length > 0 && (
+                                <p className={`validation-hint ${isEmailValid ? 'valid' : 'invalid'}`}>
+                                    {isEmailValid ? '✓ Valid email' : '✗ Must contain @ and domain'}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Password Input */}
-                    <div className="input-group">
-                        <label className="input-label">Password</label>
-                        <input
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="login-input"
-                            disabled={loading}
-                            required
-                        />
-                    </div>
+                        {/* Password Input */}
+                        <div className="input-group">
+                            <label className="input-label">Password</label>
+                            <input
+                                type="password"
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="login-input"
+                                disabled={loading}
+                                required
+                            />
+                        </div>
 
-                    {/* Error Message */}
-                    {error && <p className="error-message">{error}</p>}
+                        {/* Error Message */}
+                        {error && <p className="error-message">{error}</p>}
 
-                    {/* Links */}
-                    <div className="login-links">
-                        <Link to="/forgot-password">Forgot password?</Link>
-                        <Link to="/signup">Create An Account</Link>
-                    </div>
+                        {/* Submit Button */}
+                        <button type="submit" className="login-button" disabled={loading}>
+                            {loading && <span className="loading-spinner"></span>}
+                            {loading ? "Signing in..." : "Sign in"}
+                        </button>
+                    </form>
 
-                    {/* Submit Button */}
-                    <button type="submit" className="login-button" disabled={loading}>
-                        {loading && <span className="loading-spinner"></span>}
-                        {loading ? "Signing in..." : "Sign in"}
-                    </button>
-                </form>
-
-                {/* Divider */}
-                <div className="divider">
-                    <span>Connect with us</span>
-                </div>
-
-                {/* Social Links */}
-                <div className="social-links">
-                    <button className="social-btn" title="Discord" type="button">D</button>
-                    <button className="social-btn" title="LinkedIn" type="button">L</button>
-                    <button className="social-btn" title="Instagram" type="button">I</button>
-                    <button className="social-btn" title="Github" type="button">G</button>
+                    {/* Footer */}
+                    <p className="footer-text">
+                        Don't have an account? <Link to="/signup">Sign up</Link>
+                    </p>
                 </div>
             </div>
-
-            {/* Footer */}
-            <p className="footer-text">
-                Don't have an account? <Link to="/signup">Sign up</Link>
-            </p>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-/* ===== Questionnaire Page ===== */
+/* ===== GenrePreferenceQuestionnaire Page ===== */
 .questionnaire-container {
     min-height: 100vh;
     height: auto;
@@ -18,6 +18,16 @@
     overflow-x: hidden;
 }
 
+/* ===== ADD THIS TO YOUR GenrePreferenceQuestionnaire.css FILE ===== */
+
+.subtitle {
+    font-size: 0.95rem;
+    color: rgba(191, 219, 254, 0.7);
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
 /* Animated Background Blobs */
 .questionnaire-container::before,
 .questionnaire-container::after {
@@ -28,6 +38,44 @@
     opacity: 0.3;
     animation: float 20s ease-in-out infinite;
     z-index: 0;
+}
+.book-entry {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.book-input,
+.book-textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.95rem;
+}
+
+.book-input::placeholder,
+.book-textarea::placeholder {
+    color: rgba(191, 219, 254, 0.6);
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+}
+
+.star.selected {
+    color: #facc15;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
 }
 
 .questionnaire-container::before {

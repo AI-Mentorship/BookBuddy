@@ -1,66 +1,115 @@
+/* ===== CREATE THIS AS src/css/Navbar.css ===== */
+
 .navbar {
-  background-color: #0877c1;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.navbar_brand {
-  font-size: 3.0rem;
-  font-weight: bold;
+.navbar_brand,
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: 700;
 }
 
+.navbar_brand a,
+.navbar-brand a {
+    background: linear-gradient(135deg, #ffffff, #bfdbfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.navbar_brand a:hover,
+.navbar-brand a:hover {
+    opacity: 0.8;
+}
+
+.navbar_links,
 .navbar-links {
-  display: flex;
-  gap: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
-.nav_link {
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+.nav_link,
+.nav-link {
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(191, 219, 254, 0.9);
+    transition: all 0.2s ease;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
 }
 
-.nav_link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.nav_link:hover,
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
+.logout-btn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #fecaca;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 1rem;
-  }
+    .navbar {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
 
-  .navbar_brand {
-    font-size: 1.2rem;
-  }
+    .navbar_brand,
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
 
-  .navbar_links {
-    gap: 1rem;
-  }
+    .navbar_links,
+    .navbar-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
 
-  .nav_link {
-    padding: 0.5rem;
-  }
-  .profile-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    .nav_link,
+    .nav-link {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.875rem;
+    }
 }
 
-.profile-link {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;        /* makes it circular */
-  object-fit: cover;         /* ensures image fits perfectly */
-  border: 2px solid #fff;    /* optional border */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+@media (max-width: 480px) {
+    .navbar_brand,
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
 
-.profile-link {
-  transform: scale(1.08);    /* subtle zoom on hover */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
+    .nav_link,
+    .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+    }
 }

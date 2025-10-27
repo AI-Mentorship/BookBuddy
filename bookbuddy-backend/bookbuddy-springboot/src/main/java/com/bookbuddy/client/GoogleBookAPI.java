@@ -90,7 +90,7 @@ public class GoogleBookAPI {
                     .build();
 
         } catch (WebClientResponseException e) {
-            // Handles HTTP errors returned directly from the Google Books API (e.g., 404, 500)
+            // Handles HTTP errors returned directly from the Google Bocd friooks API (e.g., 404, 500)
             throw new GoogleBookAPIException("Google Books API error: " + e.getStatusCode());
         } catch (Exception e) {
             // Handles any other unexpected errors (e.g., network issues, parsing errors)

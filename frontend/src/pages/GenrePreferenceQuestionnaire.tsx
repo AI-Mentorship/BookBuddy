@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../css/Questionnaire.css";
 
 const genres = [
@@ -30,11 +31,12 @@ const genres = [
     "Education / Academic",
 ];
 
-const Questionnaire: React.FC = () => {
+const GenrePreferenceQuestionnaire: React.FC = () => {
     const [selected, setSelected] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { userId } = useAuth();
 
     const toggleGenre = (genre: string) => {
         setSelected((prev) =>
@@ -52,9 +54,6 @@ const Questionnaire: React.FC = () => {
         setError("");
 
         try {
-            // Call your Spring Boot endpoint to save genres
-            const userId = localStorage.getItem("userId");
-
             const response = await fetch("http://localhost:8080/genre-preference/save", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -63,6 +62,7 @@ const Questionnaire: React.FC = () => {
                     genre: selected
                 }),
             });
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.log(errorData);
@@ -70,10 +70,10 @@ const Questionnaire: React.FC = () => {
             }
 
             const data = await response.json();
-            console.log("Preferences saved successfully" + data);
+            console.log("Preferences saved successfully", data);
 
-            // Navigate to dashboard
-            navigate("/dashboard");
+            // Navigate to Book Review page after saving preferences
+            navigate("/book-review");
         } catch (error) {
             setError((error as Error).message);
         } finally {
@@ -81,18 +81,14 @@ const Questionnaire: React.FC = () => {
         }
     };
 
-    const goBackToLogin = () => {
-        navigate("/signin");
-    };
-
     return (
         <div className="questionnaire-container">
             <h1 className="title">BookBuddy</h1>
-            <div className="question-box frosted-glass">
-                <h2>
-                    Select at least 3 genres you love. We'll tailor recommendations just for
-                    you.
-                </h2>
+
+            <div className="question-box">
+                <h2>Select at least 3 genres you love</h2>
+                <p className="subtitle">We'll tailor recommendations just for you</p>
+
                 <div className="genres-grid">
                     {genres.map((genre) => (
                         <button
@@ -111,22 +107,17 @@ const Questionnaire: React.FC = () => {
                 {/* Error Message */}
                 {error && <p className="error-message">{error}</p>}
 
-                <div className="btn-group">
-                    <button className="back-btn" onClick={goBackToLogin} disabled={loading}>
-                        Back to Sign In
-                    </button>
-                    <button
-                        className={`dashboard-btn ${selected.length >= 3 && !loading ? "" : "disabled"}`}
-                        onClick={selected.length >= 3 ? goToDashboard : undefined}
-                        disabled={selected.length < 3 || loading}
-                    >
-                        {loading && <span className="loading-spinner"></span>}
-                        {loading ? "Saving..." : `Dashboard ${selected.length < 3 ? `(${selected.length}/3)` : ""}`}
-                    </button>
-                </div>
+                <button
+                    className="dashboard-btn"
+                    onClick={goToDashboard}
+                    disabled={selected.length < 3 || loading}
+                >
+                    {loading && <span className="loading-spinner"></span>}
+                    {loading ? "Saving..." : `Continue ${selected.length < 3 ? `(${selected.length}/3)` : ""}`}
+                </button>
             </div>
         </div>
-    );
+    )
 };
 
-export default Questionnaire;
+export default GenrePreferenceQuestionnaire;
