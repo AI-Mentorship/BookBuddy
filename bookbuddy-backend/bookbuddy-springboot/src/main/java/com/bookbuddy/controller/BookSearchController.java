@@ -28,6 +28,7 @@ public class BookSearchController {
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(
         @RequestParam("q") String query,
+        @RequestParam(value = "type", defaultValue = "general") String type,
         @RequestParam(value = "page", defaultValue = "1") int page) {
             
         if (query == null || query.trim().isEmpty()) {
@@ -35,7 +36,7 @@ public class BookSearchController {
         }
 
         // Fixed page size = 20
-        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), page, 20);
+        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), type, page, 20);
         return ResponseEntity.ok(results);
     }
 
@@ -53,6 +54,3 @@ public class BookSearchController {
     }
 
 }
-
-    
-
