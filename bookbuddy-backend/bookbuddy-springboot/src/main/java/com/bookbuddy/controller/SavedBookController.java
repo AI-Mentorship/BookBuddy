@@ -26,8 +26,8 @@ public class SavedBookController {
 
     //Save Books
     @PostMapping("/save")
-    public ResponseEntity<SavedBookResponse> saveBook(@RequestBody SavedBookRequest savedBookRequest) {
-        SavedBookResponse responseDTO = savedBooksService.saveBook(savedBookRequest);
+    public ResponseEntity<SavedBookResponse> saveBook(@RequestBody SavedBookRequest bookRequest) {
+        SavedBookResponse responseDTO = savedBooksService.saveBook(bookRequest);
         // Return with CREATED status
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }

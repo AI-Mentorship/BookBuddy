@@ -37,16 +37,35 @@ const SavedBooks: React.FC = () => {
         try {
             const isSaved = savedBooks.some(b => b.googleBooksId === book.googleBooksId);
             if (isSaved) {
-                await fetch(`http://localhost:8080/saved-books/delete/user/${userId}/book/${book.googleBooksId}`, {
+                // Store the previous state for rollback
+                const previousBooks = [...savedBooks];
+
+                // Optimistically update UI
+                setSavedBooks(savedBooks.filter(b => b.googleBooksId !== book.googleBooksId));
+
+                // Make the DELETE request
+                const response = await fetch(`http://localhost:8080/saved-books/delete/user/${userId}/book/${book.googleBooksId}`, {
                     method: "DELETE",
                 });
-                setSavedBooks(savedBooks.filter(b => b.googleBooksId !== book.googleBooksId));
+
+                // If the delete fails, rollback
+                if (!response.ok) {
+                    setSavedBooks(previousBooks);
+                    throw new Error("Failed to delete book");
+                }
             } else {
-                await fetch("http://localhost:8080/saved-books/save", {
+                // Make the POST request first
+                const response = await fetch("http://localhost:8080/saved-books/save", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ userId, googleBooksId: book.googleBooksId }),
                 });
+
+                if (!response.ok) {
+                    throw new Error("Failed to save book");
+                }
+
+                // Then update the UI
                 setSavedBooks([...savedBooks, book]);
             }
         } catch (err) {
@@ -59,6 +78,10 @@ const SavedBooks: React.FC = () => {
             setReadBooks([...readBooks, book]);
             console.log("Added to read:", book.title);
             // TODO: later open review/rating modal
+        } else {
+            // Toggle off if already read
+            setReadBooks(readBooks.filter(b => b.googleBooksId !== book.googleBooksId));
+            console.log("Removed from read:", book.title);
         }
     };
 
@@ -82,7 +105,7 @@ const SavedBooks: React.FC = () => {
                             onCardClick={openModal}
                             onSave={handleSave}
                             onRead={handleAddToRead}
-                            isSaved={savedBooks.some(b => b.googleBooksId === book.googleBooksId)}
+                            isSaved={true}
                             isRead={readBooks.some(b => b.googleBooksId === book.googleBooksId)}
                         />
                     ))}

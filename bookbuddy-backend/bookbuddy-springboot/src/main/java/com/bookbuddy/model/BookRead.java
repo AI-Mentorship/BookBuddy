@@ -2,6 +2,7 @@ package com.bookbuddy.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BooksRead {
+@Builder
+public class BookRead {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long readBookId;

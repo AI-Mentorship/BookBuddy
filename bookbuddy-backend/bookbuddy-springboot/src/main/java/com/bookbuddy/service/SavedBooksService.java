@@ -31,17 +31,17 @@ public class SavedBooksService {
     }
 
     //Add books to the database
-    public SavedBookResponse saveBook(SavedBookRequest savedBookRequest) {
+    public SavedBookResponse saveBook(SavedBookRequest bookRequest) {
         // Fetch the full User entity
-        User user = userService.getUserById(savedBookRequest.getUserId());
+        User user = userService.getUserById(bookRequest.getUserId());
 
         // Build the SavedBook entity
         SavedBook savedBook = SavedBook.builder()
                 .user(user)
-                .googleBooksId(savedBookRequest.getGoogleBooksId())
+                .googleBooksId(bookRequest.getGoogleBooksId())
                 .build();
 
-        boolean doesSavedBookExist = savedBookRepository.existsByUserAndGoogleBooksId(user, savedBookRequest.getGoogleBooksId());
+        boolean doesSavedBookExist = savedBookRepository.existsByUserAndGoogleBooksId(user, bookRequest.getGoogleBooksId());
 
         if(doesSavedBookExist){
             throw new DuplicateResourceException("This book is already saved");
