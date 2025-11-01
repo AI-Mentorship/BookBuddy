@@ -164,6 +164,9 @@ public class GoogleBookAPI {
                         .queryParam("q", query)
                         .queryParam("startIndex", startIndex)
                         .queryParam("maxResults", Math.min(maxResults, 40)) // Google API limit
+                    .queryParam("printType", "books")      // only books, no magazines
+                    .queryParam("orderBy", "relevance")    // sort by relevance
+                    .queryParam("langRestrict", "en")      // English only
                         .build())
                 .retrieve()
                 .bodyToMono(GoogleBookAPISearchResponse.class)
