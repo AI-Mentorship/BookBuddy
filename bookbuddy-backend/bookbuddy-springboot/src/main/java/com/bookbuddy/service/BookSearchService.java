@@ -74,7 +74,7 @@ public class BookSearchService {
             case "general" -> query;
             default -> query;
         };
-    }add
+    }
 
     // Helper method
     private List<BookDTO> mapItemsToBookDTO(List<GoogleBookAPISearchResponse.Item> items) {
