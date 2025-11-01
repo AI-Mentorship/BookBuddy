@@ -21,28 +21,30 @@ public class BookSearchService {
     }
 
     public PagedBookResponseDTO searchBooks(String query) {
-        return searchBooksPaged(query, 1, 5);
+        return searchBooksPaged(query, "general", 1, 5);
     }
 
-    public PagedBookResponseDTO searchBooksPaged(String query, int page, int pageSize) {
+    public PagedBookResponseDTO searchBooksPaged(String query, String type, int page, int pageSize) {
+        String formattedQuery = buildQuery(query, type);
+        
         int startIndex = (page - 1) * pageSize;
         int remaining = pageSize;
         List<BookDTO> books = new ArrayList<>();
 
         // First API call to get totalItems
-        GoogleBookAPISearchResponse firstResponse = googleBookAPI.rawSearch(query, startIndex, Math.min(remaining, 40));
-        int totalItems = firstResponse.getTotalItems();
+        GoogleBookAPISearchResponse firstResponse = googleBookAPI.rawSearch(formattedQuery, startIndex, Math.min(remaining, 40));
+        int totalItems = (firstResponse != null) ? firstResponse.getTotalItems() : 0;
 
-        if (firstResponse.getItems() != null) {
+        if (firstResponse != null && firstResponse.getItems() != null) {
             books.addAll(mapItemsToBookDTO(firstResponse.getItems()));
             remaining -= firstResponse.getItems().size();
             startIndex += firstResponse.getItems().size();
-        }
+}
 
         // Loop to accumulate more results if needed (for pageSize > per-request limit)
         while (remaining > 0) {
             int fetch = Math.min(remaining, 40);
-            GoogleBookAPISearchResponse response = googleBookAPI.rawSearch(query, startIndex, fetch);
+            GoogleBookAPISearchResponse response = googleBookAPI.rawSearch(formattedQuery, startIndex, fetch);
 
             if (response.getItems() == null || response.getItems().isEmpty()) break;
 
@@ -58,6 +60,21 @@ public class BookSearchService {
                 .books(books)
                 .build();
     }
+   
+    // Understanding search type requested
+    private String buildQuery(String query, String type) {
+        if (query == null || query.isBlank()) return "";
+
+        query = query.trim();
+
+        return switch (type.toLowerCase()) {
+            case "author" -> "inauthor:" + query;
+            case "title"  -> "intitle:" + query;
+            case "isbn"   -> "isbn:" + query.replaceAll("[^0-9Xx]", "");
+            case "general" -> query;
+            default -> query;
+        };
+    }add
 
     // Helper method
     private List<BookDTO> mapItemsToBookDTO(List<GoogleBookAPISearchResponse.Item> items) {
@@ -82,5 +99,10 @@ public class BookSearchService {
                 .toList();
     }
 
-
 }
+
+
+
+   
+
+
