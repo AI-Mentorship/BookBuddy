@@ -45,6 +45,9 @@ public class GoogleBookAPI {
                         .bodyToMono(GoogleBookAPIByIdResponse.class)
                         .block();
 
+                System.out.println("Requesting Google Books URL: " + response);
+
+
                 if (response == null || response.getVolumeInfo() == null) {
                     throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
                 }
@@ -63,6 +66,8 @@ public class GoogleBookAPI {
                             .retrieve()                           // send the GET request and prepare to handle the response
                             .bodyToMono(GoogleBookAPIByIdResponse.class) // convert the JSON body to a GoogleBookAPIResponse object
                             .block();                             // make the call synchronous (blocks until response arrives)
+
+                    System.out.println("Requesting Google Books URL: " + response);
                 } else {
                     throw e; // rethrow if it’s some other unexpected status
                 }
@@ -73,6 +78,7 @@ public class GoogleBookAPI {
                 throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
             }
 
+            // Replace the BookDTO.builder() section in getGoogleBookById with:
             return BookDTO.builder()
                     .googleBooksId(response.getId())
                     .title(response.getVolumeInfo().getTitle())
@@ -84,7 +90,9 @@ public class GoogleBookAPI {
                     .categories(response.getVolumeInfo().getCategories())
                     .averageRating(response.getVolumeInfo().getAverageRating())
                     .maturityRating(response.getVolumeInfo().getMaturityRating())
-                    .thumbnail(response.getVolumeInfo().getImageLinks().getThumbnail())
+                    .thumbnail(response.getVolumeInfo().getImageLinks() != null
+                            ? response.getVolumeInfo().getImageLinks().getThumbnail()
+                            : null) // <-- Added null check
                     .language(response.getVolumeInfo().getLanguage())
                     .previewLink(response.getVolumeInfo().getPreviewLink())
                     .build();
