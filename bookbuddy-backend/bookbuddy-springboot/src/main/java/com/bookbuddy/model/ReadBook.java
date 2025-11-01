@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookRead {
+public class ReadBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long readBookId;
@@ -25,8 +25,8 @@ public class BookRead {
     private String googleBooksId;
 
     @Column(nullable = true)
-    private String private_review;
+    private String privateReview;
 
     @Column(nullable = false)
-    private double private_rating;
+    private double privateRating;
 }
