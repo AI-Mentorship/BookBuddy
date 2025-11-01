@@ -68,8 +68,8 @@ public class BookSearchService {
         query = query.trim();
 
         return switch (type.toLowerCase()) {
-            case "author" -> "inauthor:" + query;
             case "title"  -> "intitle:" + query;
+            case "author" -> "inauthor:" + query;
             case "isbn"   -> "isbn:" + query.replaceAll("[^0-9Xx]", "");
             case "general" -> query;
             default -> query;
