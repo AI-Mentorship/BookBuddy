@@ -1,4 +1,4 @@
-/* BookCard.css - Modern Pinterest Style */
+/* BookCard.css - Modern Pinterest Style with Enhanced Active States */
 
 .book-card {
     position: relative;
@@ -69,14 +69,14 @@
 
 /* Action Buttons - Modern Glassmorphic Style */
 .action-btn {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(16px);
     color: white;
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
@@ -87,49 +87,79 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
     overflow: hidden;
+    pointer-events: auto;
 }
 
 /* Hover effect with scale and glow */
 .action-btn:hover {
-    transform: scale(1.15) rotate(-5deg);
-    background: rgba(59, 130, 246, 0.3);
-    border-color: rgba(59, 130, 246, 0.5);
+    transform: scale(1.2);
+    background: rgba(59, 130, 246, 0.4);
+    border-color: rgba(59, 130, 246, 0.6);
     box-shadow:
-            0 8px 24px rgba(59, 130, 246, 0.4),
+            0 8px 24px rgba(59, 130, 246, 0.5),
             inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* Active state - gradient with vibrant colors */
-.save-btn.active,
-.read-btn.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    border-color: rgba(59, 130, 246, 0.8);
+/* Save Button - Golden Star when active */
+.save-btn.active {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border-color: rgba(251, 191, 36, 0.8);
     box-shadow:
-            0 6px 20px rgba(59, 130, 246, 0.5),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3),
-            0 0 0 3px rgba(59, 130, 246, 0.2);
-    animation: pulseGlow 2s ease-in-out infinite;
+            0 6px 20px rgba(251, 191, 36, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4),
+            0 0 0 3px rgba(251, 191, 36, 0.3);
+    animation: pulseGoldGlow 2s ease-in-out infinite;
 }
 
-@keyframes pulseGlow {
+@keyframes pulseGoldGlow {
     0%, 100% {
         box-shadow:
-                0 6px 20px rgba(59, 130, 246, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 0 0 3px rgba(59, 130, 246, 0.2);
+                0 6px 20px rgba(251, 191, 36, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 0 3px rgba(251, 191, 36, 0.3);
     }
     50% {
         box-shadow:
-                0 6px 24px rgba(59, 130, 246, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 0 0 4px rgba(59, 130, 246, 0.3);
+                0 8px 28px rgba(251, 191, 36, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 0 4px rgba(251, 191, 36, 0.4);
     }
 }
 
-.save-btn.active:hover,
+.save-btn.active:hover {
+    transform: scale(1.25) rotate(15deg);
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* Read Button - Green Check when active */
+.read-btn.active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-color: rgba(16, 185, 129, 0.8);
+    box-shadow:
+            0 6px 20px rgba(16, 185, 129, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4),
+            0 0 0 3px rgba(16, 185, 129, 0.3);
+    animation: pulseGreenGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGreenGlow {
+    0%, 100% {
+        box-shadow:
+                0 6px 20px rgba(16, 185, 129, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 0 3px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+        box-shadow:
+                0 8px 28px rgba(16, 185, 129, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 0 4px rgba(16, 185, 129, 0.4);
+    }
+}
+
 .read-btn.active:hover {
-    transform: scale(1.15) rotate(5deg);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: scale(1.25);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }
 
 /* Book Info Section */
@@ -189,9 +219,9 @@
     }
 
     .action-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 1.25rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.35rem;
     }
 
     .book-card-info h3 {
@@ -215,8 +245,8 @@
     }
 
     .action-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.15rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.25rem;
     }
 }

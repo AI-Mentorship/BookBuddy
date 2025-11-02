@@ -1,15 +1,16 @@
 package com.bookbuddy.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class BookDTO {
     private String googleBooksId;
     private String title;
@@ -24,4 +25,5 @@ public class BookDTO {
     private String thumbnail;
     private String language;
     private String previewLink;
+  
 }

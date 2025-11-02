@@ -53,6 +53,9 @@ public class BookSearchService {
             startIndex += response.getItems().size();
         }
 
+        // Rank books by relevance before returning
+        //List<BookDTO> rankedBooks = BookRanker.rankBooks(books, query, type);
+
         return PagedBookResponseDTO.builder()
                 .page(page)
                 .pageSize(pageSize)
@@ -68,8 +71,8 @@ public class BookSearchService {
         query = query.trim();
 
         return switch (type.toLowerCase()) {
-            case "author" -> "inauthor:" + query;
             case "title"  -> "intitle:" + query;
+            case "author" -> "inauthor:" + query;
             case "isbn"   -> "isbn:" + query.replaceAll("[^0-9Xx]", "");
             case "general" -> query;
             default -> query;
@@ -81,7 +84,7 @@ public class BookSearchService {
         return items.stream()
                 .map(item -> {
                     var info = item.getVolumeInfo();
-                    if (info == null) return null;
+                    if (info == null) return (BookDTO) null; // explicit cast fixes type issue
                     return BookDTO.builder()
                             .googleBooksId(item.getId())
                             .title(info.getTitle())

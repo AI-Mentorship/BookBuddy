@@ -1,4 +1,4 @@
-// Hamza Rafeeq 1111
+// WHY IS GET BY ID BROKEN????
 
 package com.bookbuddy.client;
 
@@ -45,6 +45,9 @@ public class GoogleBookAPI {
                         .bodyToMono(GoogleBookAPIByIdResponse.class)
                         .block();
 
+                System.out.println("Requesting Google Books URL: " + response);
+
+
                 if (response == null || response.getVolumeInfo() == null) {
                     throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
                 }
@@ -63,6 +66,8 @@ public class GoogleBookAPI {
                             .retrieve()                           // send the GET request and prepare to handle the response
                             .bodyToMono(GoogleBookAPIByIdResponse.class) // convert the JSON body to a GoogleBookAPIResponse object
                             .block();                             // make the call synchronous (blocks until response arrives)
+
+                    System.out.println("Requesting Google Books URL: " + response);
                 } else {
                     throw e; // rethrow if it’s some other unexpected status
                 }
@@ -73,6 +78,7 @@ public class GoogleBookAPI {
                 throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
             }
 
+            // Replace the BookDTO.builder() section in getGoogleBookById with:
             return BookDTO.builder()
                     .googleBooksId(response.getId())
                     .title(response.getVolumeInfo().getTitle())
@@ -84,7 +90,9 @@ public class GoogleBookAPI {
                     .categories(response.getVolumeInfo().getCategories())
                     .averageRating(response.getVolumeInfo().getAverageRating())
                     .maturityRating(response.getVolumeInfo().getMaturityRating())
-                    .thumbnail(response.getVolumeInfo().getImageLinks().getThumbnail())
+                    .thumbnail(response.getVolumeInfo().getImageLinks() != null
+                            ? response.getVolumeInfo().getImageLinks().getThumbnail()
+                            : null) // <-- Added null check
                     .language(response.getVolumeInfo().getLanguage())
                     .previewLink(response.getVolumeInfo().getPreviewLink())
                     .build();
@@ -119,7 +127,7 @@ public class GoogleBookAPI {
             return response.getItems().stream()
                     .map(item -> {
                         GoogleBookAPISearchResponse.VolumeInfo info = item.getVolumeInfo();
-                        if (info == null) return null;
+                        if (info == null) return (BookDTO) null;
                         return BookDTO.builder()
                                 .googleBooksId(item.getId())
                                 .title(info.getTitle())
@@ -156,6 +164,9 @@ public class GoogleBookAPI {
                         .queryParam("q", query)
                         .queryParam("startIndex", startIndex)
                         .queryParam("maxResults", Math.min(maxResults, 40)) // Google API limit
+                    .queryParam("printType", "books")      // only books, no magazines
+                    .queryParam("orderBy", "relevance")    // sort by relevance
+                    .queryParam("langRestrict", "en")      // English only
                         .build())
                 .retrieve()
                 .bodyToMono(GoogleBookAPISearchResponse.class)
