@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SavedBooksService {
+public class SavedBookService {
 
     private final SavedBookRepository savedBookRepository;
     private final GoogleBookAPI googleBookAPI;
@@ -24,24 +24,24 @@ public class SavedBooksService {
 
 
     @Autowired
-    public SavedBooksService(SavedBookRepository savedBookRepository, GoogleBookAPI googleBookAPI, UserService userService) {
+    public SavedBookService(SavedBookRepository savedBookRepository, GoogleBookAPI googleBookAPI, UserService userService) {
         this.savedBookRepository = savedBookRepository;
         this.googleBookAPI = googleBookAPI;
         this.userService = userService;
     }
 
     //Add books to the database
-    public SavedBookResponse saveBook(SavedBookRequest savedBookRequest) {
+    public SavedBookResponse saveBook(SavedBookRequest bookRequest) {
         // Fetch the full User entity
-        User user = userService.getUserById(savedBookRequest.getUserId());
+        User user = userService.getUserById(bookRequest.getUserId());
 
         // Build the SavedBook entity
         SavedBook savedBook = SavedBook.builder()
                 .user(user)
-                .googleBooksId(savedBookRequest.getGoogleBooksId())
+                .googleBooksId(bookRequest.getGoogleBooksId())
                 .build();
 
-        boolean doesSavedBookExist = savedBookRepository.existsByUserAndGoogleBooksId(user, savedBookRequest.getGoogleBooksId());
+        boolean doesSavedBookExist = savedBookRepository.existsByUserAndGoogleBooksId(user, bookRequest.getGoogleBooksId());
 
         if(doesSavedBookExist){
             throw new DuplicateResourceException("This book is already saved");

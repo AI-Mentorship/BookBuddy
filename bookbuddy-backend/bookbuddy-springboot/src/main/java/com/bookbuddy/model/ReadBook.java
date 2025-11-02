@@ -2,6 +2,7 @@ package com.bookbuddy.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BooksRead {
+@Builder
+public class ReadBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long readBookId;
@@ -23,8 +25,8 @@ public class BooksRead {
     private String googleBooksId;
 
     @Column(nullable = true)
-    private String private_review;
+    private String privateReview;
 
     @Column(nullable = false)
-    private double private_rating;
+    private double privateRating;
 }

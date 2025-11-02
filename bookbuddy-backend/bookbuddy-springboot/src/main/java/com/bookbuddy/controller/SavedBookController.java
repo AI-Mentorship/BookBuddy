@@ -10,24 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.bookbuddy.service.SavedBooksService;
+import com.bookbuddy.service.SavedBookService;
 
 @RestController
 @RequestMapping("/saved-books")
 @CrossOrigin(origins = "http://localhost:5173") // your frontend URL
 public class SavedBookController {
 
-    private final SavedBooksService savedBooksService;
+    private final SavedBookService savedBooksService;
 
     @Autowired
-    public SavedBookController(SavedBooksService savedBooksService, UserService userService) {
+    public SavedBookController(SavedBookService savedBooksService, UserService userService) {
         this.savedBooksService = savedBooksService;
     }
 
     //Save Books
     @PostMapping("/save")
-    public ResponseEntity<SavedBookResponse> saveBook(@RequestBody SavedBookRequest savedBookRequest) {
-        SavedBookResponse responseDTO = savedBooksService.saveBook(savedBookRequest);
+    public ResponseEntity<SavedBookResponse> saveBook(@RequestBody SavedBookRequest bookRequest) {
+        SavedBookResponse responseDTO = savedBooksService.saveBook(bookRequest);
         // Return with CREATED status
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
