@@ -1,10 +1,11 @@
 package com.bookbuddy.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +25,8 @@ public class BookDTO {
     private String thumbnail;
     private String language;
     private String previewLink;
+
+
+    // transient means it won't be serialized in JSON or stored in DB)
+    private transient int searchScore;
 }

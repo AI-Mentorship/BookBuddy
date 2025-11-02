@@ -53,11 +53,14 @@ public class BookSearchService {
             startIndex += response.getItems().size();
         }
 
+        // Rank books by relevance before returning
+        List<BookDTO> rankedBooks = BookRanker.rankBooks(books, query, type);
+
         return PagedBookResponseDTO.builder()
                 .page(page)
                 .pageSize(pageSize)
                 .totalItems(totalItems)
-                .books(books)
+                .books(rankedBooks)
                 .build();
     }
    
