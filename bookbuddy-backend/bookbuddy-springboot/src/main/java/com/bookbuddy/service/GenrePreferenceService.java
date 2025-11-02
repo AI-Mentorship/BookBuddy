@@ -1,6 +1,7 @@
 package com.bookbuddy.service;
 
 import com.bookbuddy.dto.GenrePreferenceRequest;
+import com.bookbuddy.dto.GenrePreferenceResponse;
 import com.bookbuddy.model.GenrePreference;
 import com.bookbuddy.model.User;
 import com.bookbuddy.repository.GenrePreferenceRepository;
@@ -46,6 +47,22 @@ public class GenrePreferenceService {
         }
 
         genrePreferenceRepository.saveAll(user_genre);
+    }
+
+    public List<GenrePreferenceResponse> getSavedGenres(Long userId) {
+        User user = userService.getUserById(userId);
+        List <GenrePreference> genre_preferences = genrePreferenceRepository.findByUser(user);
+        List <GenrePreferenceResponse> genre_response = new ArrayList<>();
+
+        for(GenrePreference genre_preference : genre_preferences) {
+            genre_response.add(
+                    GenrePreferenceResponse.builder().
+                            genre(genre_preference.getGenreName()).
+                            build()
+            );
+        }
+
+        return genre_response;
     }
 }
 
