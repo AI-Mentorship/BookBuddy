@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SavedBooksService {
+public class SavedBookService {
 
     private final SavedBookRepository savedBookRepository;
     private final GoogleBookAPI googleBookAPI;
@@ -24,7 +24,7 @@ public class SavedBooksService {
 
 
     @Autowired
-    public SavedBooksService(SavedBookRepository savedBookRepository, GoogleBookAPI googleBookAPI, UserService userService) {
+    public SavedBookService(SavedBookRepository savedBookRepository, GoogleBookAPI googleBookAPI, UserService userService) {
         this.savedBookRepository = savedBookRepository;
         this.googleBookAPI = googleBookAPI;
         this.userService = userService;

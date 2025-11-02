@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class ReadBookRequest {
     private Long userId;
     private String googleBooksId;
-    private String private_review;
-    private double private_rating;
+    private String privateReview;
+    private double privateRating;
 }
