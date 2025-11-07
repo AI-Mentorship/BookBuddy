@@ -43,7 +43,7 @@ public class ReadBookService {
                 ReadBook.builder().
                         user(user).
                         googleBooksId(googleBooksId).
-                        privateRating(bookRequest.getPrivateRating()).
+                        privateReview(bookRequest.getPrivateReview()).
                         privateRating(bookRequest.getPrivateRating()).
                         build()
         );
@@ -54,7 +54,6 @@ public class ReadBookService {
                 privateReview(savedReadBookRead.getPrivateReview()).
                 privateRating(savedReadBookRead.getPrivateRating()).
                 build();
-
 
     }
 
