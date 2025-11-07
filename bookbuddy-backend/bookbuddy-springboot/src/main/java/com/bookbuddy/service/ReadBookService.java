@@ -122,4 +122,26 @@ public class ReadBookService {
                 privateRating(readBook.getPrivateRating()).
                 build();
     }
+
+    public Integer getTotalNumberOfReadBooks(Long userId) {
+        List<ReadBook> readBooks = readBookRepository.findByUser_UserId(userId);
+        return readBooks.size();
+    }
+
+    public void saveAllReadBooks(List<ReadBookRequest> bookRequests) {
+        List<ReadBook> readBooks = new ArrayList<>();
+        for (ReadBookRequest readBookRequest : bookRequests) {
+            User currentUser = userService.getUserById(readBookRequest.getUserId());
+
+            ReadBook currentReadBook = ReadBook.builder()
+                    .user(currentUser)
+                    .googleBooksId(readBookRequest.getGoogleBooksId())
+                    .privateReview(readBookRequest.getPrivateReview())
+                    .privateRating(readBookRequest.getPrivateRating())
+                    .build();
+
+            readBooks.add(currentReadBook);
+        }
+        readBookRepository.saveAll(readBooks);
+    }
 }

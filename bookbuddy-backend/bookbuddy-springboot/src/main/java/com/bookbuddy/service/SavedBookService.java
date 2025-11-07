@@ -86,4 +86,9 @@ public class SavedBookService {
 
         savedBookRepository.deleteById(id);
     }
+
+    public Integer getTotalNumberOfSavedBooks(Long userId) {
+        List <SavedBook> savedBooks = savedBookRepository.findByUser_UserId(userId);
+        return savedBooks.size();
+    }
 }

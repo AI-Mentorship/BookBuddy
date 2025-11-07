@@ -53,4 +53,10 @@ public class SavedBookController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/total/{userId}")
+    public ResponseEntity<Integer> getTotalNumberOfSavedBooks(@PathVariable Long userId) {
+        Integer total = savedBooksService.getTotalNumberOfSavedBooks(userId);
+        return ResponseEntity.ok(total);
+    }
+
 }

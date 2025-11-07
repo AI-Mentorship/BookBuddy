@@ -70,4 +70,30 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
     }
+
+    public UserResponse updateUserInfo(Long userId, UserRequest userRequest) {
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+
+        currentUser.setEmail(userRequest.getEmail());
+        String hashedPassword = passwordEncoder.encode(userRequest.getPassword());
+        currentUser.setPassword(hashedPassword);
+        currentUser.setFirstName(userRequest.getFirstName());
+        currentUser.setLastName(userRequest.getLastName());
+        currentUser.setBirthDate(userRequest.getBirthDate());
+
+
+        userRepository.save(currentUser);
+
+
+        return UserResponse.builder().
+                userId(currentUser.getUserId()).
+                email(currentUser.getEmail()).
+                firstName(currentUser.getFirstName()).
+                lastName(currentUser.getLastName()).
+                birthDate(currentUser.getBirthDate()).
+                build();
+    }
+
 }

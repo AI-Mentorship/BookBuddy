@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("read-books")
@@ -27,17 +28,23 @@ public class ReadBookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(readBookResponse);
     }
 
+    @PostMapping({"/saveAll"})
+    public ResponseEntity<Map<String, String>> saveAllReadBooks(@RequestBody List<ReadBookRequest> bookRequests) {
+        readBookService.saveAllReadBooks(bookRequests);
+        return ResponseEntity.ok(Map.of("status", "success"));
+    }
+
     @DeleteMapping("/delete/{userId}/{googleBooksId}")
     public ResponseEntity<Void> deleteReadBook(@PathVariable Long userId, @PathVariable String googleBooksId) {
         readBookService.deleteReadBook(userId, googleBooksId);
-       return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/read-books/{userId}")
     public ResponseEntity<List<GetReadBookResponse>> readBooksByUserId(@PathVariable Long userId) {
-        List <GetReadBookResponse> readBooks = readBookService.getReadBooksByUserId(userId);
+        List<GetReadBookResponse> readBooks = readBookService.getReadBooksByUserId(userId);
 
-        if(readBooks.isEmpty()) {
+        if (readBooks.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(readBooks);
@@ -47,5 +54,11 @@ public class ReadBookController {
     public ResponseEntity<ReadBookResponse> updateReview(@RequestBody ReadBookRequest readBookRequest) {
         ReadBookResponse response = readBookService.updateReview(readBookRequest);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/total/{userId}")
+    public ResponseEntity<Integer> getTotalNumberOfReadBooks(@PathVariable Long userId) {
+        Integer total = readBookService.getTotalNumberOfReadBooks(userId);
+        return ResponseEntity.ok(total);
     }
 }

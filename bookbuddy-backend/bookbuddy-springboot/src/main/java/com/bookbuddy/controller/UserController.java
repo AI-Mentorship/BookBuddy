@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:5173") // your frontend URL
+@CrossOrigin(origins = "${frontend.url}") // uses the variable
 
 public class UserController {
 
@@ -32,6 +32,12 @@ public class UserController {
     public ResponseEntity<UserResponse> signIn(@RequestBody LoginRequest loginRequest) {
         UserResponse response = userService.signIn(loginRequest);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/update/{userId}")
+    public ResponseEntity <UserResponse> updateUserInfo(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
+        UserResponse updatedInfo = userService.updateUserInfo(userId, userRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedInfo);
     }
 
 }
