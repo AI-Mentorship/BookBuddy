@@ -46,7 +46,7 @@ public class BookSearchService {
             int fetch = Math.min(remaining, 40);
             GoogleBookAPISearchResponse response = googleBookAPI.rawSearch(formattedQuery, startIndex, fetch);
 
-            if (response.getItems() == null || response.getItems().isEmpty()) break;
+            if (response == null || response.getItems() == null || response.getItems().isEmpty()) break;
 
             books.addAll(mapItemsToBookDTO(response.getItems()));
             remaining -= response.getItems().size();
@@ -54,13 +54,13 @@ public class BookSearchService {
         }
 
         // Rank books by relevance before returning
-        //List<BookDTO> rankedBooks = BookRanker.rankBooks(books, query, type);
+        List<BookDTO> rankedBooks = BookSearchRanker.rankBooks(books, query, type);
 
         return PagedBookResponseDTO.builder()
                 .page(page)
                 .pageSize(pageSize)
                 .totalItems(totalItems)
-                .books(books)
+                .books(rankedBooks)
                 .build();
     }
    
@@ -99,6 +99,7 @@ public class BookSearchService {
                             .build();
                 })
                 .filter(Objects::nonNull)
+                .distinct()
                 .toList();
     }
 
