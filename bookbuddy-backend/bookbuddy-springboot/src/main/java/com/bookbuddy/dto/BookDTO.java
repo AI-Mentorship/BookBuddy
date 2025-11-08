@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Data
 @NoArgsConstructor
@@ -25,5 +27,9 @@ public class BookDTO {
     private String thumbnail;
     private String language;
     private String previewLink;
-  
+
+    @JsonIgnore
+    private int searchScore; // used only for in memory ranking, not exposed in API
+
+
 }
