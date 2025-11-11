@@ -37,6 +37,7 @@ public class GoogleBookAPISearchResponse {
         private Integer pageCount;
         private List<String> categories;
         private Double averageRating;
+
         private String maturityRating;
         private ImageLinks imageLinks;
         private String language;
