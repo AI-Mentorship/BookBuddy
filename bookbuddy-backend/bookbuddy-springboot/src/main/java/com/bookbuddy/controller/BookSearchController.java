@@ -36,21 +36,20 @@ public class BookSearchController {
         }
 
         // Fixed page size = 20
-        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), type, page, 20);
+        final int PAGE_SIZE = 20;
+        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), type, page, PAGE_SIZE);
         return ResponseEntity.ok(results);
     }
 
-    // Endpoint: /api/books/search/compact?q=harry+potter
+    // Full Endpoint: /api/books/search/compact?q=harry+potter
     @GetMapping("/search/compact")
-    public ResponseEntity<?> searchBooksCompact(@RequestParam("q") String query) {
-        if (query == null || query.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Query parameter 'q' cannot be empty.");
-        }
-        
-        // adjustable number of books returned, currently: 5
-        // modify "searchBooks" in service
-        PagedBookResponseDTO results = bookSearchService.searchBooks(query.trim());
+    public ResponseEntity<?> searchBooksCompact(
+            @RequestParam("q") String query,
+            @RequestParam(value = "type", defaultValue = "general") String type,
+            @RequestParam(value = "page", defaultValue = "1") int page
+    ) {
+        final int PAGE_SIZE = 10;
+        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), type, page, PAGE_SIZE);
         return ResponseEntity.ok(results);
     }
-
 }
