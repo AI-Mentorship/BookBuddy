@@ -1,0 +1,129 @@
+.edit-profile-modal {
+  width: 90%;
+  max-width: 600px;
+}
+
+.edit-profile-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #000;
+  margin: 0 0 8px 0;
+}
+
+.edit-profile-description {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.edit-profile-row {
+  display: flex;
+  gap: 16px;
+}
+
+.edit-profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-profile-field-half {
+  flex: 1;
+}
+
+.edit-profile-label {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+}
+
+.edit-profile-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.edit-profile-input:focus {
+  outline: none;
+  border-color: #0742BF;
+}
+
+.edit-profile-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.edit-profile-textarea:focus {
+  outline: none;
+  border-color: #0742BF;
+}
+
+.edit-profile-hint {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+.edit-profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.edit-profile-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-profile-button-cancel {
+  background: white;
+  color: #666;
+  border: 1px solid #E0E0E0;
+}
+
+.edit-profile-button-cancel:hover {
+  background: #f5f5f5;
+}
+
+.edit-profile-button-save {
+  background: #000;
+  color: white;
+}
+
+.edit-profile-button-save:hover {
+  background: #333;
+}
+

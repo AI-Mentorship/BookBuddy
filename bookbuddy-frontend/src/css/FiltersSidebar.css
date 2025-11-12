@@ -1,0 +1,89 @@
+.filters-sidebar {
+  position: fixed;
+  left: 0;
+  top: 70px;
+  bottom: 0;
+  width: 280px;
+  background: #0742BF;
+  padding: 24px;
+  overflow-y: auto;
+  z-index: 100;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.filters-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+  margin: 0 0 24px 0;
+}
+
+.filters-section {
+  margin-bottom: 24px;
+}
+
+.filters-section-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.filters-caret {
+  font-size: 12px;
+  transition: transform 0.2s;
+  color: white;
+}
+
+.filters-caret-up {
+  transform: rotate(180deg);
+}
+
+.filters-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 8px;
+}
+
+.filters-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filters-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: white;
+}
+
+.filters-option span {
+  user-select: none;
+}
+

@@ -1,0 +1,285 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Global Background Gradient */
+body {
+  background: linear-gradient(180deg, #0742BF 0%, #0a5dd6 50%, #1a75ff 100%);
+  background-attachment: fixed;
+  position: relative;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Dark Mode Base Styles */
+body.dark,
+body.dark-mode {
+  background: #0d1321 !important;
+  color: #e5e7eb !important;
+}
+
+body.dark::before,
+body.dark::after,
+body.dark-mode::before,
+body.dark-mode::after {
+  display: none;
+}
+
+/* Subtle Wave Effects */
+body::before {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: radial-gradient(ellipse 100% 60% at 50% 100%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: -10%;
+  right: -10%;
+  height: 40%;
+  background: radial-gradient(ellipse 120% 50% at 50% 100%, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Centered Content Container System */
+.content-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-page-container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-page-container {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Page Fade Animation - Video Matched */
+.page-fade {
+  animation: pageFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover Animations - Video Matched */
+.transition-hover {
+  transition: transform 200ms ease;
+}
+
+.transition-hover:hover {
+  transform: scale(1.04);
+}
+
+/* Button Hover Animations - Video Matched */
+button:not(:disabled) {
+  transition: transform 200ms ease;
+}
+
+button:not(:disabled):hover {
+  transform: scale(1.04);
+}
+
+.primary-button:hover:not(:disabled),
+.book-details-button:hover:not(:disabled),
+.dashboard-refresh-button:hover,
+.my-reviews-browse-button:hover {
+  transform: scale(1.04);
+}
+
+/* Dark Mode Styles */
+.dark .card,
+.dark .profile-card,
+.dark .profile-genres-card,
+.dark .my-reviews-card,
+.dark .book-card,
+.dark-mode .card,
+.dark-mode .profile-card,
+.dark-mode .profile-genres-card,
+.dark-mode .my-reviews-card,
+.dark-mode .book-card {
+  background-color: #111827 !important;
+  border: 1px solid #1f2937 !important;
+  color: #e5e7eb !important;
+}
+
+.dark .navbar,
+.dark .filters-sidebar,
+.dark-mode .navbar,
+.dark-mode .filters-sidebar {
+  background-color: #111827 !important;
+  border-bottom: 1px solid #1f2937 !important;
+}
+
+.dark .book-title,
+.dark h1,
+.dark h2,
+.dark h3,
+.dark .profile-name,
+.dark .my-reviews-book-title,
+.dark-mode .book-title,
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode .profile-name,
+.dark-mode .my-reviews-book-title {
+  color: #ffffff !important;
+}
+
+.dark .dashboard-page,
+.dark .saved-books-page,
+.dark .read-books-page,
+.dark .profile-page,
+.dark .my-reviews-page,
+.dark .genres-page,
+.dark .rate-books-page,
+.dark-mode .dashboard-page,
+.dark-mode .saved-books-page,
+.dark-mode .read-books-page,
+.dark-mode .profile-page,
+.dark-mode .my-reviews-page,
+.dark-mode .genres-page,
+.dark-mode .rate-books-page {
+  background: #0d1321 !important;
+}
+
+.dark button:hover,
+.dark-mode button:hover {
+  filter: brightness(1.15);
+}
+
+.dark .navbar-search-input,
+.dark-mode .navbar-search-input {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+
+.dark .navbar-search-dropdown,
+.dark-mode .navbar-search-dropdown {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+
+.dark .dashboard-refresh-button,
+.dark-mode .dashboard-refresh-button {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #e5e7eb !important;
+}
+
+.dark .dashboard-refresh-button:hover,
+.dark-mode .dashboard-refresh-button:hover {
+  background-color: #1f2937 !important;
+}
+
+.dark p,
+.dark span,
+.dark .saved-books-subtitle,
+.dark .read-books-subtitle,
+.dark .profile-email,
+.dark .profile-bio,
+.dark .my-reviews-book-author,
+.dark .my-reviews-date,
+.dark .my-reviews-empty-message,
+.dark .read-books-empty-message,
+.dark .saved-books-empty-message,
+.dark-mode p,
+.dark-mode span,
+.dark-mode .saved-books-subtitle,
+.dark-mode .read-books-subtitle,
+.dark-mode .profile-email,
+.dark-mode .profile-bio,
+.dark-mode .my-reviews-book-author,
+.dark-mode .my-reviews-date,
+.dark-mode .my-reviews-empty-message,
+.dark-mode .read-books-empty-message,
+.dark-mode .saved-books-empty-message {
+  color: #e5e7eb !important;
+}
+
+.dark .book-card,
+.dark-mode .book-card {
+  background-color: #111827 !important;
+}
+
+.dark .modal-content,
+.dark-mode .modal-content {
+  background-color: #111827 !important;
+  color: #e5e7eb !important;
+}
+
+.dark .modal-overlay,
+.dark-mode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.dark .filters-option,
+.dark-mode .filters-option {
+  color: #e5e7eb !important;
+}
+
+.dark .filters-section-header,
+.dark-mode .filters-section-header {
+  color: #e5e7eb !important;
+}
+

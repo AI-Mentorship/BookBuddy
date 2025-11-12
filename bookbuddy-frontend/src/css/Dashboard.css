@@ -1,0 +1,32 @@
+.dashboard-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-content {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+}
+
+.dashboard-content h1 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: white;
+  margin: 0 0 20px 0;
+}
+
+.dashboard-content p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+

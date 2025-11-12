@@ -1,0 +1,107 @@
+.genres-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+  background: white;
+}
+
+.genres-content {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.genres-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #333;
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+.genres-subtitle {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.genres-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.genre-chip {
+  padding: 12px 20px;
+  border: 2px solid #E0E0E0;
+  border-radius: 24px;
+  background: white;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.genre-chip:hover {
+  border-color: #3B7DFF;
+  background: #f0f5ff;
+}
+
+.genre-chip-selected {
+  background: #3B7DFF;
+  border-color: #3B7DFF;
+  color: white;
+}
+
+.genre-chip-selected:hover {
+  background: #2d5fcc;
+  border-color: #2d5fcc;
+}
+
+.genres-continue-button {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 24px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #bcd3ff;
+  color: white;
+  opacity: 0.6;
+}
+
+.genres-continue-button:disabled {
+  cursor: not-allowed;
+}
+
+.genres-continue-enabled {
+  background: #0742BF;
+  opacity: 1;
+}
+
+.genres-continue-enabled:hover {
+  background: #052f8f;
+}
+
+.genres-continue-enabled:active {
+  transform: translateY(1px);
+}
+

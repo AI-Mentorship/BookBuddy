@@ -1,0 +1,159 @@
+.my-reviews-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-top: 70px;
+}
+
+.my-reviews-content {
+  padding: 40px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.my-reviews-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #000;
+  margin: 0 0 32px 0;
+}
+
+.my-reviews-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.my-reviews-empty-message {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+.my-reviews-browse-button {
+  padding: 14px 32px;
+  background: #0742BF;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.my-reviews-browse-button:hover {
+  background: #052f8f;
+}
+
+.my-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.my-reviews-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  transition: box-shadow 0.2s;
+}
+
+.my-reviews-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.my-reviews-card-content {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+.my-reviews-cover {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.my-reviews-info {
+  flex: 1;
+}
+
+.my-reviews-book-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #000;
+  margin: 0 0 4px 0;
+  cursor: pointer;
+}
+
+.my-reviews-book-title:hover {
+  color: #0742BF;
+}
+
+.my-reviews-book-author {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.my-reviews-rating {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.my-reviews-star {
+  font-size: 20px;
+  color: #E0E0E0;
+}
+
+.my-reviews-star-filled {
+  color: #FFD700;
+}
+
+.my-reviews-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.my-reviews-date {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}
+
+.my-reviews-delete-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.my-reviews-delete-button:hover {
+  background: #f5f5f5;
+}
+

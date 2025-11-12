@@ -1,0 +1,66 @@
+.read-books-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-top: 70px;
+}
+
+.read-books-content {
+  padding: 40px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.read-books-header {
+  margin-bottom: 32px;
+}
+
+.read-books-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #000;
+  margin: 0 0 8px 0;
+}
+
+.read-books-subtitle {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.read-books-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.read-books-empty-message {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.read-books-empty-action {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
+.read-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .read-books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+}
+

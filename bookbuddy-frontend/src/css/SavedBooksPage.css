@@ -1,0 +1,66 @@
+.saved-books-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-top: 70px;
+}
+
+.saved-books-content {
+  padding: 40px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.saved-books-header {
+  margin-bottom: 32px;
+}
+
+.saved-books-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #000;
+  margin: 0 0 8px 0;
+}
+
+.saved-books-subtitle {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.saved-books-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.saved-books-empty-message {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.saved-books-empty-action {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
+.saved-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .saved-books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+}
+

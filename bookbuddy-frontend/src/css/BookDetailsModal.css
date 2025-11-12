@@ -1,0 +1,282 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: scaleIn 0.2s ease-out;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #666;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.modal-close:hover {
+  background: #f0f0f0;
+}
+
+.book-details-modal {
+  width: 90%;
+}
+
+.book-details-content {
+  display: flex;
+  gap: 32px;
+}
+
+.book-details-info {
+  flex: 1;
+}
+
+.book-details-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #000;
+  margin: 0 0 8px 0;
+}
+
+.book-details-author {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+.book-details-rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.book-details-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.book-details-star {
+  font-size: 24px;
+  color: #E0E0E0;
+}
+
+.book-details-star-filled {
+  color: #FFD700;
+}
+
+.book-details-rating-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #666;
+}
+
+.book-details-meta {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.book-details-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.book-details-meta-label {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.book-details-meta-value {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #000;
+}
+
+.book-details-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.book-details-genre-chip {
+  padding: 6px 16px;
+  background: #E3F2FD;
+  color: #0742BF;
+  border-radius: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.book-details-genre-chip:hover {
+  background: #BBDEFB;
+}
+
+.book-details-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.book-details-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.book-details-button-read {
+  background: #3B7DFF;
+  color: white;
+}
+
+.book-details-button-read:hover:not(:disabled) {
+  background: #2d5fcc;
+}
+
+.book-details-button-read:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.book-details-button-read-completed {
+  background: #4CAF50;
+  color: white;
+}
+
+.book-details-button-read-completed:hover {
+  background: #45a049;
+}
+
+.book-details-button-save {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.book-details-button-save:hover {
+  background: #e0e0e0;
+}
+
+.book-details-button-saved {
+  background: #4CAF50;
+  color: white;
+}
+
+.book-details-button-saved:hover {
+  background: #45a049;
+}
+
+.book-details-description {
+  margin-top: 32px;
+}
+
+.book-details-description-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #000;
+  margin: 0 0 12px 0;
+}
+
+.book-details-description-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.book-details-cover {
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.book-details-cover-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .book-details-content {
+    flex-direction: column;
+  }
+
+  .book-details-cover {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+

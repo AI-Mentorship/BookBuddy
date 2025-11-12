@@ -1,0 +1,140 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-logo {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.navbar-logo-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.navbar-logo-circle svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.navbar-logo-book {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  width: 20px;
+  height: 24px;
+}
+
+.navbar-logo-book svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.navbar-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #0742BF;
+}
+
+.navbar-center {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 40px;
+}
+
+.navbar-search-form {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 24px;
+  padding: 8px 16px;
+  gap: 12px;
+}
+
+.navbar-search-icon {
+  font-size: 18px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.navbar-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+}
+
+.navbar-search-input::placeholder {
+  color: #999;
+}
+
+.navbar-search-dropdown {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-left: 1px solid #ddd;
+  margin-left: 8px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navbar-icon {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-icon:hover {
+  background: #f0f0f0;
+}
+
+.navbar-icon-active {
+  background: #E3F2FD;
+  color: #0742BF;
+}
+

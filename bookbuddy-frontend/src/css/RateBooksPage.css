@@ -1,0 +1,215 @@
+.rate-books-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+  background: white;
+}
+
+.rate-books-content {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rate-books-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #000;
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+.rate-books-subtitle {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.rate-books-search-container {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.rate-books-search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 4px 4px 4px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.rate-books-search-wrapper:focus-within {
+  border-color: #3B7DFF;
+  box-shadow: 0 2px 8px rgba(59, 125, 255, 0.15);
+}
+
+.rate-books-search-icon {
+  font-size: 20px;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.rate-books-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #333;
+  background: transparent;
+}
+
+.rate-books-search-input::placeholder {
+  color: #999;
+}
+
+.rate-books-search-button {
+  padding: 12px 24px;
+  background: #3B7DFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.rate-books-search-button:hover {
+  background: #2d5fcc;
+}
+
+.rate-books-search-button:active {
+  transform: translateY(1px);
+}
+
+.rate-books-results {
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rate-books-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border: 1px solid #E0E0E0;
+}
+
+.rate-books-result-info {
+  flex: 1;
+}
+
+.rate-books-result-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #000;
+  margin: 0 0 4px 0;
+}
+
+.rate-books-result-author {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.rate-books-stars {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.rate-books-star {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #E0E0E0;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s, transform 0.1s;
+}
+
+.rate-books-star:hover {
+  transform: scale(1.1);
+}
+
+.rate-books-star-filled {
+  color: #FFD700;
+}
+
+.rate-books-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+.rate-books-skip-button {
+  padding: 14px 32px;
+  background: white;
+  border: 1px solid #3B7DFF;
+  border-radius: 12px;
+  color: #3B7DFF;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.rate-books-skip-button:hover {
+  background: #f0f5ff;
+}
+
+.rate-books-skip-button:active {
+  transform: translateY(1px);
+}
+
+.rate-books-continue-button {
+  padding: 14px 32px;
+  background: #3B7DFF;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.rate-books-continue-button:hover {
+  background: #2d5fcc;
+}
+
+.rate-books-continue-button:active {
+  transform: translateY(1px);
+}
+

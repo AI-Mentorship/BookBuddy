@@ -1,0 +1,137 @@
+.mark-as-read-modal {
+  width: 90%;
+  max-width: 600px;
+}
+
+.mark-as-read-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #000;
+  margin: 0 0 8px 0;
+}
+
+.mark-as-read-book-info {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 32px 0;
+}
+
+.mark-as-read-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mark-as-read-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mark-as-read-label {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mark-as-read-required {
+  color: #f44336;
+}
+
+.mark-as-read-stars {
+  display: flex;
+  gap: 8px;
+}
+
+.mark-as-read-star {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #E0E0E0;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s, transform 0.1s;
+}
+
+.mark-as-read-star:hover {
+  transform: scale(1.1);
+}
+
+.mark-as-read-star-filled {
+  color: #FFD700;
+}
+
+.mark-as-read-error {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #f44336;
+  margin: 0;
+}
+
+.mark-as-read-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #E0E0E0;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.mark-as-read-textarea:focus {
+  outline: none;
+  border-color: #3B7DFF;
+}
+
+.mark-as-read-textarea::placeholder {
+  color: #999;
+}
+
+.mark-as-read-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.mark-as-read-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mark-as-read-button-cancel {
+  background: white;
+  color: #666;
+  border: 1px solid #E0E0E0;
+}
+
+.mark-as-read-button-cancel:hover {
+  background: #f5f5f5;
+}
+
+.mark-as-read-button-submit {
+  background: #3B7DFF;
+  color: white;
+}
+
+.mark-as-read-button-submit:hover {
+  background: #2d5fcc;
+}
+

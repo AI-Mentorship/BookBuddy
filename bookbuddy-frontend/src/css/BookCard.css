@@ -1,0 +1,56 @@
+.book-card {
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+}
+
+.book-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.book-card-cover-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 150%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.book-card-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.book-card-rating-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.book-card-rating-star {
+  color: #FFD700;
+  font-size: 16px;
+}
+
+.book-card-rating-value {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
