@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import BookDetailsModal from "../components/BookDetailsModal";
 import MarkAsReadModal from "../components/MarkAsReadModal";
 import { useBooks } from "../context/BooksContext";
 import { Book } from "../services/api";
+import BookCover from "../components/BookCover";
 import "../css/MyReviewsPage.css";
 
 export default function MyReviewsPage() {
   const navigate = useNavigate();
-  const { readBooks, removeReview } = useBooks();
+  const { readBooks, removeReview, loadReadBooks, userProfile, loading } = useBooks();
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showMarkAsRead, setShowMarkAsRead] = useState(false);
+  const [editMode, setEditMode] = useState<{
+    enabled: boolean;
+    rating?: number;
+    review?: string;
+  }>({ enabled: false });
+
+  // Ensure reviews are loaded when visiting this tab
+  useEffect(() => {
+    if (userProfile.userId && readBooks.length === 0) {
+      loadReadBooks();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProfile.userId]);
 
   const handleBookClick = (book: Book) => {
     setSelectedBook(book);
@@ -20,6 +34,7 @@ export default function MyReviewsPage() {
   const handleCloseModal = () => {
     setSelectedBook(null);
     setShowMarkAsRead(false);
+    setEditMode({ enabled: false });
   };
 
   const handleMarkAsRead = () => {
@@ -28,6 +43,13 @@ export default function MyReviewsPage() {
 
   const handleCloseMarkAsRead = () => {
     setShowMarkAsRead(false);
+    setEditMode({ enabled: false });
+  };
+
+  const handleEditReview = (book: Book, rating?: number, review?: string) => {
+    setSelectedBook(book);
+    setEditMode({ enabled: true, rating, review });
+    setShowMarkAsRead(true);
   };
 
   const handleDeleteReview = (bookId: string) => {
@@ -56,7 +78,11 @@ export default function MyReviewsPage() {
       <Navbar />
       <div className="my-reviews-content">
         <h1 className="my-reviews-title">My Reviews</h1>
-        {readBooks.length === 0 ? (
+        {loading && readBooks.length === 0 ? (
+          <div className="my-reviews-empty-state">
+            <p className="my-reviews-empty-message">Loading your reviews…</p>
+          </div>
+        ) : readBooks.length === 0 ? (
           <div className="my-reviews-empty-state">
             <p className="my-reviews-empty-message">You haven't written any reviews yet.</p>
             <button
@@ -71,14 +97,11 @@ export default function MyReviewsPage() {
             {readBooks.map((readBook) => (
               <div key={readBook.book.id} className="my-reviews-card">
                 <div className="my-reviews-card-content">
-                  <img
+                  <BookCover
                     src={readBook.book.coverImage}
                     alt={`${readBook.book.title} cover`}
                     className="my-reviews-cover"
                     onClick={() => handleBookClick(readBook.book)}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://via.placeholder.com/100x150?text=No+Cover";
-                    }}
                   />
                   <div className="my-reviews-info">
                     <h3 className="my-reviews-book-title">{readBook.book.title}</h3>
@@ -101,15 +124,23 @@ export default function MyReviewsPage() {
                     <p className="my-reviews-date">
                       Reviewed on {formatDate(new Date().toISOString())}
                     </p>
+                    <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                      <button
+                        className="my-reviews-browse-button"
+                        onClick={() => handleEditReview(readBook.book, readBook.rating, readBook.review)}
+                      >
+                        Edit Review
+                      </button>
+                      <button
+                        className="my-reviews-delete-button"
+                        onClick={() => handleDeleteReview(readBook.book.id)}
+                        title="Delete review"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <button
-                  className="my-reviews-delete-button"
-                  onClick={() => handleDeleteReview(readBook.book.id)}
-                  title="Delete review"
-                >
-                  🗑️
-                </button>
               </div>
             ))}
           </div>
@@ -125,7 +156,13 @@ export default function MyReviewsPage() {
       )}
 
       {selectedBook && showMarkAsRead && (
-        <MarkAsReadModal book={selectedBook} onClose={handleCloseMarkAsRead} />
+        <MarkAsReadModal
+          book={selectedBook}
+          onClose={handleCloseMarkAsRead}
+          mode={editMode.enabled ? "edit" : "create"}
+          initialRating={editMode.rating}
+          initialReview={editMode.review}
+        />
       )}
     </div>
   );

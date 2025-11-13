@@ -6,7 +6,8 @@
   padding: 40px 20px;
   position: relative;
   z-index: 1;
-  background: white;
+  /* Use global gradient background; keep page transparent */
+  background: transparent;
 }
 
 .genres-content {
@@ -15,13 +16,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Glass panel */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
 .genres-title {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 36px;
-  color: #333;
+  color: #ffffff;
   margin: 0 0 12px 0;
   text-align: center;
 }
@@ -30,7 +39,7 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 16px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0 0 40px 0;
   text-align: center;
 }
@@ -46,10 +55,10 @@
 
 .genre-chip {
   padding: 12px 20px;
-  border: 2px solid #E0E0E0;
-  border-radius: 24px;
-  background: white;
-  color: #333;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -59,14 +68,14 @@
 }
 
 .genre-chip:hover {
-  border-color: #3B7DFF;
-  background: #f0f5ff;
+  border-color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .genre-chip-selected {
   background: #3B7DFF;
   border-color: #3B7DFF;
-  color: white;
+  color: #ffffff;
 }
 
 .genre-chip-selected:hover {
@@ -77,15 +86,16 @@
 .genres-continue-button {
   padding: 14px 32px;
   border: none;
-  border-radius: 24px;
+  border-radius: 999px;
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
-  background: #bcd3ff;
-  color: white;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
   opacity: 0.6;
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .genres-continue-button:disabled {

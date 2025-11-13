@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDarkMode } from "../context/DarkModeContext";
+import { useBooks } from "../context/BooksContext";
 import "../css/Navbar.css";
 
 interface NavbarProps {
@@ -19,6 +20,7 @@ export default function Navbar({
   const navigate = useNavigate();
   const location = useLocation();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { logout, isAuthenticated } = useBooks();
   const [internalQuery, setInternalQuery] = useState("");
   const [internalFilter, setInternalFilter] = useState("all");
   const searchQuery = externalQuery !== undefined ? externalQuery : internalQuery;
@@ -131,6 +133,20 @@ export default function Navbar({
         >
           {isDarkMode ? "☀️" : "🌙"}
         </button>
+        {isAuthenticated && (
+          <button
+            className="navbar-icon transition-hover"
+            onClick={() => {
+              const ok = window.confirm("Are you sure you want to log out?");
+              if (!ok) return;
+              logout();
+              navigate("/", { replace: true });
+            }}
+            title="Logout"
+          >
+            🚪
+          </button>
+        )}
       </div>
     </nav>
   );

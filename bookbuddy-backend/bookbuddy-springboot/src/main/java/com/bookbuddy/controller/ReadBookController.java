@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("read-books")
+@CrossOrigin(origins = "${frontend.url}")
 public class ReadBookController {
 
     private final ReadBookService readBookService;
@@ -40,7 +41,8 @@ public class ReadBookController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/read-books/{userId}")
+    // UPDATED: Add both endpoints that point to the same method
+    @GetMapping({"/read-books/{userId}", "/user/{userId}"})
     public ResponseEntity<List<GetReadBookResponse>> readBooksByUserId(@PathVariable Long userId) {
         List<GetReadBookResponse> readBooks = readBookService.getReadBooksByUserId(userId);
 

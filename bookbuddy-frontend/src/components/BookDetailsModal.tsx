@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Book } from "../services/api";
 import { useBooks } from "../context/BooksContext";
+import BookCover from "./BookCover";
 import "../css/BookDetailsModal.css";
 
 interface BookDetailsModalProps {
@@ -116,13 +117,10 @@ export default function BookDetailsModal({
           </div>
 
           <div className="book-details-cover">
-            <img
+            <BookCover
               src={book.coverImage}
               alt={`${book.title} cover`}
               className="book-details-cover-image"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x450?text=No+Cover";
-              }}
             />
           </div>
         </div>

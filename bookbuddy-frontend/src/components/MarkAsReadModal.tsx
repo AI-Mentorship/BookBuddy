@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Book } from "../services/api";
 import { useBooks } from "../context/BooksContext";
-import * as api from "../services/api";
 import "../css/MarkAsReadModal.css";
 
 interface MarkAsReadModalProps {
   book: Book;
   onClose: () => void;
+  mode?: "create" | "edit";
+  initialRating?: number;
+  initialReview?: string;
 }
 
-export default function MarkAsReadModal({ book, onClose }: MarkAsReadModalProps) {
-  const { markAsRead } = useBooks();
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState("");
+export default function MarkAsReadModal({ book, onClose, mode = "create", initialRating, initialReview }: MarkAsReadModalProps) {
+  const { markAsRead, updateExistingReview } = useBooks();
+  const [rating, setRating] = useState(initialRating ?? 0);
+  const [review, setReview] = useState(initialReview ?? "");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,13 +24,17 @@ export default function MarkAsReadModal({ book, onClose }: MarkAsReadModalProps)
       return;
     }
     try {
-      await api.createReview(book, rating, review || undefined);
-      markAsRead(book, rating, review || undefined);
+      if (mode === "edit") {
+        await updateExistingReview(book, rating, review || undefined);
+      } else {
+        // Persist review by marking the book as read via context API (calls backend under the hood)
+        await markAsRead(book, rating, review || undefined);
+        // Trigger a re-render in parent to update button state
+        setTimeout(() => {
+          window.dispatchEvent(new Event("bookMarkedAsRead"));
+        }, 100);
+      }
       onClose();
-      // Trigger a re-render in parent to update button state
-      setTimeout(() => {
-        window.dispatchEvent(new Event("bookMarkedAsRead"));
-      }, 100);
     } catch (error) {
       console.error("Failed to create review:", error);
       setError("Failed to save review. Please try again.");
@@ -42,7 +48,7 @@ export default function MarkAsReadModal({ book, onClose }: MarkAsReadModalProps)
           ×
         </button>
 
-        <h2 className="mark-as-read-title">Mark as Read</h2>
+        <h2 className="mark-as-read-title">{mode === "edit" ? "Edit Review" : "Mark as Read"}</h2>
         <p className="mark-as-read-book-info">
           {book.title} by {book.author}
         </p>
@@ -92,7 +98,7 @@ export default function MarkAsReadModal({ book, onClose }: MarkAsReadModalProps)
               Cancel
             </button>
             <button type="submit" className="mark-as-read-button mark-as-read-button-submit">
-              Mark as Read
+              {mode === "edit" ? "Save Changes" : "Mark as Read"}
             </button>
           </div>
         </form>

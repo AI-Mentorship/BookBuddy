@@ -12,7 +12,7 @@ import com.bookbuddy.service.BookSearchService;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "*") // We may need this for frontend 
+@CrossOrigin(origins = "${frontend.url}")
 public class BookSearchController {
 
     private final BookSearchService bookSearchService;
@@ -25,6 +25,7 @@ public class BookSearchController {
      * Endpoint: /api/books/search?q=harry+potter
      * Always returns up to 20 results (auto-paged).
      */
+
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(
         @RequestParam("q") String query,

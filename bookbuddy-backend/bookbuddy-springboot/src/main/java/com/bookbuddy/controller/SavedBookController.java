@@ -14,7 +14,7 @@ import com.bookbuddy.service.SavedBookService;
 
 @RestController
 @RequestMapping("/saved-books")
-@CrossOrigin(origins = "http://localhost:5173") // your frontend URL
+@CrossOrigin(origins = "${frontend.url}")
 public class SavedBookController {
 
     private final SavedBookService savedBooksService;

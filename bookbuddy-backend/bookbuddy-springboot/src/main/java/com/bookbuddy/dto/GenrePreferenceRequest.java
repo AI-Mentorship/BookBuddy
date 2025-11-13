@@ -13,5 +13,5 @@ import java.util.List;
 @Builder
 public class GenrePreferenceRequest {
     private Long userId;
-    private List<String> genre;
+    private List<String> genres;
 }

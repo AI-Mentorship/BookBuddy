@@ -10,6 +10,7 @@ import SavedBooksPage from "./pages/SavedBooksPage";
 import ReadBooksPage from "./pages/ReadBooksPage";
 import ProfilePage from "./pages/ProfilePage";
 import MyReviewsPage from "./pages/MyReviewsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -18,13 +19,62 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Auth />} />
-            <Route path="/genres" element={<GenresPage />} />
-            <Route path="/rate-books" element={<RateBooksPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/saved" element={<SavedBooksPage />} />
-            <Route path="/read" element={<ReadBooksPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/reviews" element={<MyReviewsPage />} />
+            <Route
+              path="/genres"
+              element={
+                <ProtectedRoute>
+                  <GenresPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/rate-books"
+              element={
+                <ProtectedRoute>
+                  <RateBooksPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/saved"
+              element={
+                <ProtectedRoute>
+                  <SavedBooksPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/read"
+              element={
+                <ProtectedRoute>
+                  <ReadBooksPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reviews"
+              element={
+                <ProtectedRoute>
+                  <MyReviewsPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

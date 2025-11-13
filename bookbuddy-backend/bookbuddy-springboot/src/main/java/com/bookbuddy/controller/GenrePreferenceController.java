@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("genre-preference")
-@CrossOrigin(origins = "http://localhost:5173") // your frontend URL
+@CrossOrigin(origins = "${frontend.url}")
 public class GenrePreferenceController {
 
     private GenrePreferenceService genrePreferenceService;

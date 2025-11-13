@@ -1,4 +1,5 @@
 import { Book } from "../services/api";
+import BookCover from "./BookCover";
 import "../css/BookCard.css";
 
 interface BookCardProps {
@@ -12,13 +13,10 @@ export default function BookCard({ book, onClick, showRating = false, rating }: 
   return (
     <div className="book-card" onClick={onClick}>
       <div className="book-card-cover-wrapper">
-        <img
+        <BookCover
           src={book.coverImage}
           alt={`${book.title} cover`}
           className="book-card-cover"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = "https://via.placeholder.com/200x300?text=No+Cover";
-          }}
         />
         {showRating && rating && (
           <div className="book-card-rating-badge">
