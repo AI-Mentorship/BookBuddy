@@ -47,7 +47,13 @@ def recommendBooks(request: LLMRequest):
             reviewsMap[book.googleBooksId] = book.review
     candidateDF["review"] = candidateDF["id"].map(lambda x: reviewsMap.get(x, ""))
 
-    rankedDF = getRanking(candidateDF, readBooks, favGenres)
+    rankedDF = getRanking(
+        favGenres=favGenres,
+        readBookIDs=readBookIDs,
+        savedBookIDs=savedBookIDs,
+        topN=40,
+        candidateDF=candidateDF
+    )
     recommendedBookIds = rankedDF.head(40)["id"].tolist()
 
     return LLMResponse(recommendedBookIds=recommendedBookIds)
