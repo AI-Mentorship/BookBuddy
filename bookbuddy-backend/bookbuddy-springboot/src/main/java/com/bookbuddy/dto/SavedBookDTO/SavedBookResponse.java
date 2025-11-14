@@ -1,4 +1,4 @@
-package com.bookbuddy.dto;
+package com.bookbuddy.dto.SavedBookDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReadBookRequest {
+public class SavedBookResponse {
     private Long userId;
     private String googleBooksId;
-    private String privateReview;
-    private double privateRating;
 }

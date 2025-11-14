@@ -1,8 +1,8 @@
 package com.bookbuddy.service;
 
-import com.bookbuddy.dto.LoginRequest;
-import com.bookbuddy.dto.UserRequest;
-import com.bookbuddy.dto.UserResponse;
+import com.bookbuddy.dto.UserDTO.LoginRequest;
+import com.bookbuddy.dto.UserDTO.UserRequest;
+import com.bookbuddy.dto.UserDTO.UserResponse;
 import com.bookbuddy.exception.EmailAlreadyExistsException;
 import com.bookbuddy.exception.InvalidCredentialsException;
 import com.bookbuddy.exception.ResourceNotFoundException;

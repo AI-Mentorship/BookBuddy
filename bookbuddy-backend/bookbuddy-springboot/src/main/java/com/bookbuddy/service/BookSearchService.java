@@ -7,9 +7,9 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import com.bookbuddy.client.GoogleBookAPI;
-import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.GoogleBookAPISearchResponse;
-import com.bookbuddy.dto.PagedBookResponseDTO;
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
+import com.bookbuddy.dto.GoogleBookAPIDTO.GoogleBookAPISearchResponse;
+import com.bookbuddy.dto.GoogleBookAPIDTO.PagedBookResponseDTO;
 
 @Service
 public class BookSearchService {

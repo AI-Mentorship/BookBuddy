@@ -1,0 +1,194 @@
+* [33m525eb6a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mllm-models[m[33m)[m Added llm endpoints
+* [33m0034c05[m Added some llm features
+* [33m6976165[m[33m ([m[1;31morigin/llm-models[m[33m)[m updated trained model
+* [33m63a2f57[m added pretrained model
+[31m|[m * [33mb1090f0[m[33m ([m[1;35mrefs/stash[m[33m)[m On llm-models: !!GitHub_Desktop<llm-models>
+[31m|[m[31m/[m[33m|[m 
+[31m|[m * [33m2e9679e[m index on llm-models: 9048579 updated ml models
+[31m|[m[31m/[m  
+* [33m9048579[m updated ml models
+[33m|[m * [33m9530b72[m[33m ([m[1;31morigin/frontend_new[m[33m, [m[1;32mfrontend_new[m[33m)[m fixed endpoints for now
+[33m|[m * [33me2bbdb8[m Aded new frontend folder
+[33m|[m[33m/[m  
+*   [33mef43717[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/david[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdavid[m[33m)[m Merge pull request #35 from AI-Mentorship/hraf3
+[35m|[m[36m\[m  
+[35m|[m * [33mfbd9695[m[33m ([m[1;31morigin/hraf3[m[33m)[m small book ranker updates
+* [36m|[m [33m1d851e5[m Merge pull request #34 from AI-Mentorship/hraf3
+[1;31m|[m[36m\[m[36m|[m 
+[1;31m|[m * [33m52567bd[m refined search of books, prioritize more relavent responses
+[1;31m|[m[1;31m/[m  
+* [33m971d692[m Fixed and updated endpoints
+* [33m0e3578f[m Fixed save endpoint for Read Books
+[1;32m|[m * [33mf2b76dd[m[33m ([m[1;31morigin/ml-features[m[33m)[m Added ML features
+[1;32m|[m[1;32m/[m  
+* [33mb57a769[m machine learning endpoints added
+*   [33mf159044[m switch to java 21
+[1;34m|[m[1;35m\[m  
+[1;34m|[m * [33md95b97a[m Lombok dependency
+[1;34m|[m *   [33ma8c5086[m Merge pull request #30 from AI-Mentorship/hraf2
+[1;34m|[m [1;36m|[m[31m\[m  
+[1;34m|[m [1;36m|[m *   [33mf43bcb8[m Merge branch 'main' into hraf2
+[1;34m|[m [1;36m|[m [32m|[m[1;36m\[m  
+[1;34m|[m [1;36m|[m [32m|[m[1;36m/[m  
+[1;34m|[m [1;36m|[m[1;36m/[m[32m|[m   
+[1;34m|[m * [32m|[m   [33m6115d1b[m Merge pull request #29 from AI-Mentorship/david-aiyeyemi
+[1;34m|[m [34m|[m[35m\[m [32m\[m  
+[1;34m|[m [34m|[m * [32m|[m [33m8e18e9b[m Read books implemented
+[1;34m|[m [34m|[m[34m/[m [32m/[m  
+[1;34m|[m * [32m|[m   [33m3025fb2[m Merge pull request #28 from AI-Mentorship/hraf2
+[1;34m|[m [36m|[m[1;31m\[m [32m\[m  
+[1;34m|[m * [1;31m\[m [32m\[m   [33md5c4d1d[m Merge pull request #27 from AI-Mentorship/david-aiyeyemi
+[1;34m|[m [1;32m|[m[1;33m\[m [1;31m\[m [32m\[m  
+[1;34m|[m [1;32m|[m * [1;31m|[m [32m|[m [33me8ba4d3[m Read Books in progres
+[1;34m|[m [1;32m|[m * [1;31m|[m [32m|[m [33m705edae[m Your commit message here
+[1;34m|[m [1;32m|[m [1;33m|[m [1;31m|[m * [33mf2a1b53[m Added Book search ranking system (testing)
+[1;34m|[m [1;32m|[m [1;33m|[m [1;31m|[m * [33mf809c3f[m book search rankings
+[1;34m|[m [1;32m|[m [1;33m|[m [1;31m|[m[1;31m/[m  
+[1;34m|[m [1;32m|[m [1;33m|[m * [33m80965b1[m fixed small errors
+[1;34m|[m [1;32m|[m [1;33m|[m * [33m8ee017d[m fixed accidental bug
+* [1;32m|[m [1;33m|[m [1;33m|[m [33mf5b7f34[m removed small bug
+[1;32m|[m[1;32m/[m [1;33m/[m [1;33m/[m  
+* [1;33m|[m [1;33m|[m   [33me7027df[m Merge pull request #26 from AI-Mentorship/hraf2
+[1;33m|[m[1;33m\[m [1;33m\[m [1;33m\[m  
+[1;33m|[m [1;33m|[m[1;33m/[m [1;33m/[m  
+[1;33m|[m[1;33m/[m[1;33m|[m [1;33m/[m   
+[1;33m|[m [1;33m|[m[1;33m/[m    
+[1;33m|[m * [33m254c465[m organize query type: author, title, ibsn
+[1;33m|[m[1;33m/[m  
+* [33m2d684df[m added compact search feature
+*   [33m94fb2f5[m Merge pull request #25 from AI-Mentorship/david-aiyeyemi
+[1;36m|[m[31m\[m  
+[1;36m|[m * [33mcabcb37[m frontend fixes
+[1;36m|[m * [33md911cc0[m Frontend fixes
+[1;36m|[m[1;36m/[m  
+*   [33me4f9717[m Merge pull request #24 from AI-Mentorship/david-aiyeyemi
+[32m|[m[33m\[m  
+[32m|[m * [33m3774cad[m fixed front end is now compatible with backend
+* [33m|[m   [33mf1686fa[m Merge pull request #23 from AI-Mentorship/hraf2
+[34m|[m[35m\[m [33m\[m  
+[34m|[m * [33m|[m [33m3db5a8a[m Added search pages now we can do 'pagecount' at end of call
+[34m|[m[34m/[m [33m/[m  
+* [33m|[m [33m566d41c[m Merge pull request #22 from AI-Mentorship/david-aiyeyemi
+[36m|[m[33m\[m[33m|[m 
+[36m|[m * [33mbda9d3c[m fixed
+[36m|[m[36m/[m  
+*   [33mbc163b4[m Merge pull request #21 from AI-Mentorship/hraf2
+[1;32m|[m[1;33m\[m  
+[1;32m|[m * [33md3fcba4[m testttttttPLSPLSPLS
+[1;32m|[m * [33m8f76960[m testing2
+* [1;33m|[m   [33maf399bb[m Merge pull request #20 from AI-Mentorship/david-aiyeyemi
+[1;33m|[m[1;35m\[m [1;33m\[m  
+[1;33m|[m [1;35m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[1;35m|[m   
+[1;33m|[m * [33m341aa40[m fixed
+[1;33m|[m[1;33m/[m  
+*   [33me01b726[m Merge pull request #19 from AI-Mentorship/david-aiyeyemi
+[1;36m|[m[31m\[m  
+[1;36m|[m * [33m3ef3b4a[m fixed
+[1;36m|[m *   [33m87670e4[m fixed
+[1;36m|[m [32m|[m[1;36m\[m  
+[1;36m|[m [32m|[m[1;36m/[m  
+[1;36m|[m[1;36m/[m[32m|[m   
+* [32m|[m   [33m39be1ef[m Merge pull request #18 from AI-Mentorship/hraf2
+[34m|[m[35m\[m [32m\[m  
+[34m|[m * [32m|[m [33m0c37685[m testing c
+[34m|[m[34m/[m [32m/[m  
+* [32m|[m [33m668f3fc[m fixed errors
+[35m|[m * [33m2fb759e[m testing2
+[35m|[m * [33m541ffc0[m Update GoogleBookAPI.java
+[35m|[m * [33mcc1d2d8[m Merged front end to the main
+[35m|[m *   [33m6366a7d[m Merge branch 'main' of https://github.com/AI-Mentorship/BookBuddy into david-aiyeyemi
+[35m|[m [36m|[m[35m\[m  
+[35m|[m [36m|[m[35m/[m  
+[35m|[m[35m/[m[36m|[m   
+* [36m|[m   [33m181ff54[m Merge pull request #15 from AI-Mentorship/david-aiyeyemi
+[1;32m|[m[1;33m\[m [36m\[m  
+* [1;33m\[m [36m\[m   [33m2f11039[m Merge pull request #14 from AI-Mentorship/Hraf
+[1;34m|[m[1;35m\[m [1;33m\[m [36m\[m  
+[1;34m|[m * [1;33m\[m [36m\[m   [33m80f9ebb[m Merge branch 'main' into Hraf
+[1;34m|[m [1;36m|[m[1;34m\[m [1;33m\[m [36m\[m  
+[1;34m|[m [1;36m|[m[1;34m/[m [1;33m/[m [36m/[m  
+[1;34m|[m[1;34m/[m[1;36m|[m [1;33m|[m [36m|[m   
+* [1;36m|[m [1;33m|[m [36m|[m   [33mb3bd3c8[m Merge pull request #13 from AI-Mentorship/david-aiyeyemi
+[32m|[m[33m\[m [1;36m\[m [1;33m\[m [36m\[m  
+[32m|[m [33m|[m * [1;33m|[m [36m|[m [33m3a764af[m Added search feature &  files labled 'BookSearch'
+[32m|[m [33m|[m[32m/[m [1;33m/[m [36m/[m  
+[32m|[m[32m/[m[33m|[m [1;33m|[m [36m|[m   
+* [33m|[m [1;33m|[m [36m|[m   [33m0c7aab3[m Merge pull request #12 from AI-Mentorship/david-aiyeyemi
+[34m|[m[35m\[m [33m\[m [1;33m\[m [36m\[m  
+* [35m\[m [33m\[m [1;33m\[m [36m\[m   [33mfde6b4e[m Merge pull request #11 from AI-Mentorship/david-aiyeyemi
+[36m|[m[1;31m\[m [35m\[m [33m\[m [1;33m\[m [36m\[m  
+* [1;31m\[m [35m\[m [33m\[m [1;33m\[m [36m\[m   [33m5f61480[m Merge pull request #10 from AI-Mentorship/david-aiyeyemi
+[1;32m|[m[1;33m\[m [1;31m\[m [35m\[m [33m\[m [1;33m\[m [36m\[m  
+[1;32m|[m [1;33m|[m [1;31m|[m [35m|[m [33m|[m [1;33m|[m * [33m28c19db[m Small bug fixes
+[1;32m|[m [1;33m|[m [1;31m|[m [35m|[m [33m|[m [1;33m|[m[1;33m/[m  
+[1;32m|[m [1;33m|[m [1;31m|[m [35m|[m [33m|[m * [33mdd11cb9[m Update frontend folder from Merged_Frontend branch
+[1;32m|[m [1;33m|[m [1;31m|[m [35m|[m [33m|[m[33m/[m  
+[1;32m|[m [1;33m|[m [1;31m|[m [35m|[m * [33mafb792d[m Sign in logic has been added, encrypted password in the database, the api problem has a potential solution now
+[1;32m|[m [1;33m|[m [1;31m|[m [35m|[m[35m/[m  
+[1;32m|[m [1;33m|[m [1;31m|[m * [33m296f044[m Added api key to backend
+[1;32m|[m [1;33m|[m [1;31m|[m * [33m3682741[m Saved book features and adding users to the database is completed: users can be added to the database, save books, delete books, see saved books, all potential errors are clearly identified in JSON data will Http response and explantion message
+[1;32m|[m [1;33m|[m [1;31m|[m[1;31m/[m  
+[1;32m|[m [1;33m|[m * [33m7ca17bc[m Added functionality to save books in database and retrieve books saved by user with json data of the books
+[1;32m|[m [1;33m|[m[1;33m/[m  
+[1;32m|[m * [33m3852d2d[m Added exception handling, api calling, api responding, and cleaned up creating a user
+[1;32m|[m[1;32m/[m  
+[1;32m|[m * [33m61607f5[m[33m ([m[1;32mMerged_Frontend[m[33m)[m changes to Profile css
+[1;32m|[m * [33mc2ac2b1[m Merged frontend login pages with dashboard
+[1;32m|[m *   [33m2efbe57[m Merge pull request #9 from AI-Mentorship/Dashboard_Draft
+[1;32m|[m [1;35m|[m[1;36m\[m  
+[1;32m|[m [1;35m|[m *   [33m629ef61[m Merge branch 'Jiya-bookbuddy' into Dashboard_Draft
+[1;32m|[m [1;35m|[m [31m|[m[1;35m\[m  
+[1;32m|[m [1;35m|[m [31m|[m[1;35m/[m  
+[1;32m|[m [1;35m|[m[1;35m/[m[31m|[m   
+[1;32m|[m * [31m|[m [33me3f883e[m questionnaire + sign in page
+[1;32m|[m * [31m|[m [33m64150fb[m Frontend cleanup: keep only essential files for login page
+[1;32m|[m * [31m|[m [33maf08716[m Short description
+[1;32m|[m [32m|[m * [33mba0582d[m Added frontend - Dashboard, Favorites, Profile
+[1;32m|[m [32m|[m[1;32m/[m  
+[1;32m|[m[1;32m/[m[32m|[m   
+* [32m|[m   [33ma9b19c8[m Merge pull request #8 from AI-Mentorship/hraf
+[33m|[m[34m\[m [32m\[m  
+[33m|[m * [32m|[m [33m9a247d6[m added Saved books controller, service, repository
+[33m|[m[33m/[m [32m/[m  
+* [32m|[m   [33m3e2e666[m Merge pull request #7 from AI-Mentorship/david-aiyeyemi
+[35m|[m[36m\[m [32m\[m  
+[35m|[m * [32m\[m   [33m1cc560b[m Merge branch 'david-aiyeyemi' of https://github.com/AI-Mentorship/BookBuddy into david-aiyeyemi
+[35m|[m [1;31m|[m[1;32m\[m [32m\[m  
+[35m|[m * [1;32m|[m [32m|[m [33ma440c22[m Added functionality of adding users to the database from JSON data
+* [1;32m|[m [1;32m|[m [32m|[m   [33m92a778c[m Merge pull request #6 from AI-Mentorship/david-aiyeyemi
+[1;33m|[m[1;32m\[m [1;32m\[m [1;32m\[m [32m\[m  
+[1;33m|[m [1;32m|[m [1;32m|[m[1;32m/[m [32m/[m  
+[1;33m|[m [1;32m|[m[1;32m/[m[1;32m|[m [32m|[m   
+[1;33m|[m * [1;32m|[m [32m|[m   [33m54587cd[m Merge branch 'main' into david-aiyeyemi
+[1;33m|[m [1;32m|[m[1;33m\[m [1;32m\[m [32m\[m  
+[1;33m|[m [1;32m|[m[1;33m/[m [1;32m/[m [32m/[m  
+[1;33m|[m[1;33m/[m[1;32m|[m [1;32m/[m [32m/[m   
+[1;33m|[m [1;32m|[m[1;32m/[m [32m/[m    
+* [1;32m|[m [32m|[m [33mf523ce8[m Database is now connected to springboot backend
+* [1;32m|[m [32m|[m   [33mbcb5dac[m Merge pull request #5 from AI-Mentorship/david-aiyeyemi
+[31m|[m[32m\[m [1;32m\[m [32m\[m  
+[31m|[m [32m|[m * [32m|[m [33m9d10d9b[m Created User model and logic for creating account
+[31m|[m [32m|[m[32m/[m [32m/[m  
+[31m|[m * [32m/[m [33m4b15559[m Added dependcies and restructured springboot
+[31m|[m[31m/[m [32m/[m  
+* [32m|[m   [33m10a810a[m Merge pull request #4 from AI-Mentorship/Hraf
+[33m|[m[34m\[m [32m\[m  
+[33m|[m * [32m|[m [33mdf00fa1[m Added dependencies, some application properties
+[33m|[m[33m/[m [32m/[m  
+* [32m|[m [33m30bbe1b[m Added model folder into bookbuddy-backend
+* [32m|[m [33m7b2cd45[m Added Springboot to the backend
+* [32m|[m [33m5aed110[m Restructured the backend
+* [32m|[m [33mb40ac9f[m Delete frontend/README.md
+* [32m|[m [33m9b13be3[m Update README.md (Combined backend and frontend README.md files)
+* [32m|[m   [33m949e10c[m Merge pull request #3 from AI-Mentorship/sai_frontend
+[32m|[m[36m\[m [32m\[m  
+[32m|[m [36m|[m[32m/[m  
+[32m|[m[32m/[m[36m|[m   
+[32m|[m * [33m0d7ac43[m added frontend folder
+[32m|[m[32m/[m  
+* [33m9feee0a[m Add .gitkeep files to track empty backend folders
+* [33m5a5becf[m Update README.md
+* [33m56fe35e[m Initial commit
+* [33m5db3e3a[m InteliJ details
+* [33m1974944[m Initial commit

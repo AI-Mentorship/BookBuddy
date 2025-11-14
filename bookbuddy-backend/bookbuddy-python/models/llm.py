@@ -1,7 +1,7 @@
 from transformers import pipeline
 from huggingface_hub import InferenceClient
 
-HF_TOKEN = "API KEY HERE"
+HF_TOKEN = ""
 
 sentiment_analyzer = pipeline(
     "text-classification",

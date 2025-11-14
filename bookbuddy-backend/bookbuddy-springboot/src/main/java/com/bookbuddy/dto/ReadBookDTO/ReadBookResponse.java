@@ -1,4 +1,4 @@
-package com.bookbuddy.dto;
+package com.bookbuddy.dto.ReadBookDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

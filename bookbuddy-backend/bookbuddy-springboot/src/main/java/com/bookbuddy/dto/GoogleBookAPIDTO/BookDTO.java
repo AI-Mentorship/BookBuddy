@@ -1,4 +1,4 @@
-package com.bookbuddy.dto;
+package com.bookbuddy.dto.GoogleBookAPIDTO;
 
 import java.util.List;
 

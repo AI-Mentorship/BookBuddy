@@ -1,5 +1,8 @@
-package com.bookbuddy.dto;
+package com.bookbuddy.dto.LLMDTO;
 
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceResponse;
+import com.bookbuddy.dto.ReadBookDTO.GetReadBookResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.bookbuddy.dto;
+package com.bookbuddy.dto.GoogleBookAPIDTO;
 
 import java.util.List;
 
@@ -11,9 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GoogleBookAPIByIdResponse  {
-    private String id;
-    private VolumeInfo volumeInfo;
+public class GoogleBookAPISearchResponse {
+    private int totalItems; // <-- add this
+    private List<Item> items;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Item {
+        private String id;
+        private VolumeInfo volumeInfo;
+    }
 
     @Data
     @NoArgsConstructor
@@ -26,8 +35,9 @@ public class GoogleBookAPIByIdResponse  {
         private String publishedDate;
         private String description;
         private Integer pageCount;
-        private List <String> categories;
+        private List<String> categories;
         private Double averageRating;
+
         private String maturityRating;
         private ImageLinks imageLinks;
         private String language;
@@ -41,5 +51,4 @@ public class GoogleBookAPIByIdResponse  {
     public static class ImageLinks {
         private String thumbnail;
     }
-
 }

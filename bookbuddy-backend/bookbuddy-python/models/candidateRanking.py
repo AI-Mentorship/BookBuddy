@@ -15,7 +15,7 @@ ranker_model.load_model(MODEL_PATH)
 def fetchCandidates(favGenres: List[str], maxResults: int = 20) -> List[Dict]:
     candidates = []
     for genre in favGenres:
-        params = {"q": f"subject:{genre}", "maxResults": maxResults, "printType": "books"}
+        params = {"q": f"subject:{genre}", "maxResults": maxResults, "printType": "books", "langRestrict": "en"}
         response = requests.get(GOOGLE_BOOKS_URL, params=params)
         if response.status_code == 200:
             for item in response.json().get("items", []):

@@ -1,9 +1,9 @@
 package com.bookbuddy.controller;
 
 
-import com.bookbuddy.dto.GetReadBookResponse;
-import com.bookbuddy.dto.ReadBookRequest;
-import com.bookbuddy.dto.ReadBookResponse;
+import com.bookbuddy.dto.ReadBookDTO.GetReadBookResponse;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookRequest;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookResponse;
 import com.bookbuddy.service.ReadBookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

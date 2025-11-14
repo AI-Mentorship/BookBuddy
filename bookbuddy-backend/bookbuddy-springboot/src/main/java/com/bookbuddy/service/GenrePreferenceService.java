@@ -1,13 +1,12 @@
 package com.bookbuddy.service;
 
-import com.bookbuddy.dto.GenrePreferenceRequest;
-import com.bookbuddy.dto.GenrePreferenceResponse;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceRequest;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceResponse;
 import com.bookbuddy.model.GenrePreference;
 import com.bookbuddy.model.User;
 import com.bookbuddy.repository.GenrePreferenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
-package com.bookbuddy.dto;
+package com.bookbuddy.dto.ReadBookDTO;
 
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
