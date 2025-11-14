@@ -15,6 +15,8 @@ public class PagedBookResponseDTO {
     private int page;
     private int pageSize;
     private int totalItems;
+    private boolean hasNextPage;
+    private String searchId;
     private List<BookDTO> books;
 }
 

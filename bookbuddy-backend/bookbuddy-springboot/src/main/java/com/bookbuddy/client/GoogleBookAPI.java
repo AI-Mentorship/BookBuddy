@@ -103,57 +103,6 @@ public class GoogleBookAPI {
         }
     }
 
-    public List<BookDTO> searchBooks(String query, int startIndex, int maxResults) {
-        try {
-            GoogleBookAPISearchResponse response = webClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .queryParam("q", query)
-                            .queryParam("startIndex", startIndex)
-                            .queryParam("maxResults", maxResults) // limit results if wanted
-                            .build())
-                    .retrieve()
-                    .bodyToMono(GoogleBookAPISearchResponse.class)
-                    .block();
-                
-            // where response is empty or invalid
-            if (response == null || response.getItems() == null) {
-                throw new GoogleBookAPIException("No results found for query: " + query);
-            }
-
-            // Map each Google result → BookDTO
-            return response.getItems().stream()
-                    .map(item -> {
-                        GoogleBookAPISearchResponse.VolumeInfo info = item.getVolumeInfo();
-                        if (info == null) return (BookDTO) null;
-                        return BookDTO.builder()
-                                .googleBooksId(item.getId())
-                                .title(info.getTitle())
-                                .authors(info.getAuthors())
-                                .publisher(info.getPublisher())
-                                .publishedDate(info.getPublishedDate())
-                                .description(info.getDescription())
-                                .pageCount(info.getPageCount())
-                                .categories(info.getCategories())
-                                .averageRating(info.getAverageRating())
-                                .maturityRating(info.getMaturityRating())
-                                .thumbnail(info.getImageLinks() != null ? info.getImageLinks().getThumbnail() : null)
-                                .language(info.getLanguage())
-                                .previewLink(info.getPreviewLink())
-                                .build();
-                    })
-                    .filter(dto -> dto != null)
-                    .toList();
-
-        } catch (WebClientResponseException e) {
-            // if there is http errors: invalid id, API key issues
-            throw new GoogleBookAPIException("Google Books API error: " + e.getStatusCode());
-        } catch (Exception e) {
-            // runtime error: network, parsing
-            throw new GoogleBookAPIException("Failed to search books: " + e.getMessage());
-        }
-
-    }
-
     public GoogleBookAPISearchResponse rawSearch(String query, int startIndex, int maxResults) {
         try {
             return webClient.get()
