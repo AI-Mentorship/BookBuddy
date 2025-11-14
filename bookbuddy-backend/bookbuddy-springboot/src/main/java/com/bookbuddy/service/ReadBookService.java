@@ -1,10 +1,10 @@
 package com.bookbuddy.service;
 
 import com.bookbuddy.client.GoogleBookAPI;
-import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.GetReadBookResponse;
-import com.bookbuddy.dto.ReadBookRequest;
-import com.bookbuddy.dto.ReadBookResponse;
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
+import com.bookbuddy.dto.ReadBookDTO.GetReadBookResponse;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookRequest;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookResponse;
 import com.bookbuddy.exception.DuplicateResourceException;
 import com.bookbuddy.exception.ResourceNotFoundException;
 import com.bookbuddy.model.ReadBook;

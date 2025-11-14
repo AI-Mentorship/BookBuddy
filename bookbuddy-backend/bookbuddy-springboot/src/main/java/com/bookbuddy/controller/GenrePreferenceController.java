@@ -1,7 +1,7 @@
 package com.bookbuddy.controller;
 
-import com.bookbuddy.dto.GenrePreferenceRequest;
-import com.bookbuddy.dto.GenrePreferenceResponse;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceRequest;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceResponse;
 import com.bookbuddy.service.GenrePreferenceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

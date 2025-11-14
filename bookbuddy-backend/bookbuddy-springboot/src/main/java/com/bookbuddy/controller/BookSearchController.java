@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookbuddy.dto.PagedBookResponseDTO;
+import com.bookbuddy.dto.GoogleBookAPIDTO.PagedBookResponseDTO;
 import com.bookbuddy.service.BookSearchService;
 
 @RestController
