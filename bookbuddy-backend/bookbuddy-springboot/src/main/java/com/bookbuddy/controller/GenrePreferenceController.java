@@ -1,7 +1,7 @@
 package com.bookbuddy.controller;
 
-import com.bookbuddy.dto.GenrePreferenceRequest;
-import com.bookbuddy.dto.GenrePreferenceResponse;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceRequest;
+import com.bookbuddy.dto.GenrePreferenceDTO.GenrePreferenceResponse;
 import com.bookbuddy.service.GenrePreferenceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("genre-preference")
-@CrossOrigin(origins = "${frontend.url}")
+@CrossOrigin(origins = "http://localhost:5173") // your frontend URL
 public class GenrePreferenceController {
 
     private GenrePreferenceService genrePreferenceService;

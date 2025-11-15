@@ -2,9 +2,9 @@ package com.bookbuddy.controller;
 
 import java.util.List;
 
-import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.SavedBookRequest;
-import com.bookbuddy.dto.SavedBookResponse;
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
+import com.bookbuddy.dto.SavedBookDTO.SavedBookRequest;
+import com.bookbuddy.dto.SavedBookDTO.SavedBookResponse;
 import com.bookbuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import com.bookbuddy.service.SavedBookService;
 
 @RestController
 @RequestMapping("/saved-books")
-@CrossOrigin(origins = "${frontend.url}")
+@CrossOrigin(origins = "http://localhost:5173") // your frontend URL
 public class SavedBookController {
 
     private final SavedBookService savedBooksService;

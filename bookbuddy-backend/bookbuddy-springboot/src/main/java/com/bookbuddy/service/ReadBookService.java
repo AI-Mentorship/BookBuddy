@@ -1,10 +1,10 @@
 package com.bookbuddy.service;
 
 import com.bookbuddy.client.GoogleBookAPI;
-import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.GetReadBookResponse;
-import com.bookbuddy.dto.ReadBookRequest;
-import com.bookbuddy.dto.ReadBookResponse;
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
+import com.bookbuddy.dto.ReadBookDTO.GetReadBookResponse;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookRequest;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookResponse;
 import com.bookbuddy.exception.DuplicateResourceException;
 import com.bookbuddy.exception.ResourceNotFoundException;
 import com.bookbuddy.model.ReadBook;
@@ -77,75 +77,28 @@ public class ReadBookService {
 
         for (ReadBook readBook : readBooks) {
             String googleBooksId = readBook.getGoogleBooksId();
-
-            try {
-                BookDTO readBookDTO = googleBookAPI.getGoogleBookById(googleBooksId);
-                responses.add(
-                        GetReadBookResponse.builder()
-                                .googleBooksId(readBookDTO.getGoogleBooksId())
-                                .title(readBookDTO.getTitle())
-                                .authors(readBookDTO.getAuthors())
-                                .publisher(readBookDTO.getPublisher())
-                                .publishedDate(readBookDTO.getPublishedDate())
-                                .description(readBookDTO.getDescription())
-                                .pageCount(readBookDTO.getPageCount())
-                                .categories(readBookDTO.getCategories())
-                                .averageRating(readBookDTO.getAverageRating())
-                                .maturityRating(readBookDTO.getMaturityRating())
-                                .thumbnail(readBookDTO.getThumbnail())
-                                .language(readBookDTO.getLanguage())
-                                .previewLink(readBookDTO.getPreviewLink())
-                                .privateReview(readBook.getPrivateReview())
-                                .privateRating(readBook.getPrivateRating())
-                                .build());
-            } catch (Exception e) {
-                // Google Books API failed - create a fallback response
-                System.err.println("Failed to fetch book details for " + googleBooksId + ": " + e.getMessage());
-
-                // Still add the book with minimal info so user can see their rating/review
-                responses.add(
-                        GetReadBookResponse.builder()
-                                .googleBooksId(googleBooksId)
-                                .title("Book details unavailable")
-                                .authors(List.of("Unknown"))
-                                .description("Unable to fetch book details from Google Books API")
-                                .thumbnail(null)
-                                .pageCount(0)
-                                .categories(List.of())
-                                .privateReview(readBook.getPrivateReview())
-                                .privateRating(readBook.getPrivateRating())
-                                .build());
-            }
+            BookDTO readBookDTO = googleBookAPI.getGoogleBookById(googleBooksId);
+            responses.add(
+                    GetReadBookResponse.builder().
+                            googleBooksId(readBookDTO.getGoogleBooksId()).
+                            title(readBookDTO.getTitle()).
+                            authors(readBookDTO.getAuthors()).
+                            publisher(readBookDTO.getPublisher()).
+                            publishedDate(readBookDTO.getPublishedDate()).
+                            description(readBookDTO.getDescription()).
+                            pageCount(readBookDTO.getPageCount()).
+                            categories(readBookDTO.getCategories()).
+                            averageRating(readBookDTO.getAverageRating()).
+                            maturityRating(readBookDTO.getMaturityRating()).
+                            thumbnail(readBookDTO.getThumbnail()).
+                            language(readBookDTO.getLanguage()).
+                            previewLink(readBookDTO.getPreviewLink())
+                            .privateReview(readBook.getPrivateReview())
+                            .privateRating(readBook.getPrivateRating())
+                            .build());
         }
 
         return responses;
-    }
-
-    public GetReadBookResponse getReadBookByUserAndGoogleBooksId(Long userId, String googleBooksId) {
-        User user = userService.getUserById(userId);
-        ReadBook readBook = readBookRepository.findByUserAndGoogleBooksId(user, googleBooksId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "No read book found for user " + userId + " with Google Books ID: " + googleBooksId
-                ));
-
-        BookDTO dto = googleBookAPI.getGoogleBookById(googleBooksId);
-        return GetReadBookResponse.builder()
-                .googleBooksId(dto.getGoogleBooksId())
-                .title(dto.getTitle())
-                .authors(dto.getAuthors())
-                .publisher(dto.getPublisher())
-                .publishedDate(dto.getPublishedDate())
-                .description(dto.getDescription())
-                .pageCount(dto.getPageCount())
-                .categories(dto.getCategories())
-                .averageRating(dto.getAverageRating())
-                .maturityRating(dto.getMaturityRating())
-                .thumbnail(dto.getThumbnail())
-                .language(dto.getLanguage())
-                .previewLink(dto.getPreviewLink())
-                .privateReview(readBook.getPrivateReview())
-                .privateRating(readBook.getPrivateRating())
-                .build();
     }
 
     public ReadBookResponse updateReview(ReadBookRequest readBookRequest) {

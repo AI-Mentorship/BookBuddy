@@ -1,8 +1,8 @@
 package com.bookbuddy.controller;
 
-import com.bookbuddy.dto.BookDTO;
-import com.bookbuddy.dto.LLMRequest;
-import com.bookbuddy.dto.LLMResponse;
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
+import com.bookbuddy.dto.LLMDTO.LLMRequest;
+import com.bookbuddy.dto.LLMDTO.LLMResponse;
 import com.bookbuddy.service.LLMService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,6 @@ public class LLMController {
         LLMRequest llmRequest = llmService.processLLMRequest(userId);
         LLMResponse recommendedBookIds = llmService.fetchRecommendationIdsFromML(llmRequest);
         return ResponseEntity.ok( llmService.getRecommendedBooks(recommendedBookIds));
-
     }
 
 }

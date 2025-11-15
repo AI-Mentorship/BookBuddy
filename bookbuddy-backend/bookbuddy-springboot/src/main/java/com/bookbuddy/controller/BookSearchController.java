@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookbuddy.dto.PagedBookResponseDTO;
+import com.bookbuddy.dto.GoogleBookAPIDTO.PagedBookResponseDTO;
 import com.bookbuddy.service.BookSearchService;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "${frontend.url}")
+@CrossOrigin(origins = "*") // We may need this for frontend 
 public class BookSearchController {
 
     private final BookSearchService bookSearchService;
@@ -25,32 +25,18 @@ public class BookSearchController {
      * Endpoint: /api/books/search?q=harry+potter
      * Always returns up to 20 results (auto-paged).
      */
-
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(
-        @RequestParam("q") String query,
-        @RequestParam(value = "type", defaultValue = "general") String type,
-        @RequestParam(value = "page", defaultValue = "1") int page) {
-            
-        if (query == null || query.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Query parameter 'q' cannot be empty.");
-        }
-
-        // Fixed page size = 20
-        final int PAGE_SIZE = 20;
-        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), type, page, PAGE_SIZE);
-        return ResponseEntity.ok(results);
-    }
-
-    // Full Endpoint: /api/books/search/compact?q=harry+potter
-    @GetMapping("/search/compact")
-    public ResponseEntity<?> searchBooksCompact(
+            @RequestParam("userId") Long userId,
             @RequestParam("q") String query,
             @RequestParam(value = "type", defaultValue = "general") String type,
-            @RequestParam(value = "page", defaultValue = "1") int page
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+            @RequestParam(value = "searchId", required = false) String searchId
     ) {
-        final int PAGE_SIZE = 10;
-        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(query.trim(), type, page, PAGE_SIZE);
+        PagedBookResponseDTO results = bookSearchService.searchBooksPaged(userId, query, type, page, pageSize, searchId);
         return ResponseEntity.ok(results);
     }
+
+
 }

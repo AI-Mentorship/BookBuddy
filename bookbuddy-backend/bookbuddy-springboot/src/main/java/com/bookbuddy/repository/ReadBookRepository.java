@@ -20,6 +20,4 @@ public interface ReadBookRepository extends JpaRepository <ReadBook, Long> {
 
     List<ReadBook> findByUser_UserId(Long userId);
 
-    Optional<ReadBook> findByUserAndGoogleBooksId(User user, String googleBooksId);
-
 }

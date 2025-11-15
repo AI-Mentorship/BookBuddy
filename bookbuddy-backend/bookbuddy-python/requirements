@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+xgboost
+pandas
+requests
+transformers
+huggingface-hub
+torch

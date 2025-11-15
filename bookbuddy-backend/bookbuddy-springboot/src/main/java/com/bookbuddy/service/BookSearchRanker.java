@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 
-import com.bookbuddy.dto.BookDTO;
+import com.bookbuddy.dto.GoogleBookAPIDTO.BookDTO;
 
 public class BookSearchRanker {
 

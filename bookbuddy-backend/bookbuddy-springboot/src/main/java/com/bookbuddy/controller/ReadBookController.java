@@ -1,9 +1,9 @@
 package com.bookbuddy.controller;
 
 
-import com.bookbuddy.dto.GetReadBookResponse;
-import com.bookbuddy.dto.ReadBookRequest;
-import com.bookbuddy.dto.ReadBookResponse;
+import com.bookbuddy.dto.ReadBookDTO.GetReadBookResponse;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookRequest;
+import com.bookbuddy.dto.ReadBookDTO.ReadBookResponse;
 import com.bookbuddy.service.ReadBookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("read-books")
-@CrossOrigin(origins = "${frontend.url}")
 public class ReadBookController {
 
     private final ReadBookService readBookService;
@@ -41,8 +40,7 @@ public class ReadBookController {
         return ResponseEntity.ok().build();
     }
 
-    // UPDATED: Add both endpoints that point to the same method
-    @GetMapping({"/read-books/{userId}", "/user/{userId}"})
+    @GetMapping("/read-books/{userId}")
     public ResponseEntity<List<GetReadBookResponse>> readBooksByUserId(@PathVariable Long userId) {
         List<GetReadBookResponse> readBooks = readBookService.getReadBooksByUserId(userId);
 
