@@ -11,6 +11,7 @@ import com.bookbuddy.model.User;
 import com.bookbuddy.repository.SavedBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class SavedBookService {
     }
 
     //Add books to the database
+    @Transactional
     public SavedBookResponse saveBook(SavedBookRequest bookRequest) {
         // Fetch the full User entity
         User user = userService.getUserById(bookRequest.getUserId());
@@ -58,6 +60,7 @@ public class SavedBookService {
 
 
     // Get all saved books by particular user
+    @Transactional(readOnly = true)
     public List<BookDTO> getSavedBooksByUserId(Long userId) {
         List<SavedBook> savedBooks = savedBookRepository.findByUser_UserId(userId);
         List<BookDTO> savedBooksDTOs = new ArrayList<>();
@@ -76,6 +79,7 @@ public class SavedBookService {
     }
 
     //Delete saved book by user id
+    @Transactional
     public void deleteSavedBooksByUserId(Long userId, String googleBooksId) {
         User user = userService.getUserById(userId);
         Long id = savedBookRepository.findSavedBookIdByUserAndGoogleBooksId(user, googleBooksId)
@@ -87,6 +91,7 @@ public class SavedBookService {
         savedBookRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public Integer getTotalNumberOfSavedBooks(Long userId) {
         List <SavedBook> savedBooks = savedBookRepository.findByUser_UserId(userId);
         return savedBooks.size();

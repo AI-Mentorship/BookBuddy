@@ -18,6 +18,7 @@ export default function BookDetailsModal({
   const { toggleSave, isSaved, isRead } = useBooks();
   const [saved, setSaved] = useState(isSaved(book.id));
   const [read, setRead] = useState(isRead(book.id));
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     const checkState = () => {
@@ -39,10 +40,23 @@ export default function BookDetailsModal({
     setSaved(!saved);
   };
 
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 200);
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content book-details-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
+    <div 
+      className={`modal-overlay ${isClosing ? 'modal-closing' : ''}`} 
+      onClick={handleClose}
+    >
+      <div 
+        className={`modal-content book-details-modal ${isClosing ? 'modal-content-closing' : ''}`} 
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="modal-close" onClick={handleClose}>
           ×
         </button>
 
@@ -96,7 +110,11 @@ export default function BookDetailsModal({
                 onClick={read ? undefined : onMarkAsRead}
                 disabled={read}
               >
-                <span>🔖</span>
+                <span className="book-details-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
                 {read ? "Marked as Read" : "Mark as Read"}
               </button>
               <button
@@ -105,7 +123,11 @@ export default function BookDetailsModal({
                 }`}
                 onClick={handleSave}
               >
-                <span>🔖</span>
+                <span className="book-details-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
                 {saved ? "Saved" : "Save"}
               </button>
             </div>
@@ -128,4 +150,3 @@ export default function BookDetailsModal({
     </div>
   );
 }
-

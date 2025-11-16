@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BooksProvider } from "./context/BooksContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import "./css/global.css";
@@ -12,11 +13,22 @@ import ProfilePage from "./pages/ProfilePage";
 import MyReviewsPage from "./pages/MyReviewsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
 function App() {
   return (
-    <DarkModeProvider>
-      <BooksProvider>
-        <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <DarkModeProvider>
+        <BooksProvider>
+          <BrowserRouter>
           <Routes>
             <Route path="/" element={<Auth />} />
             <Route
@@ -80,6 +92,7 @@ function App() {
         </BrowserRouter>
       </BooksProvider>
     </DarkModeProvider>
+    </QueryClientProvider>
   );
 }
 

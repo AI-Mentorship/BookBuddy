@@ -115,3 +115,55 @@
   transform: translateY(1px);
 }
 
+.genres-selection-info {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.genres-selection-count {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.genres-min-required {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.genre-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.genre-checkmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.genre-chip-selected .genre-checkmark {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.genre-label {
+  flex: 1;
+}
+
+.genre-chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

@@ -54,14 +54,14 @@ export default function FiltersSidebar({ filters, onFiltersChange }: FiltersSide
         </button>
         {expandedSections.pageLength && (
           <div className="filters-options">
-            {["0-200 pages", "200-400 pages", "400-600 pages", "600+ pages"].map((option) => (
+            {["0-200", "200-400", "400-600", "600+"].map((option) => (
               <label key={option} className="filters-option">
                 <input
                   type="checkbox"
                   checked={filters.pageLength.includes(option)}
                   onChange={() => toggleFilter("pageLength", option)}
                 />
-                <span>{option}</span>
+                <span>{option} pages</span>
               </label>
             ))}
           </div>
@@ -80,14 +80,14 @@ export default function FiltersSidebar({ filters, onFiltersChange }: FiltersSide
         </button>
         {expandedSections.minRating && (
           <div className="filters-options">
-            {["5 Stars", "4+ Stars", "3+ Stars", "2+ Stars"].map((option) => (
+            {["5", "4+", "3+", "2+"].map((option) => (
               <label key={option} className="filters-option">
                 <input
                   type="checkbox"
                   checked={filters.minRating.includes(option)}
                   onChange={() => toggleFilter("minRating", option)}
                 />
-                <span>{option}</span>
+                <span>{option} Stars</span>
               </label>
             ))}
           </div>
@@ -106,16 +106,22 @@ export default function FiltersSidebar({ filters, onFiltersChange }: FiltersSide
         </button>
         {expandedSections.maturity && (
           <div className="filters-options">
-            {["Young Adult", "Adult", "Children", "All Ages"].map((option) => (
-              <label key={option} className="filters-option">
-                <input
-                  type="checkbox"
-                  checked={filters.maturity.includes(option)}
-                  onChange={() => toggleFilter("maturity", option)}
-                />
-                <span>{option}</span>
-              </label>
-            ))}
+            <label key="NOT_MATURE" className="filters-option">
+              <input
+                type="checkbox"
+                checked={filters.maturity.includes("NOT_MATURE")}
+                onChange={() => toggleFilter("maturity", "NOT_MATURE")}
+              />
+              <span>Not Mature</span>
+            </label>
+            <label key="MATURE" className="filters-option">
+              <input
+                type="checkbox"
+                checked={filters.maturity.includes("MATURE")}
+                onChange={() => toggleFilter("maturity", "MATURE")}
+              />
+              <span>Mature</span>
+            </label>
           </div>
         )}
       </div>

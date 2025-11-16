@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("read-books")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ReadBookController {
 
     private final ReadBookService readBookService;

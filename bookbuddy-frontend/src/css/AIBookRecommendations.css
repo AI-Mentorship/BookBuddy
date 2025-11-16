@@ -1,0 +1,267 @@
+/* Netflix/Pinterest Style - Minimal, Visual-First Design */
+
+.ai-recommendations-section {
+    margin-bottom: 48px;
+    padding: 0;
+    background: transparent;
+}
+
+/* Minimal Header - Netflix Style */
+.ai-recommendations-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding: 0 0 16px 0;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.ai-recommendations-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: -0.3px;
+}
+
+.ai-recommendations-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+/* Refresh Button - Top Right, Subtle */
+.refresh-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.refresh-button:hover:not(:disabled) {
+    background: #e8e8e8;
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.refresh-button:active:not(:disabled) {
+    transform: rotate(90deg) scale(0.95);
+}
+
+.refresh-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.refresh-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.loading-spinner-small {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(102, 102, 102, 0.2);
+    border-top: 2px solid #666;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error Banner - Subtle, Top */
+.ai-recommendations-error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #fff5e6;
+    border-left: 3px solid #ff9800;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #856404;
+    font-family: 'Roboto', sans-serif;
+}
+
+.error-retry-link {
+    background: none;
+    border: none;
+    color: #ff9800;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    font-family: 'Roboto', sans-serif;
+}
+
+.error-retry-link:hover:not(:disabled) {
+    background: rgba(255, 152, 0, 0.1);
+}
+
+.error-retry-link:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Books Grid - Pinterest/Netflix Style */
+.ai-recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px;
+    position: relative;
+    padding: 0;
+}
+
+@media (min-width: 1400px) {
+    .ai-recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+/* Book Card Wrapper - Clean, No Badges */
+.book-card-wrapper {
+    position: relative;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.book-card-wrapper:hover {
+    transform: translateY(-4px);
+    z-index: 1;
+}
+
+/* Loading State - Just Skeleton Cards */
+.ai-recommendations-loading {
+    /* Handled by grid with skeleton cards */
+}
+
+/* Empty State - Minimal */
+.ai-recommendations-empty {
+    text-align: center;
+    padding: 64px 24px;
+    color: #666;
+}
+
+.ai-recommendations-empty p {
+    font-size: 16px;
+    color: #999;
+    margin: 0 0 20px 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.generate-button-empty {
+    padding: 12px 24px;
+    background: #0742bf;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Roboto', sans-serif;
+}
+
+.generate-button-empty:hover:not(:disabled) {
+    background: #0635a0;
+    transform: translateY(-1px);
+}
+
+.generate-button-empty:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Loading More - Subtle */
+.ai-recommendations-loading-more {
+    margin-top: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .ai-recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-recommendations-section {
+        margin-bottom: 32px;
+    }
+
+    .ai-recommendations-header {
+        margin-bottom: 20px;
+    }
+
+    .ai-recommendations-title {
+        font-size: 20px;
+    }
+
+    .ai-recommendations-subtitle {
+        font-size: 13px;
+    }
+
+    .ai-recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 16px;
+    }
+
+    .refresh-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .refresh-button svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ai-recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+    }
+
+    .ai-recommendations-title {
+        font-size: 18px;
+    }
+
+    .ai-recommendations-subtitle {
+        font-size: 12px;
+    }
+}

@@ -1,17 +1,29 @@
-import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback, useRef } from "react";
+import axios from "axios";
 import Navbar from "../components/Navbar";
-import BookCard from "../components/BookCard";
 import BookDetailsModal from "../components/BookDetailsModal";
 import MarkAsReadModal from "../components/MarkAsReadModal";
 import FiltersSidebar, { Filters } from "../components/FiltersSidebar";
-import { useBooks } from "../context/BooksContext";
+import AIBookRecommendations from "../components/AIBookRecommendations";
+import BookCard from "../components/BookCard";
 import { Book } from "../services/api";
+import { useBooks } from "../context/BooksContext";
+import { mapDtoToBook } from "../services/axiosApi";
 import "../css/DashboardPage.css";
 
+const API_BASE_URL = "http://localhost:8080";
+
+interface PagedBookResponseDTO {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  hasNextPage: boolean;
+  searchId: string;
+  books: any[]; // BookDTO from backend
+}
+
 export default function DashboardPage() {
-  const navigate = useNavigate();
-  const { books, loading, loadBooks } = useBooks();
+  const { userProfile } = useBooks();
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showMarkAsRead, setShowMarkAsRead] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,9 +34,232 @@ export default function DashboardPage() {
     maturity: [],
   });
 
+  // Search state management
+  const [searchResults, setSearchResults] = useState<Book[]>([]); // Raw results from API
+  const [filteredResults, setFilteredResults] = useState<Book[]>([]); // Filtered results for display
+  const [isSearching, setIsSearching] = useState(false);
+  const [currentSearchId, setCurrentSearchId] = useState<string | null>(null);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxKnownPage, setMaxKnownPage] = useState(1); // Track highest page we've discovered
+  const maxKnownPageRef = useRef(1); // Ref to track maxKnownPage without causing handleSearch to recreate
+  const [loadingPage, setLoadingPage] = useState<number | null>(null); // Track which page is being loaded
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [totalSearchItems, setTotalSearchItems] = useState<number>(0);
+
+  // Filter application function
+  const applyFilters = useCallback((books: Book[], activeFilters: Filters): Book[] => {
+    let filtered = [...books];
+
+    // Apply Page Length filters
+    if (activeFilters.pageLength.length > 0) {
+      filtered = filtered.filter((book) => {
+        return activeFilters.pageLength.some((range) => {
+          switch (range) {
+            case "0-200":
+              return book.pages >= 0 && book.pages <= 200;
+            case "200-400":
+              return book.pages > 200 && book.pages <= 400;
+            case "400-600":
+              return book.pages > 400 && book.pages <= 600;
+            case "600+":
+              return book.pages > 600;
+            default:
+              return true;
+          }
+        });
+      });
+    }
+
+    // Apply Min Rating filters
+    if (activeFilters.minRating.length > 0) {
+      const minRatings = activeFilters.minRating.map((r) => {
+        switch (r) {
+          case "5":
+            return 5;
+          case "4+":
+            return 4;
+          case "3+":
+            return 3;
+          case "2+":
+            return 2;
+          default:
+            return 0;
+        }
+      });
+      const minRating = Math.min(...minRatings);
+      filtered = filtered.filter((book) => book.rating >= minRating);
+    }
+
+    // Apply Maturity filters
+    if (activeFilters.maturity.length > 0) {
+      filtered = filtered.filter((book) =>
+        activeFilters.maturity.includes(book.maturity)
+      );
+    }
+
+    return filtered;
+  }, []);
+
+  // Search function - Always REPLACE results, never append
+  const handleSearch = useCallback(async (query: string, filter: string, page: number = 1) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setFilteredResults([]);
+      setSearchError(null);
+      setCurrentSearchId(null);
+      setHasNextPage(false);
+      setCurrentPage(1);
+      setMaxKnownPage(1);
+      maxKnownPageRef.current = 1;
+      setTotalSearchItems(0);
+      return;
+    }
+
+    if (!userProfile.userId) {
+      setSearchError("Please log in to search books.");
+      return;
+    }
+
+    setIsSearching(true);
+    setSearchError(null);
+    setLoadingPage(page); // Track which page we're loading
+
+    try {
+      const response = await axios.get<PagedBookResponseDTO>(`${API_BASE_URL}/api/books/search`, {
+        params: {
+          userId: userProfile.userId,
+          q: query,
+          type: filter === "all" ? "general" : filter,
+          page,
+          pageSize: 20,
+        },
+      });
+
+      const data = response.data;
+      const books = data.books.map(mapDtoToBook);
+
+      // CRITICAL: Always replace results, never append
+      setSearchResults(books);
+      setCurrentSearchId(data.searchId);
+      setCurrentPage(page);
+      setHasNextPage(data.hasNextPage);
+      setTotalSearchItems(data.totalItems);
+
+      // Track discovered pages
+      if (page > maxKnownPageRef.current) {
+        maxKnownPageRef.current = page;
+        setMaxKnownPage(page);
+      }
+
+      // Scroll to top of results after page change
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error: any) {
+      console.error("Search failed:", error);
+      
+      // Handle rate limit errors specifically
+      if (error.response?.status === 429) {
+        setSearchError("Too many requests. Please wait a moment and try again.");
+      } else {
+        setSearchError(
+          error.response?.data?.message || 
+          error.message || 
+          "Failed to search books. Please try again."
+        );
+      }
+      
+      if (page === 1) {
+        setSearchResults([]);
+        setFilteredResults([]);
+      }
+    } finally {
+      setIsSearching(false);
+      setLoadingPage(null); // Clear loading page when done
+    }
+  }, [userProfile.userId]); // Removed maxKnownPage dependency - use ref instead
+
+  // Apply filters whenever searchResults or filters change
   useEffect(() => {
-    loadBooks();
-  }, [loadBooks]);
+    const filtered = applyFilters(searchResults, filters);
+    setFilteredResults(filtered);
+  }, [searchResults, filters, applyFilters]);
+
+  // Debounced search effect - ONLY triggers on NEW searches (query/filter changes)
+  // Pagination buttons handle page changes directly by calling handleSearch()
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      setFilteredResults([]);
+      setSearchError(null);
+      setCurrentSearchId(null);
+      setHasNextPage(false);
+      setCurrentPage(1);
+      setMaxKnownPage(1);
+      maxKnownPageRef.current = 1;
+      setTotalSearchItems(0);
+      return;
+    }
+
+    const debounceTimer = setTimeout(() => {
+      // Reset to page 1 ONLY when query or filter changes (new search)
+      setCurrentPage(1);
+      setMaxKnownPage(1); // Reset discovered pages on new search
+      maxKnownPageRef.current = 1; // Reset ref as well
+      setCurrentSearchId(null);
+      handleSearch(searchQuery, searchFilter, 1);
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, searchFilter]); // ONLY query and filter - NOT handleSearch or currentPage
+
+  // Note: Filter changes are handled by the main search effect above
+  // When filters change, searchQuery stays the same but the effect will re-trigger
+  // because filters are applied client-side, not sent to API
+  // So we don't need a separate effect for filters - the debounced search effect handles it
+
+  // Pagination handlers
+  const handlePageClick = useCallback((pageNum: number) => {
+    if (pageNum === currentPage || pageNum < 1 || isSearching) return;
+    handleSearch(searchQuery, searchFilter, pageNum);
+  }, [currentPage, isSearching, searchQuery, searchFilter, handleSearch]);
+
+  const handlePrevious = useCallback(() => {
+    if (currentPage > 1 && !isSearching) {
+      handleSearch(searchQuery, searchFilter, currentPage - 1);
+    }
+  }, [currentPage, isSearching, searchQuery, searchFilter, handleSearch]);
+
+  const handleNext = useCallback(() => {
+    if (hasNextPage && !isSearching) {
+      handleSearch(searchQuery, searchFilter, currentPage + 1);
+    }
+  }, [hasNextPage, isSearching, searchQuery, searchFilter, currentPage, handleSearch]);
+
+  // Generate page numbers to display (smart pagination)
+  const getPageNumbers = useCallback((): number[] => {
+    const pages: number[] = [];
+    const maxDisplayed = 5; // Show 5 page buttons at a time
+
+    // Calculate range around current page
+    let start = Math.max(1, currentPage - 2);
+    let end = start + maxDisplayed - 1;
+
+    // Adjust end based on known pages
+    const lastKnownPage = hasNextPage ? maxKnownPage + 1 : maxKnownPage;
+    end = Math.min(end, lastKnownPage);
+
+    // If we're near the end, adjust start to show 5 pages
+    if (end - start < maxDisplayed - 1) {
+      start = Math.max(1, end - maxDisplayed + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }, [currentPage, maxKnownPage, hasNextPage]);
 
   const handleBookClick = (book: Book) => {
     setSelectedBook(book);
@@ -41,80 +276,10 @@ export default function DashboardPage() {
 
   const handleCloseMarkAsRead = () => {
     setShowMarkAsRead(false);
-    // BookDetailsModal will automatically show again with updated state
   };
-
-  const handleRefresh = () => {
-    setSearchQuery("");
-    setSearchFilter("all");
-    setFilters({
-      pageLength: [],
-      minRating: [],
-      maturity: [],
-    });
-    // Reload books from backend
-    loadBooks();
-  };
-
-  const filteredBooks = useMemo(() => {
-    let filtered = books;
-
-    // Apply search query with filter
-    const query = searchQuery.trim().toLowerCase();
-    filtered = filtered.filter((book) => {
-      if (!query) return true;
-
-      switch (searchFilter) {
-        case "title":
-          return book.title.toLowerCase().includes(query);
-        case "author":
-          return book.author.toLowerCase().includes(query);
-        case "isbn":
-          return book.isbn?.toLowerCase().includes(query);
-        default:
-          return (
-            book.title.toLowerCase().includes(query) ||
-            book.author.toLowerCase().includes(query) ||
-            book.isbn?.toLowerCase().includes(query)
-          );
-      }
-    });
-
-    // Apply page length filters
-    if (filters.pageLength.length > 0) {
-      filtered = filtered.filter((book) => {
-        return filters.pageLength.some((filter) => {
-          if (filter === "0-200 pages") return book.pages <= 200;
-          if (filter === "200-400 pages") return book.pages > 200 && book.pages <= 400;
-          if (filter === "400-600 pages") return book.pages > 400 && book.pages <= 600;
-          if (filter === "600+ pages") return book.pages > 600;
-          return false;
-        });
-      });
-    }
-
-    // Apply min rating filters
-    if (filters.minRating.length > 0) {
-      filtered = filtered.filter((book) => {
-        return filters.minRating.some((filter) => {
-          if (filter === "5 Stars") return book.rating >= 5;
-          if (filter === "4+ Stars") return book.rating >= 4;
-          if (filter === "3+ Stars") return book.rating >= 3;
-          if (filter === "2+ Stars") return book.rating >= 2;
-          return false;
-        });
-      });
-    }
-
-    // Apply maturity filters
-    if (filters.maturity.length > 0) {
-      filtered = filtered.filter((book) => filters.maturity.includes(book.maturity));
-    }
-
-    return filtered;
-  }, [books, searchQuery, searchFilter, filters]);
 
   const showFilters = searchQuery.length > 0;
+  const hasSearchQuery = searchQuery.trim().length > 0;
 
   return (
     <div className="dashboard-page page-fade">
@@ -129,21 +294,120 @@ export default function DashboardPage() {
           <FiltersSidebar filters={filters} onFiltersChange={setFilters} />
         )}
         <div className={`dashboard-content ${showFilters ? "dashboard-content-with-sidebar" : ""}`}>
-          {loading ? (
-            <p style={{ textAlign: "center", color: "#9ca3af", fontWeight: 600 }}>Loading books...</p>
-          ) : filteredBooks.length === 0 ? (
-            <p style={{ textAlign: "center", color: "#9ca3af", fontWeight: 600 }}>No books found.</p>
-          ) : (
-            <div className="dashboard-grid">
-              {filteredBooks.map((book) => (
-                <BookCard key={book.id} book={book} onClick={() => handleBookClick(book)} />
-              ))}
+          {hasSearchQuery ? (
+            // Search Results Section
+            <div className="search-results-section">
+              <div className="search-results-header">
+                <h2 className="search-results-title">
+                  {isSearching && currentPage === 1 ? (
+                    "Searching..."
+                  ) : searchError ? (
+                    "Search Error"
+                  ) : searchResults.length > 0 ? (
+                    filteredResults.length !== searchResults.length ? (
+                      `Showing ${filteredResults.length} of ${searchResults.length} filtered results for "${searchQuery}"`
+                    ) : (
+                      `Showing ${filteredResults.length}${totalSearchItems > searchResults.length ? ` of ${totalSearchItems}` : ""} results for "${searchQuery}"`
+                    )
+                  ) : (
+                    `No results found for "${searchQuery}"`
+                  )}
+                </h2>
+              </div>
+
+              {/* Loading State - Initial Search */}
+              {isSearching && currentPage === 1 && searchResults.length === 0 ? (
+                <div className="search-loading">
+                  <div className="loading-spinner"></div>
+                  <p>Searching books...</p>
+                </div>
+              ) : searchError ? (
+                /* Error State */
+                <div className="search-error">
+                  <p>{searchError}</p>
+                  <button 
+                    className="search-retry-button"
+                    onClick={() => {
+                      setSearchError(null);
+                      handleSearch(searchQuery, searchFilter, 1);
+                    }}
+                  >
+                    Retry Search
+                  </button>
+                </div>
+              ) : filteredResults.length === 0 && searchResults.length === 0 ? (
+                /* No Results - No Search Results */
+                <div className="search-empty">
+                  <p>No books found matching your search.</p>
+                  <p className="search-empty-hint">Try different keywords or check your spelling.</p>
+                </div>
+              ) : filteredResults.length === 0 && searchResults.length > 0 ? (
+                /* No Results - Filters Applied */
+                <div className="search-empty">
+                  <p>No books match your current filters.</p>
+                  <p className="search-empty-hint">Try adjusting your filter criteria or clear some filters.</p>
+                </div>
+              ) : (
+                /* Results Display */
+                <>
+                  <div className="search-results-grid">
+                    {filteredResults.map((book) => (
+                      <BookCard
+                        key={book.id}
+                        book={book}
+                        onClick={() => handleBookClick(book)}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Loading Indicator for Page Changes */}
+                  {isSearching && loadingPage && (
+                    <div className="search-loading-more">
+                      <div className="loading-spinner-small"></div>
+                      <p>Loading page {loadingPage}...</p>
+                    </div>
+                  )}
+                  
+                  {/* Pagination Controls - Show if there are results and (has next page or not on page 1) */}
+                  {searchResults.length > 0 && (hasNextPage || currentPage > 1) && (
+                    <div className="pagination-container">
+                      <button
+                        onClick={handlePrevious}
+                        disabled={currentPage === 1 || isSearching}
+                        className="pagination-button pagination-prev-next"
+                      >
+                        Previous
+                      </button>
+                      
+                      <div className="page-numbers">
+                        {getPageNumbers().map((pageNum) => (
+                          <button
+                            key={pageNum}
+                            onClick={() => handlePageClick(pageNum)}
+                            className={`page-number ${pageNum === currentPage ? 'active' : ''}`}
+                            disabled={pageNum === currentPage || isSearching}
+                          >
+                            {pageNum}
+                          </button>
+                        ))}
+                      </div>
+                      
+                      <button
+                        onClick={handleNext}
+                        disabled={!hasNextPage || isSearching}
+                        className="pagination-button pagination-prev-next"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
+          ) : (
+            // AI Book Recommendations Section - Main Focus
+            <AIBookRecommendations onBookClick={handleBookClick} />
           )}
-          <button className="dashboard-refresh-button" onClick={handleRefresh}>
-            <span className="dashboard-refresh-icon">↻</span>
-            Refresh
-          </button>
         </div>
       </div>
 

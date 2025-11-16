@@ -103,50 +103,50 @@ export default function Navbar({
           onClick={() => navigate("/dashboard")}
           title="Dashboard"
         >
-          📚
+          {/* Grid/Posts Icon */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="#0742BF" strokeWidth="2" fill="none"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke="#0742BF" strokeWidth="2" fill="none"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke="#0742BF" strokeWidth="2" fill="none"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke="#0742BF" strokeWidth="2" fill="none"/>
+          </svg>
+          {isActive("/dashboard") && <div className="navbar-icon-indicator"></div>}
         </button>
         <button
           className={`navbar-icon transition-hover ${isActive("/read") ? "navbar-icon-active" : ""}`}
           onClick={() => navigate("/read")}
           title="Read Books"
         >
-          📖
+          {/* Heart Icon */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="#0742BF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          {isActive("/read") && <div className="navbar-icon-indicator"></div>}
         </button>
         <button
           className={`navbar-icon transition-hover ${isActive("/saved") ? "navbar-icon-active" : ""}`}
           onClick={() => navigate("/saved")}
           title="Saved Books"
         >
-          🔖
+          {/* Bookmark Icon */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="#0742BF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          {isActive("/saved") && <div className="navbar-icon-indicator"></div>}
         </button>
         <button
           className={`navbar-icon transition-hover ${isActive("/profile") ? "navbar-icon-active" : ""}`}
           onClick={() => navigate("/profile")}
           title="Profile"
         >
-          👤
+          {/* Profile/User Icon - Filled */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#0742BF"/>
+            <circle cx="12" cy="9" r="3" fill="white"/>
+            <path d="M6 19c0-3.314 2.686-5 6-5s6 1.686 6 5" fill="white"/>
+          </svg>
+          {isActive("/profile") && <div className="navbar-icon-indicator"></div>}
         </button>
-        <button
-          className="navbar-icon transition-hover"
-          onClick={toggleDarkMode}
-          title={isDarkMode ? "Light Mode" : "Dark Mode"}
-        >
-          {isDarkMode ? "☀️" : "🌙"}
-        </button>
-        {isAuthenticated && (
-          <button
-            className="navbar-icon transition-hover"
-            onClick={() => {
-              const ok = window.confirm("Are you sure you want to log out?");
-              if (!ok) return;
-              logout();
-              navigate("/", { replace: true });
-            }}
-            title="Logout"
-          >
-            🚪
-          </button>
-        )}
       </div>
     </nav>
   );

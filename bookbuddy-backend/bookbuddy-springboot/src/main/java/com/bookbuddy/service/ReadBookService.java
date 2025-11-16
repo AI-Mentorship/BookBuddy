@@ -11,6 +11,7 @@ import com.bookbuddy.model.ReadBook;
 import com.bookbuddy.model.User;
 import com.bookbuddy.repository.ReadBookRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ReadBookService {
         this.googleBookAPI = googleBookAPI;
     }
 
+    @Transactional
     public ReadBookResponse saveReadBook(ReadBookRequest bookRequest) {
         Long userId = bookRequest.getUserId();
         User user = userService.getUserById(userId);
@@ -57,6 +59,7 @@ public class ReadBookService {
 
     }
 
+    @Transactional
     public void deleteReadBook(Long userId, String googleBooksId) {
         User user = userService.getUserById(userId);
         Long id = readBookRepository.findReadBookIdByUserAndGoogleBooksId(user, googleBooksId)
@@ -67,6 +70,7 @@ public class ReadBookService {
         readBookRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<GetReadBookResponse> getReadBooksByUserId(Long userId) {
         List<ReadBook> readBooks = readBookRepository.findByUser_UserId(userId);
         List<GetReadBookResponse> responses = new ArrayList<>();
@@ -101,6 +105,7 @@ public class ReadBookService {
         return responses;
     }
 
+    @Transactional
     public ReadBookResponse updateReview(ReadBookRequest readBookRequest) {
         User user = userService.getUserById(readBookRequest.getUserId());
         String googleBooksId = readBookRequest.getGoogleBooksId();
@@ -123,11 +128,13 @@ public class ReadBookService {
                 build();
     }
 
+    @Transactional(readOnly = true)
     public Integer getTotalNumberOfReadBooks(Long userId) {
         List<ReadBook> readBooks = readBookRepository.findByUser_UserId(userId);
         return readBooks.size();
     }
 
+    @Transactional
     public void saveAllReadBooks(List<ReadBookRequest> bookRequests) {
         List<ReadBook> readBooks = new ArrayList<>();
         for (ReadBookRequest readBookRequest : bookRequests) {

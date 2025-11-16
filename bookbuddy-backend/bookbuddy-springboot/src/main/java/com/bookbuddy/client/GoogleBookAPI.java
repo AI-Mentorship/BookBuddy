@@ -1,5 +1,3 @@
-// WHY IS GET BY ID BROKEN????
-
 package com.bookbuddy.client;
 
 import java.util.List;
@@ -22,10 +20,7 @@ public class GoogleBookAPI {
     private String googleApiKey;
     private final WebClient webClient;
 
-
-    // Spring automatically provides a WebClient.Builder
     public GoogleBookAPI(WebClient.Builder webClientBuilder) {
-        // Set the base URL once — cleaner for reuse
         this.webClient = webClientBuilder
                 .baseUrl("https://www.googleapis.com/books/v1/volumes")
                 .build();
@@ -33,14 +28,14 @@ public class GoogleBookAPI {
 
     public BookDTO getGoogleBookById(String googleBooksId) {
         try {
-            GoogleBookAPIByIdResponse response;
+            GoogleBookAPIByIdResponse response = null;
 
             // Try the PUBLIC endpoint first (no API key)
             try {
                 response = webClient.get()
                         .uri(uriBuilder -> uriBuilder
                                 .path("/{id}")
-                                .queryParam("langRestrict", "en") // force English edition
+                                // REMOVED langRestrict - doesn't work for getById
                                 .build(googleBooksId))
                         .retrieve()
                         .bodyToMono(GoogleBookAPIByIdResponse.class)
@@ -48,36 +43,28 @@ public class GoogleBookAPI {
 
                 System.out.println("Requesting Google Books URL (public): " + response);
 
-                if (response == null || response.getVolumeInfo() == null) {
-                    throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
-                }
-
             } catch (WebClientResponseException e) {
                 // Fallback to API key if public request fails
-                if (e.getStatusCode().is4xxClientError() || e.getStatusCode().is5xxServerError()) {
+                System.out.println("Public request failed, trying with API key...");
+                
+                response = webClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/{id}")
+                                .queryParam("key", googleApiKey)
+                                .build(googleBooksId))
+                        .retrieve()
+                        .bodyToMono(GoogleBookAPIByIdResponse.class)
+                        .block();
 
-                    response = webClient.get()
-                            .uri(uriBuilder -> uriBuilder
-                                    .path("/{id}")
-                                    .queryParam("key", googleApiKey)
-                                    .build(googleBooksId))
-                            .retrieve()
-                            .bodyToMono(GoogleBookAPIByIdResponse.class)
-                            .block();
-
-                    System.out.println("Requesting Google Books URL (API key): " + response);
-
-                } else {
-                    throw e; // unexpected error
-                }
+                System.out.println("Requesting Google Books URL (API key): " + response);
             }
 
-            // Final check
+            // Final validation
             if (response == null || response.getVolumeInfo() == null) {
                 throw new GoogleBookAPIException("No book found for ID: " + googleBooksId);
             }
 
-            // Map Google API response → BookDTO safely
+            // Map Google API response → BookDTO
             GoogleBookAPIByIdResponse.VolumeInfo info = response.getVolumeInfo();
 
             return BookDTO.builder()
@@ -97,7 +84,7 @@ public class GoogleBookAPI {
                     .build();
 
         } catch (WebClientResponseException e) {
-            throw new GoogleBookAPIException("Google Books API error: " + e.getStatusCode());
+            throw new GoogleBookAPIException("Google Books API error: " + e.getStatusCode() + " - " + e.getMessage());
         } catch (Exception e) {
             throw new GoogleBookAPIException("Failed to fetch book from Google API: " + e.getMessage());
         }
@@ -109,10 +96,10 @@ public class GoogleBookAPI {
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("q", query)
                         .queryParam("startIndex", startIndex)
-                        .queryParam("maxResults", Math.min(maxResults, 40)) // Google API limit
-                    .queryParam("printType", "books")      // only books, no magazines
-                    .queryParam("orderBy", "relevance")    // sort by relevance
-                    .queryParam("langRestrict", "en")      // English only
+                        .queryParam("maxResults", Math.min(maxResults, 40))
+                        .queryParam("printType", "books")
+                        .queryParam("orderBy", "relevance")
+                        .queryParam("langRestrict", "en") // langRestrict works for search
                         .build())
                 .retrieve()
                 .bodyToMono(GoogleBookAPISearchResponse.class)

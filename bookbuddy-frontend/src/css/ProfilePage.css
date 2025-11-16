@@ -63,8 +63,29 @@
 .profile-name-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   margin-bottom: 8px;
+}
+
+.profile-logout-button {
+  padding: 8px 16px;
+  background: #f0f0f0;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+}
+
+.profile-logout-button:hover {
+  background: #e0e0e0;
 }
 
 .profile-name {
@@ -77,8 +98,8 @@
 
 .profile-logout-button {
   padding: 8px 16px;
-  background: #f44336;
-  color: white;
+  background: #f0f0f0;
+  color: #333;
   border: none;
   border-radius: 8px;
   font-family: 'Roboto', sans-serif;

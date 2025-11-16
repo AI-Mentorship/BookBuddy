@@ -1,0 +1,48 @@
+/* Pinterest-style Skeleton Loaders */
+.skeleton-card-pinterest {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 100%;
+}
+
+.skeleton-cover-pinterest {
+  width: 100%;
+  padding-top: 150%;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e0e0e0 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Dark mode */
+.dark .skeleton-card-pinterest {
+  background: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark .skeleton-cover-pinterest {
+  background: linear-gradient(
+    90deg,
+    #2a2a2a 0%,
+    #333 50%,
+    #2a2a2a 100%
+  );
+  background-size: 200% 100%;
+}
+

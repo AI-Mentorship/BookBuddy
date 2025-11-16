@@ -12,6 +12,16 @@
 
 .saved-books-header {
   margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.saved-books-header > div {
+  flex: 1;
+  min-width: 200px;
 }
 
 .saved-books-title {
@@ -28,6 +38,72 @@
   font-size: 16px;
   color: #666;
   margin: 0;
+}
+
+.saved-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+.saved-books-refresh-button {
+  padding: 10px 20px;
+  background: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.saved-books-refresh-button:hover:not(:disabled) {
+  background: #f5f5f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.saved-books-refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saved-books-error-banner {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.saved-books-error-banner p {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #856404;
+}
+
+.saved-books-error-banner button {
+  padding: 6px 12px;
+  background: #ffc107;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #856404;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.saved-books-error-banner button:hover {
+  background: #ffb300;
 }
 
 .saved-books-empty-state {
@@ -51,16 +127,37 @@
   margin: 0;
 }
 
-.saved-books-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 24px;
+.saved-books-retry-button {
+  padding: 10px 20px;
+  background: #0742BF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 16px;
+}
+
+.saved-books-retry-button:hover {
+  background: #0630a0;
 }
 
 @media (max-width: 768px) {
   .saved-books-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 16px;
+  }
+
+  .saved-books-header {
+    flex-direction: column;
+  }
+
+  .saved-books-header > div:last-child {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
 

@@ -50,10 +50,12 @@
 
         <!-- PostgreSQL driver -->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.3</version>
+    <scope>runtime</scope>
+</dependency>
+
 
         <!-- Lombok for reducing boilerplate code -->
         <dependency>

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useBooks } from "../context/BooksContext";
-import * as api from "../services/api";  // ADD THIS IMPORT
+import { genrePreferencesApi } from "../services/axiosApi";
+import Toast from "../components/Toast";
 import "../css/GenresPage.css";
 
 const GENRES = [
@@ -42,14 +43,34 @@ export default function GenresPage() {
     }, [location.search]);
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [fetchingGenres, setFetchingGenres] = useState(true);
+    const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
 
-    // Prefill selections when editing
+    // Fetch saved genres from backend when component loads
     useEffect(() => {
-        if (isEditMode && userProfile?.selectedGenres?.length) {
-            setSelectedGenres(userProfile.selectedGenres);
-        }
-    }, [isEditMode, userProfile.selectedGenres]);
+        const fetchSavedGenres = async () => {
+            if (!userProfile?.userId) {
+                setFetchingGenres(false);
+                return;
+            }
+
+            try {
+                setFetchingGenres(true);
+                const savedGenres = await genrePreferencesApi.getGenrePreferences(userProfile.userId);
+                if (savedGenres && savedGenres.length > 0) {
+                    // Remove duplicates and set selected genres
+                    const uniqueGenres = Array.from(new Set(savedGenres));
+                    setSelectedGenres(uniqueGenres);
+                }
+            } catch (err) {
+                // Silently fail - user can still select genres
+            } finally {
+                setFetchingGenres(false);
+            }
+        };
+
+        fetchSavedGenres();
+    }, [userProfile?.userId]);
 
     const toggleGenre = (genre: string) => {
         setSelectedGenres((prev) => {
@@ -62,28 +83,50 @@ export default function GenresPage() {
     };
 
     const handleContinue = async () => {
-        if (selectedGenres.length >= 3) {
+        if (selectedGenres.length >= 3 && userProfile.userId) {
+            // Ensure genres is an array of strings and remove duplicates
+            const genresArray: string[] = Array.isArray(selectedGenres) 
+                ? Array.from(new Set(selectedGenres.filter((g): g is string => typeof g === "string")))
+                : [];
+
+            if (genresArray.length < 3) {
+                setToast({
+                    message: "Please select at least 3 genres.",
+                    type: "error",
+                });
+                return;
+            }
+
             setLoading(true);
-            setError("");
+            setToast(null);
 
             try {
-                // Save genre preferences to backend FIRST
-                if (userProfile.userId) {
-                    await api.saveGenrePreferences(userProfile.userId, selectedGenres);
-                }
+                // Save genre preferences to backend using POST endpoint
+                // The API function already handles duplicate removal, but we do it here too for safety
+                await genrePreferencesApi.saveGenrePreferences(userProfile.userId, genresArray);
 
-                // THEN update local state
-                updateProfile({ selectedGenres });
+                // Update local state after successful save
+                updateProfile({ selectedGenres: genresArray });
 
-                // Navigate based on mode
-                if (isEditMode) {
-                    navigate("/profile");
-                } else {
-                    navigate("/rate-books");
-                }
-            } catch (error) {
-                console.error("Failed to save genre preferences:", error);
-                setError("Failed to save preferences. Please try again.");
+                // Show success message
+                setToast({
+                    message: isEditMode ? "Genre preferences updated successfully!" : "Genre preferences saved!",
+                    type: "success",
+                });
+
+                // Navigate after a short delay to show success message
+                setTimeout(() => {
+                    if (isEditMode) {
+                        navigate("/profile");
+                    } else {
+                        navigate("/rate-books");
+                    }
+                }, 1000);
+            } catch (err) {
+                setToast({
+                    message: "Failed to save preferences. Please try again.",
+                    type: "error",
+                });
                 setLoading(false);
             }
         }
@@ -91,8 +134,27 @@ export default function GenresPage() {
 
     const isContinueEnabled = selectedGenres.length >= 3;
 
+    if (fetchingGenres) {
+        return (
+            <div className="genres-page page-fade">
+                <div className="genres-content">
+                    <div className="genres-selection-info">
+                        <p className="genres-selection-count">Loading your saved genres...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="genres-page page-fade">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
             <div className="genres-content">
                 <h1 className="genres-title">{isEditMode ? "Edit your favorite genres" : "What do you love to read?"}</h1>
                 <p className="genres-subtitle">
@@ -101,17 +163,14 @@ export default function GenresPage() {
                         : "Select at least 3 genres to personalize your recommendations"}
                 </p>
 
-                {error && (
-                    <div style={{
-                        color: "#ef4444",
-                        background: "#fee",
-                        padding: "0.75rem",
-                        borderRadius: "0.5rem",
-                        marginBottom: "1rem"
-                    }}>
-                        {error}
-                    </div>
-                )}
+                <div className="genres-selection-info">
+                    <p className="genres-selection-count">
+                        {selectedGenres.length} of {GENRES.length} genres selected
+                        {selectedGenres.length < 3 && (
+                            <span className="genres-min-required"> (Select at least 3 to continue)</span>
+                        )}
+                    </p>
+                </div>
 
                 <div className="genres-grid">
                     {GENRES.map((genre) => {
@@ -122,8 +181,11 @@ export default function GenresPage() {
                                 type="button"
                                 className={`genre-chip ${isSelected ? "genre-chip-selected" : ""}`}
                                 onClick={() => toggleGenre(genre)}
+                                disabled={loading}
+                                aria-pressed={isSelected}
                             >
-                                {genre}
+                                {isSelected && <span className="genre-checkmark">✓</span>}
+                                <span className="genre-label">{genre}</span>
                             </button>
                         );
                     })}

@@ -4,30 +4,70 @@ import BookCard from "../components/BookCard";
 import BookDetailsModal from "../components/BookDetailsModal";
 import MarkAsReadModal from "../components/MarkAsReadModal";
 import { useBooks } from "../context/BooksContext";
-import { Book } from "../services/api";
+import { Book, ReadBook } from "../services/api";
+import { readBooksApi } from "../services/axiosApi";
 import "../css/ReadBooksPage.css";
 
 export default function ReadBooksPage() {
-    const { readBooks, loadReadBooks, userProfile, loading } = useBooks();
+    const { userProfile } = useBooks();
+    const [readBooks, setReadBooks] = useState<ReadBook[]>([]);
+    const [totalCount, setTotalCount] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [refreshing, setRefreshing] = useState(false);
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [showMarkAsRead, setShowMarkAsRead] = useState(false);
 
-    // Debug logging
-    useEffect(() => {
-        console.log("ReadBooksPage - userProfile:", userProfile);
-        console.log("ReadBooksPage - readBooks:", readBooks);
-        console.log("ReadBooksPage - loading:", loading);
-    }, [userProfile, readBooks, loading]);
+    // Load read books and total count
+    const loadReadBooks = async () => {
+        if (!userProfile.userId) {
+            setLoading(false);
+            return;
+        }
 
-    // Ensure we fetch from backend when user navigates here
+        try {
+            setError(null);
+            const [books, count] = await Promise.all([
+                readBooksApi.getReadBooks(userProfile.userId!),
+                readBooksApi.getTotalReadBooks(userProfile.userId!).catch(() => null),
+            ]);
+            setReadBooks(books);
+            setTotalCount(count);
+        } catch (err) {
+            setError("Failed to load read books. Please try again.");
+            setReadBooks([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Initial load
     useEffect(() => {
-        console.log("ReadBooksPage - useEffect triggered, userId:", userProfile.userId);
         if (userProfile.userId) {
-            console.log("ReadBooksPage - calling loadReadBooks()");
+            setLoading(true);
             loadReadBooks();
+        } else {
+            setLoading(false);
+            setReadBooks([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userProfile.userId]);
+
+    // Handle refresh
+    const handleRefresh = async () => {
+        if (!userProfile.userId) return;
+
+        try {
+            setRefreshing(true);
+            setError(null);
+            await loadReadBooks();
+        } catch (err) {
+            setError("Failed to refresh. Please try again.");
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
 
     const handleBookClick = (book: Book) => {
         setSelectedBook(book);
@@ -38,32 +78,86 @@ export default function ReadBooksPage() {
         setShowMarkAsRead(false);
     };
 
-    const handleMarkAsRead = () => {
+    const handleOpenMarkAsRead = () => {
         setShowMarkAsRead(true);
     };
 
-    const handleCloseMarkAsRead = () => {
+    const handleCloseMarkAsRead = async () => {
         setShowMarkAsRead(false);
         if (selectedBook) {
             setSelectedBook(null);
         }
+        // Refresh read books after marking as read
+        if (userProfile.userId) {
+            await loadReadBooks();
+        }
     };
+
+    const displayCount = totalCount !== null ? totalCount : readBooks.length;
+
+    // Loading state
+    if (loading && readBooks.length === 0) {
+        return (
+            <div className="read-books-page page-fade">
+                <Navbar />
+                <div className="read-books-content">
+                    <div className="read-books-empty-state">
+                        <p className="read-books-empty-message">Loading your read books…</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state (when no books loaded)
+    if (error && readBooks.length === 0) {
+        return (
+            <div className="read-books-page page-fade">
+                <Navbar />
+                <div className="read-books-content">
+                    <div className="read-books-empty-state">
+                        <p className="read-books-empty-message">Failed to load read books. Please try again.</p>
+                        <button onClick={handleRefresh} className="read-books-retry-button">
+                            Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="read-books-page page-fade">
             <Navbar />
             <div className="read-books-content">
                 <div className="read-books-header">
-                    <h1 className="read-books-title">Read Books</h1>
-                    <p className="read-books-subtitle">{readBooks.length} books you've read</p>
-                </div>
-                {loading && readBooks.length === 0 ? (
-                    <div className="read-books-empty-state">
-                        <p className="read-books-empty-message">Loading your read books…</p>
+                    <div>
+                        <h1 className="read-books-title">Read Books</h1>
+                        <p className="read-books-subtitle">
+                            {displayCount} {displayCount === 1 ? 'book' : 'books'} you've read
+                        </p>
                     </div>
-                ) : readBooks.length === 0 ? (
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            onClick={handleRefresh}
+                            disabled={refreshing}
+                            className="read-books-refresh-button"
+                        >
+                            {refreshing ? 'Refreshing...' : '🔄 Refresh'}
+                        </button>
+                    </div>
+                </div>
+
+                {error && readBooks.length > 0 && (
+                    <div className="read-books-error-banner">
+                        <p>Something went wrong. Please try refreshing.</p>
+                        <button onClick={handleRefresh}>Retry</button>
+                    </div>
+                )}
+
+                {readBooks.length === 0 ? (
                     <div className="read-books-empty-state">
-                        <p className="read-books-empty-message">No books read yet.</p>
+                        <p className="read-books-empty-message">You haven't read any books yet.</p>
                         <p className="read-books-empty-action">Start exploring and mark books as read!</p>
                     </div>
                 ) : (
@@ -73,6 +167,8 @@ export default function ReadBooksPage() {
                                 key={readBook.book.id}
                                 book={readBook.book}
                                 onClick={() => handleBookClick(readBook.book)}
+                                showRating={true}
+                                rating={readBook.rating}
                             />
                         ))}
                     </div>
@@ -83,12 +179,18 @@ export default function ReadBooksPage() {
                 <BookDetailsModal
                     book={selectedBook}
                     onClose={handleCloseModal}
-                    onMarkAsRead={handleMarkAsRead}
+                    onMarkAsRead={handleOpenMarkAsRead}
                 />
             )}
 
             {selectedBook && showMarkAsRead && (
-                <MarkAsReadModal book={selectedBook} onClose={handleCloseMarkAsRead} />
+                <MarkAsReadModal
+                    book={selectedBook}
+                    onClose={handleCloseMarkAsRead}
+                    mode={readBooks.some((rb) => rb.book.id === selectedBook.id) ? "edit" : "create"}
+                    initialRating={readBooks.find((rb) => rb.book.id === selectedBook.id)?.rating}
+                    initialReview={readBooks.find((rb) => rb.book.id === selectedBook.id)?.review}
+                />
             )}
         </div>
     );

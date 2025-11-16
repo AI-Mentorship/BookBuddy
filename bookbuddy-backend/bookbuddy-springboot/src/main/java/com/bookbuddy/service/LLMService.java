@@ -111,26 +111,49 @@ public class LLMService {
         }
     }
 
+    //THIS IS NOT USED
+    // public List<BookDTO> getRecommendedBooks(LLMResponse llmResponse) {
+    //     List<String> recommendedBookIds = llmResponse.getRecommendedBookIds();
+
+    //     // Validate book IDs with ML service before fetching from Google Books API
+    //     ValidationResponse validationResponse = validateBookIds(recommendedBookIds);
+
+    //     // Filter to only keep valid book IDs (where validation returned true)
+    //     List<String> validBookIds = recommendedBookIds.stream()
+    //             .filter(bookId -> validationResponse.getValidationResults().getOrDefault(bookId, false))
+    //             .collect(Collectors.toList());
+
+    //     // Fetch book details only for validated IDs
+    //     List<BookDTO> recommendedBooks = new ArrayList<>();
+    //     for (String validBookId : validBookIds) {
+    //         BookDTO bookDetail = googleBookAPI.getGoogleBookById(validBookId);
+    //         recommendedBooks.add(bookDetail);
+    //     }
+
+    //     return recommendedBooks;
+    // }
+
     public List<BookDTO> getRecommendedBooks(LLMResponse llmResponse) {
         List<String> recommendedBookIds = llmResponse.getRecommendedBookIds();
-
-        // Validate book IDs with ML service before fetching from Google Books API
-        ValidationResponse validationResponse = validateBookIds(recommendedBookIds);
-
-        // Filter to only keep valid book IDs (where validation returned true)
-        List<String> validBookIds = recommendedBookIds.stream()
-                .filter(bookId -> validationResponse.getValidationResults().getOrDefault(bookId, false))
-                .collect(Collectors.toList());
-
-        // Fetch book details only for validated IDs
+    
+        // Temporarily skip validation to test recommendations
+        // ValidationResponse validationResponse = validateBookIds(recommendedBookIds);
+        // List<String> validBookIds = recommendedBookIds.stream()
+        //         .filter(bookId -> validationResponse.getValidationResults().getOrDefault(bookId, false))
+        //         .collect(Collectors.toList());
+    
+        // For now, just assume all recommended IDs are valid
+        List<String> validBookIds = recommendedBookIds;
+    
         List<BookDTO> recommendedBooks = new ArrayList<>();
         for (String validBookId : validBookIds) {
             BookDTO bookDetail = googleBookAPI.getGoogleBookById(validBookId);
             recommendedBooks.add(bookDetail);
         }
-
+    
         return recommendedBooks;
     }
+    
 
     /**
      * PUBLIC method to validate Google Books IDs against the ML service.

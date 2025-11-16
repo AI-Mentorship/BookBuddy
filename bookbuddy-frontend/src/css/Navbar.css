@@ -119,22 +119,50 @@
 .navbar-icon {
   background: none;
   border: none;
-  font-size: 24px;
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
   transition: background-color 0.2s;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  gap: 4px;
+}
+
+.navbar-icon svg {
+  transition: all 0.2s;
 }
 
 .navbar-icon:hover {
   background: #f0f0f0;
 }
 
+.navbar-icon:hover svg {
+  transform: scale(1.1);
+}
+
 .navbar-icon-active {
   background: #E3F2FD;
-  color: #0742BF;
+}
+
+.navbar-icon-active svg {
+  stroke: #0742BF;
+}
+
+.navbar-icon-active svg circle[fill="#0742BF"] {
+  fill: #0742BF;
+}
+
+.navbar-icon-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 3px;
+  background: #0742BF;
+  border-radius: 2px 2px 0 0;
 }
 

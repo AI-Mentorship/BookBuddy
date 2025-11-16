@@ -19,7 +19,7 @@ export interface Book {
     pages: number;
     published: number;
     genres: string[];
-    maturity: "Young Adult" | "Adult" | "Children" | "All Ages";
+    maturity: "NOT_MATURE" | "MATURE";
     rating: number;
     reviewCount: number;
     description: string;
@@ -280,7 +280,7 @@ function emptyBook(): Book {
         pages: 0,
         published: new Date().getFullYear(),
         genres: [],
-        maturity: "All Ages",
+        maturity: "NOT_MATURE",
         rating: 0,
         reviewCount: 0,
         description: "",
