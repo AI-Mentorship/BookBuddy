@@ -299,12 +299,10 @@ function parseYear(publishedDate?: string): number {
 }
 
 function normalizeMaturity(val?: string): Book["maturity"] {
-    if (!val || typeof val !== "string") return "All Ages";
+    if (!val || typeof val !== "string") return "NOT_MATURE";
     const v = val.toLowerCase();
-    if (v.includes("young")) return "Young Adult";
-    if (v.includes("adult")) return "Adult";
-    if (v.includes("child")) return "Children";
-    return "All Ages";
+    if (v.includes("mature")) return "MATURE";
+    return "NOT_MATURE";
 }
 
 function extractIsbn(dto: any): string | undefined {

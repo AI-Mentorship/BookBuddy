@@ -15,29 +15,62 @@ export default function BookDetailsModal({
   onClose,
   onMarkAsRead,
 }: BookDetailsModalProps) {
-  const { toggleSave, isSaved, isRead } = useBooks();
+  const { toggleSave, removeReview, isSaved, isRead } = useBooks();
   const [saved, setSaved] = useState(isSaved(book.id));
   const [read, setRead] = useState(isRead(book.id));
   const [isClosing, setIsClosing] = useState(false);
+  const [showUnmarkConfirm, setShowUnmarkConfirm] = useState(false);
 
   useEffect(() => {
-    const checkState = () => {
-      setSaved(isSaved(book.id));
+    // Sync state on open
+    setSaved(isSaved(book.id));
+    setRead(isRead(book.id));
+  
+    const handleBookMarked = () => {
       setRead(isRead(book.id));
     };
-    checkState();
-    
-    const handleBookMarked = () => {
-      checkState();
+  
+    const handleBookUnmarked = () => {
+      setRead(isRead(book.id));
     };
+  
     window.addEventListener("bookMarkedAsRead", handleBookMarked);
-    return () => window.removeEventListener("bookMarkedAsRead", handleBookMarked);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    window.addEventListener("bookUnmarkedAsRead", handleBookUnmarked);
+  
+    return () => {
+      window.removeEventListener("bookMarkedAsRead", handleBookMarked);
+      window.removeEventListener("bookUnmarkedAsRead", handleBookUnmarked);
+    };
   }, [book.id]);
+  
 
   const handleSave = () => {
     toggleSave(book);
     setSaved(!saved);
+  };
+
+  const handleMarkAsRead = () => {
+    if (read) {
+      setShowUnmarkConfirm(true);
+    } else {
+      onMarkAsRead();
+    }
+  };
+
+  const confirmUnmark = async () => {
+    setShowUnmarkConfirm(false);
+    try {
+      await removeReview(book.id);
+      window.dispatchEvent(new CustomEvent("bookUnmarkedAsRead", { 
+        detail: { googleBooksId: book.id } 
+      }));
+    } catch (error) {
+      console.error("Failed to unmark:", error);
+    }
+  };
+
+  const cancelUnmark = () => {
+    setShowUnmarkConfirm(false);
   };
 
   const handleClose = () => {
@@ -60,11 +93,19 @@ export default function BookDetailsModal({
           ×
         </button>
 
-        <div className="book-details-content">
-          <div className="book-details-info">
+        <div className="book-details-header">
+          <div className="book-details-cover-container">
+            <BookCover
+              src={book.coverImage}
+              alt={`${book.title} cover`}
+              className="book-details-cover-image"
+            />
+          </div>
+          
+          <div className="book-details-header-info">
             <h1 className="book-details-title">{book.title}</h1>
             <p className="book-details-author">by {book.author}</p>
-
+            
             <div className="book-details-rating">
               <div className="book-details-stars">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -95,57 +136,89 @@ export default function BookDetailsModal({
             </div>
 
             <div className="book-details-genres">
-              {book.genres.map((genre) => (
-                <span key={genre} className="book-details-genre-chip">
-                  {genre}
-                </span>
-              ))}
-            </div>
-
-            <div className="book-details-actions">
-              <button
-                className={`book-details-button book-details-button-read ${
-                  read ? "book-details-button-read-completed" : ""
-                }`}
-                onClick={read ? undefined : onMarkAsRead}
-                disabled={read}
-              >
-                <span className="book-details-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                {read ? "Marked as Read" : "Mark as Read"}
-              </button>
-              <button
-                className={`book-details-button book-details-button-save ${
-                  saved ? "book-details-button-saved" : ""
-                }`}
-                onClick={handleSave}
-              >
-                <span className="book-details-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                {saved ? "Saved" : "Save"}
-              </button>
-            </div>
-
-            <div className="book-details-description">
-              <h3 className="book-details-description-title">About this book</h3>
-              <p className="book-details-description-text">{book.description}</p>
+              {book.genres.slice(0, 3).map((genre) => {
+                const cleanGenre = genre.includes('/') 
+                  ? genre.split('/').pop()?.trim() || genre
+                  : genre;
+                return (
+                  <span key={genre} className="book-details-genre-chip">
+                    {cleanGenre}
+                  </span>
+                );
+              })}
             </div>
           </div>
+        </div>
 
-          <div className="book-details-cover">
-            <BookCover
-              src={book.coverImage}
-              alt={`${book.title} cover`}
-              className="book-details-cover-image"
+        <div className="book-details-actions">
+          <button
+            className={`book-details-button book-details-button-read ${
+              read ? "book-details-button-read-completed" : ""
+            }`}
+            onClick={handleMarkAsRead}
+          >
+            <span className="book-details-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+            {read ? "Marked as Read" : "Mark as Read"}
+          </button>
+          
+          <button
+            className={`book-details-button book-details-button-save ${
+              saved ? "book-details-button-saved" : ""
+            }`}
+            onClick={handleSave}
+          >
+            <span className="book-details-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+            {saved ? "Saved" : "Save"}
+          </button>
+        </div>
+
+        <div className="book-details-tabs">
+          <button className="book-details-tab book-details-tab-active">
+            Description
+          </button>
+        </div>
+
+        <div className="book-details-tab-content">
+          <div className="book-details-description-content">
+            <div 
+              className="book-details-description-text" 
+              dangerouslySetInnerHTML={{ __html: book.description }}
             />
           </div>
         </div>
+
+        {showUnmarkConfirm && (
+          <div className="confirm-dialog-overlay" onClick={cancelUnmark}>
+            <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+              <h3 className="confirm-dialog-title">Unmark as Read?</h3>
+              <p className="confirm-dialog-message">
+                This will remove "{book.title}" from your read books list and delete your review and rating.
+              </p>
+              <div className="confirm-dialog-actions">
+                <button 
+                  className="confirm-dialog-button confirm-dialog-button-cancel" 
+                  onClick={cancelUnmark}
+                >
+                  Cancel
+                </button>
+                <button 
+                  className="confirm-dialog-button confirm-dialog-button-confirm" 
+                  onClick={confirmUnmark}
+                >
+                  Unmark
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
