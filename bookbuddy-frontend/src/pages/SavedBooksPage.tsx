@@ -9,7 +9,7 @@ import { savedBooksApi } from "../services/axiosApi";
 import "../css/SavedBooksPage.css";
 
 export default function SavedBooksPage() {
-    const { userProfile } = useBooks();
+    const { userProfile, savedBooks: contextSavedBooks, loadSavedBooks: loadContextSavedBooks } = useBooks();
     const [savedBooks, setSavedBooks] = useState<Book[]>([]);
     const [totalCount, setTotalCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
@@ -18,9 +18,17 @@ export default function SavedBooksPage() {
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [showMarkAsRead, setShowMarkAsRead] = useState(false);
 
-    // Load saved books and total count
-    const loadSavedBooks = async () => {
+    // Load saved books and total count - OPTIMIZED: Use context data if available
+    const loadSavedBooks = async (forceRefresh = false) => {
         if (!userProfile.userId) {
+            setLoading(false);
+            return;
+        }
+
+        // Use context data if available and not forcing refresh
+        if (!forceRefresh && contextSavedBooks.length > 0) {
+            setSavedBooks(contextSavedBooks);
+            setTotalCount(contextSavedBooks.length);
             setLoading(false);
             return;
         }
@@ -33,6 +41,8 @@ export default function SavedBooksPage() {
             ]);
             setSavedBooks(books);
             setTotalCount(count);
+            // Refresh context data
+            await loadContextSavedBooks();
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "Failed to load saved books";
             setError(errorMessage);
@@ -42,26 +52,34 @@ export default function SavedBooksPage() {
         }
     };
 
-    // Initial load
+    // Initial load - use context data if available
     useEffect(() => {
         if (userProfile.userId) {
-            setLoading(true);
-            loadSavedBooks();
+            if (contextSavedBooks.length > 0) {
+                // Use context data immediately
+                setSavedBooks(contextSavedBooks);
+                setTotalCount(contextSavedBooks.length);
+                setLoading(false);
+            } else {
+                // Load if context doesn't have data
+                setLoading(true);
+                loadSavedBooks();
+            }
         } else {
             setLoading(false);
             setSavedBooks([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userProfile.userId]);
+    }, [userProfile.userId, contextSavedBooks.length]);
 
-    // Handle refresh
+    // Handle refresh - force refresh from API
     const handleRefresh = async () => {
         if (!userProfile.userId) return;
 
         try {
             setRefreshing(true);
             setError(null);
-            await loadSavedBooks();
+            await loadSavedBooks(true); // Force refresh
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "Failed to refresh";
             setError(errorMessage);

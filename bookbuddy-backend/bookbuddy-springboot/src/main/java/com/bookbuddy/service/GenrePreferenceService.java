@@ -32,20 +32,35 @@ public class GenrePreferenceService {
 
         List<String> genres = genrePreferenceRequest.getGenre();
         if (genres == null || genres.isEmpty()) {
+            // If empty, just delete all existing preferences
+            genrePreferenceRepository.deleteByUser(user);
+            genrePreferenceRepository.flush(); // Ensure delete is committed
             return;
         }
 
-        genrePreferenceRepository.deleteAll(genrePreferenceRepository.findByUser(user));
+        // OPTIMIZED: Direct delete query instead of fetch-then-delete
+        genrePreferenceRepository.deleteByUser(user);
+        genrePreferenceRepository.flush(); // Ensure delete is committed before inserting new ones
 
+        // Build new preferences list
         List<GenrePreference> user_genre = new ArrayList<>();
         for (String genre : genres) {
-            user_genre.add(GenrePreference.builder()
-                    .user(user)
-                    .genreName(genre)
-                    .build());
+            if (genre != null && !genre.trim().isEmpty()) {
+                user_genre.add(GenrePreference.builder()
+                        .user(user)
+                        .genreName(genre.trim())
+                        .build());
+            }
         }
 
-        genrePreferenceRepository.saveAll(user_genre);
+        // Save all new preferences in one batch
+        if (!user_genre.isEmpty()) {
+            List<GenrePreference> saved = genrePreferenceRepository.saveAll(user_genre);
+            genrePreferenceRepository.flush(); // Ensure save is committed
+            System.out.println("Saved " + saved.size() + " genre preferences for user " + userId);
+        } else {
+            System.out.println("No valid genres to save for user " + userId);
+        }
     }
 
     @Transactional(readOnly = true)

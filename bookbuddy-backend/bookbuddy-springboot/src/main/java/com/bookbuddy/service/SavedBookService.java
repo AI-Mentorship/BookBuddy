@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 public class SavedBookService {
@@ -69,12 +71,26 @@ public class SavedBookService {
             return savedBooksDTOs;
         }
 
-        //If one book has an error there will be an error fetching all books (JUST A NOTE FOR THE FUTURE)
-        for (SavedBook savedBook : savedBooks) {
-            String googleBooksId = savedBook.getGoogleBooksId();
-            BookDTO currentBookDTO = googleBookAPI.getGoogleBookById(googleBooksId);
-            savedBooksDTOs.add(currentBookDTO);
-        }
+        // Fetch all books in parallel for better performance
+        List<CompletableFuture<BookDTO>> futures = savedBooks.stream()
+                .map(savedBook -> CompletableFuture.supplyAsync(() -> {
+                    try {
+                        String googleBooksId = savedBook.getGoogleBooksId();
+                        return googleBookAPI.getGoogleBookById(googleBooksId);
+                    } catch (Exception e) {
+                        // Log error but don't fail entire request - return null and filter out
+                        System.err.println("Failed to fetch saved book " + savedBook.getGoogleBooksId() + ": " + e.getMessage());
+                        return null;
+                    }
+                }))
+                .collect(Collectors.toList());
+
+        // Wait for all futures to complete and collect results
+        savedBooksDTOs = futures.stream()
+                .map(CompletableFuture::join)
+                .filter(bookDTO -> bookDTO != null) // Filter out failed requests
+                .collect(Collectors.toList());
+
         return savedBooksDTOs;
     }
 

@@ -9,7 +9,7 @@ import { readBooksApi } from "../services/axiosApi";
 import "../css/ReadBooksPage.css";
 
 export default function ReadBooksPage() {
-    const { userProfile } = useBooks();
+    const { userProfile, readBooks: contextReadBooks, loadReadBooks: loadContextReadBooks } = useBooks();
     const [readBooks, setReadBooks] = useState<ReadBook[]>([]);
     const [totalCount, setTotalCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
@@ -18,9 +18,17 @@ export default function ReadBooksPage() {
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [showMarkAsRead, setShowMarkAsRead] = useState(false);
 
-    // Load read books and total count
-    const loadReadBooks = async () => {
+    // Load read books and total count - OPTIMIZED: Use context data if available
+    const loadReadBooks = async (forceRefresh = false) => {
         if (!userProfile.userId) {
+            setLoading(false);
+            return;
+        }
+
+        // Use context data if available and not forcing refresh
+        if (!forceRefresh && contextReadBooks.length > 0) {
+            setReadBooks(contextReadBooks);
+            setTotalCount(contextReadBooks.length);
             setLoading(false);
             return;
         }
@@ -33,6 +41,8 @@ export default function ReadBooksPage() {
             ]);
             setReadBooks(books);
             setTotalCount(count);
+            // Refresh context data
+            await loadContextReadBooks();
         } catch (err) {
             setError("Failed to load read books. Please try again.");
             setReadBooks([]);
@@ -41,26 +51,34 @@ export default function ReadBooksPage() {
         }
     };
 
-    // Initial load
+    // Initial load - use context data if available
     useEffect(() => {
         if (userProfile.userId) {
-            setLoading(true);
-            loadReadBooks();
+            if (contextReadBooks.length > 0) {
+                // Use context data immediately
+                setReadBooks(contextReadBooks);
+                setTotalCount(contextReadBooks.length);
+                setLoading(false);
+            } else {
+                // Load if context doesn't have data
+                setLoading(true);
+                loadReadBooks();
+            }
         } else {
             setLoading(false);
             setReadBooks([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userProfile.userId]);
+    }, [userProfile.userId, contextReadBooks.length]);
 
-    // Handle refresh
+    // Handle refresh - force refresh from API
     const handleRefresh = async () => {
         if (!userProfile.userId) return;
 
         try {
             setRefreshing(true);
             setError(null);
-            await loadReadBooks();
+            await loadReadBooks(true); // Force refresh
         } catch (err) {
             setError("Failed to refresh. Please try again.");
         } finally {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EditProfileModal from "../components/EditProfileModal";
@@ -7,8 +7,34 @@ import "../css/ProfilePage.css";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
-    const { userProfile, savedBooks, readBooks, updateProfile } = useBooks();
+    const { userProfile, savedBooks, readBooks, updateProfile, loadGenrePreferences } = useBooks();
     const [showEditModal, setShowEditModal] = useState(false);
+    const [loadingGenres, setLoadingGenres] = useState(false);
+
+    // Ensure genre preferences are loaded when profile page is visited
+    useEffect(() => {
+        const loadGenres = async () => {
+            if (!userProfile?.userId) return;
+            
+            // Only reload if we don't have genres or if they're empty
+            if (userProfile.selectedGenres && userProfile.selectedGenres.length > 0) {
+                return; // Already have genres, no need to reload
+            }
+
+            try {
+                setLoadingGenres(true);
+                // Use context method which will update the context state
+                await loadGenrePreferences();
+            } catch (error) {
+                console.error("Failed to load genre preferences on profile page:", error);
+            } finally {
+                setLoadingGenres(false);
+            }
+        };
+
+        loadGenres();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userProfile?.userId]); // Only depend on userId
 
     const getReaderType = (): string => {
         const count = readBooks.length;
@@ -144,7 +170,9 @@ export default function ProfilePage() {
                         </button>
                     </div>
                     <div className="profile-genres-tags">
-                        {userProfile.selectedGenres.length > 0 ? (
+                        {loadingGenres ? (
+                            <p className="profile-genres-empty">Loading genres...</p>
+                        ) : userProfile.selectedGenres && userProfile.selectedGenres.length > 0 ? (
                             userProfile.selectedGenres.map((genre) => (
                                 <span key={genre} className="profile-genre-tag">
                   {genre}

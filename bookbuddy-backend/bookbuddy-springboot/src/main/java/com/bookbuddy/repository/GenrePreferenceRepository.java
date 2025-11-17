@@ -15,6 +15,7 @@ import java.util.List;
 public interface GenrePreferenceRepository extends JpaRepository<GenrePreference, Long> {
     List<GenrePreference> findByUser(User user);
     
+    @Modifying
     @Query("DELETE FROM GenrePreference g WHERE g.user = :user")
     void deleteByUser(@Param("user") User user);
 }

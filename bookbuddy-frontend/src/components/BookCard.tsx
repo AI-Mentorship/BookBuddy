@@ -27,7 +27,7 @@ export default function BookCard({ book, onClick, showRating = false, rating }: 
       </div>
       <div className="book-card-info">
         <h3 className="book-card-title">{book.title}</h3>
-        <p className="book-card-author">{book.authors?.join(", ") || "Unknown Author"}</p>
+        <p className="book-card-author">{(book.author && book.author.trim()) || "Unknown Author"}</p>
       </div>
     </div>
   );

@@ -118,18 +118,18 @@ public class BookSearchService {
             
             // Basic info
             builder.googleBooksId(item.getId());
-            builder.title(volumeInfo.getTitle());
-            builder.authors(volumeInfo.getAuthors());
-            builder.publisher(volumeInfo.getPublisher());
-            builder.publishedDate(volumeInfo.getPublishedDate());
-            builder.description(volumeInfo.getDescription());
-            builder.pageCount(volumeInfo.getPageCount());
-            builder.categories(volumeInfo.getCategories());
-            builder.language(volumeInfo.getLanguage());
-            builder.previewLink(volumeInfo.getPreviewLink());
+            builder.title(volumeInfo.getTitle() != null ? volumeInfo.getTitle() : "");
+            builder.authors(volumeInfo.getAuthors() != null ? volumeInfo.getAuthors() : List.of());
+            builder.publisher(volumeInfo.getPublisher() != null ? volumeInfo.getPublisher() : "");
+            builder.publishedDate(volumeInfo.getPublishedDate() != null ? volumeInfo.getPublishedDate() : "");
+            builder.description(volumeInfo.getDescription() != null ? volumeInfo.getDescription() : "");
+            builder.pageCount(volumeInfo.getPageCount() != null ? volumeInfo.getPageCount() : 0);
+            builder.categories(volumeInfo.getCategories() != null ? volumeInfo.getCategories() : List.of());
+            builder.language(volumeInfo.getLanguage() != null ? volumeInfo.getLanguage() : "en");
+            builder.previewLink(volumeInfo.getPreviewLink() != null ? volumeInfo.getPreviewLink() : "");
             
             // Rating info
-            builder.averageRating(volumeInfo.getAverageRating());
+            builder.averageRating(volumeInfo.getAverageRating() != null ? volumeInfo.getAverageRating() : 0.0);
             builder.maturityRating(volumeInfo.getMaturityRating());
             
             // Thumbnail

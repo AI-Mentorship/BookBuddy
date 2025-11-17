@@ -207,7 +207,7 @@ export default function DashboardPage() {
       maxKnownPageRef.current = 1; // Reset ref as well
       setCurrentSearchId(null);
       handleSearch(searchQuery, searchFilter, 1);
-    }, 500);
+    }, 800); // Increased debounce to reduce API calls
 
     return () => clearTimeout(debounceTimer);
     // eslint-disable-next-line react-hooks/exhaustive-deps

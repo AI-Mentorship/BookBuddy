@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ReadBookService {
@@ -79,27 +80,45 @@ public class ReadBookService {
             return responses;
         }
 
+        // Fetch all books in parallel for better performance
+        List<CompletableFuture<GetReadBookResponse>> futures = new ArrayList<>();
         for (ReadBook readBook : readBooks) {
-            String googleBooksId = readBook.getGoogleBooksId();
-            BookDTO readBookDTO = googleBookAPI.getGoogleBookById(googleBooksId);
-            responses.add(
-                    GetReadBookResponse.builder().
-                            googleBooksId(readBookDTO.getGoogleBooksId()).
-                            title(readBookDTO.getTitle()).
-                            authors(readBookDTO.getAuthors()).
-                            publisher(readBookDTO.getPublisher()).
-                            publishedDate(readBookDTO.getPublishedDate()).
-                            description(readBookDTO.getDescription()).
-                            pageCount(readBookDTO.getPageCount()).
-                            categories(readBookDTO.getCategories()).
-                            averageRating(readBookDTO.getAverageRating()).
-                            maturityRating(readBookDTO.getMaturityRating()).
-                            thumbnail(readBookDTO.getThumbnail()).
-                            language(readBookDTO.getLanguage()).
-                            previewLink(readBookDTO.getPreviewLink())
+            CompletableFuture<GetReadBookResponse> future = CompletableFuture.supplyAsync(() -> {
+                try {
+                    String googleBooksId = readBook.getGoogleBooksId();
+                    BookDTO readBookDTO = googleBookAPI.getGoogleBookById(googleBooksId);
+                    return GetReadBookResponse.builder()
+                            .googleBooksId(readBookDTO.getGoogleBooksId())
+                            .title(readBookDTO.getTitle())
+                            .authors(readBookDTO.getAuthors())
+                            .publisher(readBookDTO.getPublisher())
+                            .publishedDate(readBookDTO.getPublishedDate())
+                            .description(readBookDTO.getDescription())
+                            .pageCount(readBookDTO.getPageCount())
+                            .categories(readBookDTO.getCategories())
+                            .averageRating(readBookDTO.getAverageRating())
+                            .maturityRating(readBookDTO.getMaturityRating())
+                            .thumbnail(readBookDTO.getThumbnail())
+                            .language(readBookDTO.getLanguage())
+                            .previewLink(readBookDTO.getPreviewLink())
                             .privateReview(readBook.getPrivateReview())
                             .privateRating(readBook.getPrivateRating())
-                            .build());
+                            .build();
+                } catch (Exception e) {
+                    // Log error but don't fail entire request - return null and filter out
+                    System.err.println("Failed to fetch book " + readBook.getGoogleBooksId() + ": " + e.getMessage());
+                    return null;
+                }
+            });
+            futures.add(future);
+        }
+
+        // Wait for all futures to complete and collect results
+        for (CompletableFuture<GetReadBookResponse> future : futures) {
+            GetReadBookResponse response = future.join();
+            if (response != null) {
+                responses.add(response);
+            }
         }
 
         return responses;

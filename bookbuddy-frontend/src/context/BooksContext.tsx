@@ -30,7 +30,8 @@ interface BooksContextType {
     loading: boolean;
     loadBooks: () => Promise<void>;
     loadReadBooks: () => Promise<void>;
-    loadSavedBooks: () => Promise<void>; // ADD THIS
+    loadSavedBooks: () => Promise<void>;
+    loadGenrePreferences: () => Promise<void>;
     toggleSave: (book: Book) => Promise<void>;
     markAsRead: (book: Book, rating: number, review?: string) => Promise<void>;
     updateExistingReview: (book: Book, rating: number, review?: string) => Promise<void>;
@@ -96,15 +97,25 @@ export function BooksProvider({ children }: { children: ReactNode }) {
         }
     }, [userProfile]);
 
-    // Load books and user data when profile is set
+    // Load books and user data when profile is set - OPTIMIZED: Load in parallel
     useEffect(() => {
         if (userProfile.userId) {
-            loadBooks();
-            loadSavedBooks();
-            loadReadBooks();
-            loadGenrePreferences();
+            // Load all data in parallel for better performance
+            Promise.all([
+                loadBooks().catch(err => console.error("Failed to load books:", err)),
+                loadSavedBooks().catch(err => console.error("Failed to load saved books:", err)),
+                loadReadBooks().catch(err => console.error("Failed to load read books:", err)),
+                loadGenrePreferences().catch(err => console.error("Failed to load genre preferences:", err))
+            ]);
+        } else {
+            // Clear data when user logs out
+            setBooks([]);
+            setSavedBooks([]);
+            setReadBooks([]);
+            setRatings({});
         }
-    }, [userProfile.userId]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userProfile.userId]); // Only depend on userId, not the functions
 
     const loadBooks = async () => {
         setLoading(true);
@@ -133,16 +144,12 @@ export function BooksProvider({ children }: { children: ReactNode }) {
 
     const loadReadBooks = async () => {
         if (!userProfile.userId) {
-            console.log("loadReadBooks - No userId, skipping");
             return;
         }
 
-        console.log("loadReadBooks - Starting, userId:", userProfile.userId);
-
         try {
-            setLoading(true);
+            // Don't set loading here - let individual pages handle their own loading states
             const books = await api.getReadBooks(userProfile.userId);
-            console.log("loadReadBooks - Received books:", books);
             setReadBooks(books);
 
             const ratingsMap: Record<string, { stars: number; review?: string }> = {};
@@ -150,12 +157,9 @@ export function BooksProvider({ children }: { children: ReactNode }) {
                 ratingsMap[rb.book.id] = { stars: rb.rating, review: rb.review };
             });
             setRatings(ratingsMap);
-            console.log("loadReadBooks - Success, loaded", books.length, "books");
         } catch (error) {
-            console.error("loadReadBooks - Error:", error);
+            console.error("Failed to load read books:", error);
             setReadBooks([]);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -164,9 +168,14 @@ export function BooksProvider({ children }: { children: ReactNode }) {
 
         try {
             const genres = await api.getGenrePreferences(userProfile.userId);
-            setUserProfile((prev) => ({ ...prev, selectedGenres: genres }));
+            // Only update if we got genres back (even if empty array)
+            if (Array.isArray(genres)) {
+                setUserProfile((prev) => ({ ...prev, selectedGenres: genres }));
+            }
         } catch (error) {
             console.error("Failed to load genre preferences:", error);
+            // Set empty array on error so UI doesn't show stale data
+            setUserProfile((prev) => ({ ...prev, selectedGenres: [] }));
         }
     };
 
@@ -277,12 +286,15 @@ export function BooksProvider({ children }: { children: ReactNode }) {
     };
 
     const updateProfile = (profile: Partial<UserProfile>) => {
+        // Optimistic update - update UI immediately
         setUserProfile((prev) => ({ ...prev, ...profile }));
 
-        // If genres are updated, save them to backend
+        // If genres are updated, save them to backend (fire and forget for better UX)
         if (profile.selectedGenres && userProfile.userId) {
+            // Don't await - let it save in background for better performance
             api.saveGenrePreferences(userProfile.userId, profile.selectedGenres).catch((error) => {
                 console.error("Failed to save genre preferences:", error);
+                // Optionally: show a toast notification or rollback on error
             });
         }
     };
@@ -318,7 +330,8 @@ export function BooksProvider({ children }: { children: ReactNode }) {
                 loading,
                 loadBooks,
                 loadReadBooks,
-                loadSavedBooks, // ADD THIS LINE
+                loadSavedBooks,
+                loadGenrePreferences,
                 toggleSave,
                 markAsRead,
                 updateExistingReview,

@@ -54,23 +54,50 @@ export default function GenresPage() {
                 return;
             }
 
+            // First, try to use genres from context if available
+            if (userProfile.selectedGenres && userProfile.selectedGenres.length > 0) {
+                console.log("Using genres from context:", userProfile.selectedGenres);
+                setSelectedGenres(userProfile.selectedGenres);
+                setFetchingGenres(false);
+                return;
+            }
+
             try {
                 setFetchingGenres(true);
+                console.log("Fetching genres from API for userId:", userProfile.userId);
                 const savedGenres = await genrePreferencesApi.getGenrePreferences(userProfile.userId);
-                if (savedGenres && savedGenres.length > 0) {
+                console.log("Received genres from API:", savedGenres);
+                
+                // Always set genres, even if empty array
+                if (Array.isArray(savedGenres)) {
                     // Remove duplicates and set selected genres
                     const uniqueGenres = Array.from(new Set(savedGenres));
+                    console.log("Setting selected genres:", uniqueGenres);
                     setSelectedGenres(uniqueGenres);
+                    
+                    // Also update context if we got genres
+                    if (uniqueGenres.length > 0) {
+                        updateProfile({ selectedGenres: uniqueGenres });
+                    }
+                } else {
+                    console.warn("API returned non-array genres:", savedGenres);
+                    setSelectedGenres([]);
                 }
             } catch (err) {
-                // Silently fail - user can still select genres
+                console.error("Error fetching genre preferences:", err);
+                // Show error to user
+                setToast({
+                    message: "Failed to load saved genres. Please try again.",
+                    type: "error",
+                });
+                setSelectedGenres([]);
             } finally {
                 setFetchingGenres(false);
             }
         };
 
         fetchSavedGenres();
-    }, [userProfile?.userId]);
+    }, [userProfile?.userId, userProfile?.selectedGenres, updateProfile]);
 
     const toggleGenre = (genre: string) => {
         setSelectedGenres((prev) => {
@@ -101,11 +128,14 @@ export default function GenresPage() {
             setToast(null);
 
             try {
-                // Save genre preferences to backend using POST endpoint
-                // The API function already handles duplicate removal, but we do it here too for safety
+                console.log("Saving genres:", genresArray);
+                console.log("For userId:", userProfile.userId);
+                
+                // Save genre preferences to backend FIRST
                 await genrePreferencesApi.saveGenrePreferences(userProfile.userId, genresArray);
+                console.log("Successfully saved genres to backend");
 
-                // Update local state after successful save
+                // Update UI after successful save
                 updateProfile({ selectedGenres: genresArray });
 
                 // Show success message
@@ -116,13 +146,15 @@ export default function GenresPage() {
 
                 // Navigate after a short delay to show success message
                 setTimeout(() => {
+                    setLoading(false);
                     if (isEditMode) {
                         navigate("/profile");
                     } else {
                         navigate("/rate-books");
                     }
-                }, 1000);
+                }, 800);
             } catch (err) {
+                console.error("Failed to save genre preferences:", err);
                 setToast({
                     message: "Failed to save preferences. Please try again.",
                     type: "error",

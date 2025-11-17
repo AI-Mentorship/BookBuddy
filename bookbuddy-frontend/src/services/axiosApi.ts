@@ -259,9 +259,28 @@ export const genrePreferencesApi = {
     getGenrePreferences: async (userId: number): Promise<string[]> => {
         try {
             const response = await axiosInstance.get(`/genre-preference/saved-genres/${userId}`);
-            return Array.isArray(response.data) ? response.data.map((item: any) => item.genre) : [];
+            console.log("Raw API response:", response.data);
+            
+            // Handle different response formats
+            if (Array.isArray(response.data)) {
+                // Map the response to extract genre names
+                const genres = response.data.map((item: any) => {
+                    // Handle both {genre: "..."} and direct string formats
+                    return typeof item === 'string' ? item : (item.genre || item.genreName || item);
+                }).filter((g: any) => g != null && g !== '');
+                
+                console.log("Extracted genres:", genres);
+                return genres;
+            }
+            
+            console.warn("Unexpected response format:", response.data);
+            return [];
         } catch (error: any) {
-            if (error.response?.status === 404) return [];
+            console.error("Error in getGenrePreferences:", error);
+            if (error.response?.status === 404) {
+                console.log("No genres found (404)");
+                return [];
+            }
             throw new Error(error.response?.data?.message || "Failed to fetch genre preferences");
         }
     },
