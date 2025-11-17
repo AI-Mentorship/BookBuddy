@@ -1,8 +1,10 @@
+# candidateRanking
 import requests
 import pandas as pd
 import xgboost as xgb
 from typing import List, Dict
 from .llm import analyzeReview
+from ..utils.googleBooksUtils import validateGoogleBooksData
 import os
 
 GOOGLE_BOOKS_URL = "https://www.googleapis.com/books/v1/volumes?"
@@ -12,25 +14,44 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "bookRankerModel.bin")
 ranker_model = xgb.Booster()
 ranker_model.load_model(MODEL_PATH)
 
+def getGoogleBooksData(genre: str, maxResults: int = 20):
+    params = {
+        "q" : f"subject:{genre}",
+        "maxResults" : maxResults,
+        "printType" : "books",
+        "langRestrict" : "en"
+    }
+
+    response = requests.get(GOOGLE_BOOKS_URL, params=params)
+
+    if response.status_code == 200:   # GET successful
+        data = []
+        for volume in response.json().get("items", []):
+            if validateGoogleBooksData(volume):
+                info = volume.get("volumeInfo", {})
+                data.append({
+                    "title" : info.get("title"),
+                    "authors" : info.get("authors"),
+                    "publishers" : info.get("publishers"),
+                    "desc" : info.get("description"),
+                    "categories" : info.get("categories"),
+                    "pageCount" : info.get("pageCount"),
+                    "avgRating" : info.get("averageRating"),
+                    "maturity" : info.get("maturityRating"),
+                    "language": info.get("language"),
+                    "id": volume.get("id")
+                })
+        return data
+    else:
+        print('Error', response.status_code)
+        return []
+
+
 def fetchCandidates(favGenres: List[str], maxResults: int = 20) -> List[Dict]:
     candidates = []
     for genre in favGenres:
-        params = {"q": f"subject:{genre}", "maxResults": maxResults, "printType": "books", "langRestrict": "en"}
-        response = requests.get(GOOGLE_BOOKS_URL, params=params)
-        if response.status_code == 200:
-            for item in response.json().get("items", []):
-                info = item.get("volumeInfo", {})
-                book = {
-                    "id": item.get("id"),
-                    "title": info.get("title"),
-                    "authors": info.get("authors", []),
-                    "categories": info.get("categories", []),
-                    "pageCount": info.get("pageCount", 0),
-                    "avgRating": info.get("averageRating", 0),
-                    "description": info.get("description", ""),
-                    "review": ""
-                }
-                candidates.append(book)
+        books = getGoogleBooksData(genre)
+        candidates.extend(books)
     return candidates
 
 # def buildFeatures(book: Dict, favGenres: List[str]) -> pd.Series:

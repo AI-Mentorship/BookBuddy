@@ -31,5 +31,4 @@ public class BookDTO {
     @JsonIgnore
     private int searchScore; // used only for in memory ranking, not exposed in API
 
-
 }
