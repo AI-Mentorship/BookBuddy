@@ -1,10 +1,10 @@
-# main
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
+from collections import Counter
 from bookbuddy_python.models.candidateRanking import generateCandidates, getRanking
 from bookbuddy_python.models.llm import analyzeReview
 from bookbuddy_python.utils.googleBooksUtils import isValidGoogleBook
@@ -20,6 +20,7 @@ class BookDTO(BaseModel):
     categories: List[str] = None
     averageRating: float = None
     review: str = None
+    description: str = None
 
 class GenrePreferenceResponse(BaseModel):
     genre: str
@@ -35,34 +36,50 @@ class LLMResponse(BaseModel):
 class ValidationRequest(BaseModel):
     googleBooksIds: List[str]
 
+def inferGenresFromBooks(readBooks: list, limit: int = 5) -> list:
+    genreCounter = Counter()
+    for book in readBooks:
+        bookData = book.dict() if hasattr(book, "dict") else book
+        for g in bookData.get("categories") or []:
+            genreCounter[g.lower().strip()] += 1
+    return [genre for genre, count in genreCounter.most_common(limit)]
+
 @app.post("/ml/recommendations", response_model=LLMResponse)
 def recommendBooks(request: LLMRequest):
-    readBooks = [book.dict() for book in request.readBookData]
-    readBookIDs = [book.googleBooksId for book in request.readBookData if book.googleBooksId]
-    savedBookIDs = [book.googleBooksId for book in request.savedBookData if book.googleBooksId]
+    readBooks = [{**book.dict(), "id": book.googleBooksId} for book in request.readBookData]
+    print("read books: ", readBooks)
+    savedBooks = [{**book.dict(), "id": book.googleBooksId} for book in request.savedBookData]
+    print("saved books: ", savedBooks)
+
     favGenres = [g.genre for g in request.genrePreferenceData]
+    if not favGenres:
+        favGenres = inferGenresFromBooks(request.readBookData)
+    print("fav genres: ", favGenres)
 
     candidateDF = generateCandidates(
         favGenres=favGenres,
-        readBookIDs=readBookIDs,
-        savedBookIDs=savedBookIDs,
+        readBooks=readBooks,
+        savedBooks=savedBooks,
         candidateBooks=None
     )
+    print("Candidate DF:", candidateDF)
 
-    reviewsMap = {}
-    for book in request.readBookData + request.savedBookData:
-        if book.googleBooksId and book.review:
-            reviewsMap[book.googleBooksId] = book.review
+    if "id" not in candidateDF.columns:
+        candidateDF["id"] = candidateDF.apply(lambda row: row.get("book_id") or row.get("googleBooksId") or None, axis=1)
+
+    reviewsMap = {b["id"]: b.get("review", "") for b in readBooks + savedBooks if b.get("review")}
     candidateDF["review"] = candidateDF["id"].map(lambda x: reviewsMap.get(x, ""))
 
     rankedDF = getRanking(
         favGenres=favGenres,
-        readBookIDs=readBookIDs,
-        savedBookIDs=savedBookIDs,
-        topN=40,
+        readBooks=readBooks,
+        savedBooks=savedBooks,
+        limit=40,
         candidateDF=candidateDF
     )
-    recommendedBookIds = rankedDF.head(40)["id"].tolist()
+    print("Ranked DF:", rankedDF)
+
+    recommendedBookIds = rankedDF["id"].tolist()
 
     return LLMResponse(recommendedBookIds=recommendedBookIds)
 
