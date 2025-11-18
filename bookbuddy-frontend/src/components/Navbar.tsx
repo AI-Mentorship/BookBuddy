@@ -9,6 +9,7 @@ interface NavbarProps {
   onSearchChange?: (query: string) => void;
   searchFilter?: string;
   onSearchFilterChange?: (filter: string) => void;
+  onSearchSubmit?: (query: string, filter: string) => void;
 }
 
 export default function Navbar({
@@ -16,6 +17,7 @@ export default function Navbar({
   onSearchChange,
   searchFilter: externalFilter,
   onSearchFilterChange,
+  onSearchSubmit,
 }: NavbarProps) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,7 +46,10 @@ export default function Navbar({
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Search is handled by parent component
+    // Trigger search on Enter key press
+    if (onSearchSubmit && searchQuery.trim()) {
+      onSearchSubmit(searchQuery, searchFilter);
+    }
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -80,7 +85,7 @@ export default function Navbar({
           <input
             type="text"
             className="navbar-search-input"
-            placeholder="Search by all fields..."
+            placeholder="Search by all fields... (Press Enter)"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
           />

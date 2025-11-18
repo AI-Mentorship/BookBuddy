@@ -318,6 +318,9 @@ function extractIsbn(dto: any): string | undefined {
 
 // Genre Preferences API
 export async function saveGenrePreferences(userId: number, genres: string[]): Promise<void> {
+    // Remove duplicates before sending
+    const uniqueGenres = Array.from(new Set(genres));
+    
     const response = await fetch(`${API_BASE_URL}/genre-preference/save`, {
         method: "POST",
         headers: {
@@ -325,7 +328,7 @@ export async function saveGenrePreferences(userId: number, genres: string[]): Pr
         },
         body: JSON.stringify({
             userId,
-            genres,
+            genre: uniqueGenres, // Backend expects "genre" not "genres"
         }),
     });
     if (!response.ok) {

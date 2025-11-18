@@ -42,14 +42,22 @@ public class GenrePreferenceService {
         genrePreferenceRepository.deleteByUser(user);
         genrePreferenceRepository.flush(); // Ensure delete is committed before inserting new ones
 
-        // Build new preferences list
+        // Build new preferences list - Remove duplicates using Set
         List<GenrePreference> user_genre = new ArrayList<>();
+        java.util.Set<String> seenGenres = new java.util.HashSet<>();
+        
         for (String genre : genres) {
             if (genre != null && !genre.trim().isEmpty()) {
-                user_genre.add(GenrePreference.builder()
-                        .user(user)
-                        .genreName(genre.trim())
-                        .build());
+                String trimmedGenre = genre.trim();
+                // Only add if we haven't seen this genre before (case-insensitive check)
+                String lowerGenre = trimmedGenre.toLowerCase();
+                if (!seenGenres.contains(lowerGenre)) {
+                    seenGenres.add(lowerGenre);
+                    user_genre.add(GenrePreference.builder()
+                            .user(user)
+                            .genreName(trimmedGenre)
+                            .build());
+                }
             }
         }
 

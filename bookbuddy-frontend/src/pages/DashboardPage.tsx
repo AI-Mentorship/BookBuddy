@@ -46,6 +46,7 @@ export default function DashboardPage() {
   const [loadingPage, setLoadingPage] = useState<number | null>(null); // Track which page is being loaded
   const [searchError, setSearchError] = useState<string | null>(null);
   const [totalSearchItems, setTotalSearchItems] = useState<number>(0);
+  const [hasSearched, setHasSearched] = useState(false); // Track if user has actually searched (pressed Enter)
 
   // Filter application function
   const applyFilters = useCallback((books: Book[], activeFilters: Filters): Book[] => {
@@ -113,8 +114,12 @@ export default function DashboardPage() {
       setMaxKnownPage(1);
       maxKnownPageRef.current = 1;
       setTotalSearchItems(0);
+      setHasSearched(false);
       return;
     }
+    
+    // Mark that a search has been executed
+    setHasSearched(true);
 
     if (!userProfile.userId) {
       setSearchError("Please log in to search books.");
@@ -184,10 +189,9 @@ export default function DashboardPage() {
     setFilteredResults(filtered);
   }, [searchResults, filters, applyFilters]);
 
-  // Debounced search effect - ONLY triggers on NEW searches (query/filter changes)
-  // Pagination buttons handle page changes directly by calling handleSearch()
-  useEffect(() => {
-    if (!searchQuery.trim()) {
+  // Handle search submission (Enter key press)
+  const handleSearchSubmit = useCallback((query: string, filter: string) => {
+    if (!query.trim()) {
       setSearchResults([]);
       setFilteredResults([]);
       setSearchError(null);
@@ -199,24 +203,30 @@ export default function DashboardPage() {
       setTotalSearchItems(0);
       return;
     }
+    
+    // Reset to page 1 for new search
+    setCurrentPage(1);
+    setMaxKnownPage(1);
+    maxKnownPageRef.current = 1;
+    setCurrentSearchId(null);
+    handleSearch(query, filter, 1);
+  }, [handleSearch]);
 
-    const debounceTimer = setTimeout(() => {
-      // Reset to page 1 ONLY when query or filter changes (new search)
-      setCurrentPage(1);
-      setMaxKnownPage(1); // Reset discovered pages on new search
-      maxKnownPageRef.current = 1; // Reset ref as well
+  // Clear results when search query is cleared
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      setFilteredResults([]);
+      setSearchError(null);
       setCurrentSearchId(null);
-      handleSearch(searchQuery, searchFilter, 1);
-    }, 800); // Increased debounce to reduce API calls
-
-    return () => clearTimeout(debounceTimer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery, searchFilter]); // ONLY query and filter - NOT handleSearch or currentPage
-
-  // Note: Filter changes are handled by the main search effect above
-  // When filters change, searchQuery stays the same but the effect will re-trigger
-  // because filters are applied client-side, not sent to API
-  // So we don't need a separate effect for filters - the debounced search effect handles it
+      setHasNextPage(false);
+      setCurrentPage(1);
+      setMaxKnownPage(1);
+      maxKnownPageRef.current = 1;
+      setTotalSearchItems(0);
+      setHasSearched(false);
+    }
+  }, [searchQuery]);
 
   // Pagination handlers
   const handlePageClick = useCallback((pageNum: number) => {
@@ -288,6 +298,7 @@ export default function DashboardPage() {
         onSearchChange={setSearchQuery}
         searchFilter={searchFilter}
         onSearchFilterChange={(filter) => setSearchFilter(filter as "all" | "title" | "author" | "isbn")}
+        onSearchSubmit={handleSearchSubmit}
       />
       <div className="dashboard-layout">
         {showFilters && (
@@ -303,6 +314,8 @@ export default function DashboardPage() {
                     "Searching..."
                   ) : searchError ? (
                     "Search Error"
+                  ) : !hasSearched ? (
+                    `Ready to search for "${searchQuery}"`
                   ) : searchResults.length > 0 ? (
                     filteredResults.length !== searchResults.length ? (
                       `Showing ${filteredResults.length} of ${searchResults.length} filtered results for "${searchQuery}"`
@@ -310,7 +323,7 @@ export default function DashboardPage() {
                       `Showing ${filteredResults.length}${totalSearchItems > searchResults.length ? ` of ${totalSearchItems}` : ""} results for "${searchQuery}"`
                     )
                   ) : (
-                    `No results found for "${searchQuery}"`
+                    `📚 Hmm, we couldn't find "${searchQuery}" in our library...`
                   )}
                 </h2>
               </div>
@@ -320,6 +333,18 @@ export default function DashboardPage() {
                 <div className="search-loading">
                   <div className="loading-spinner"></div>
                   <p>Searching books...</p>
+                </div>
+              ) : !hasSearched ? (
+                /* Typing State - User hasn't pressed Enter yet */
+                <div className="search-empty">
+                  <div style={{ fontSize: '64px', marginBottom: '20px' }}>⌨️</div>
+                  <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px' }}>
+                    Ready to discover your next great read?
+                  </p>
+                  <p className="search-empty-hint">
+                    Press <strong>Enter</strong> to search our library for "{searchQuery}". 
+                    We're excited to help you find your perfect book match!
+                  </p>
                 </div>
               ) : searchError ? (
                 /* Error State */
@@ -338,14 +363,26 @@ export default function DashboardPage() {
               ) : filteredResults.length === 0 && searchResults.length === 0 ? (
                 /* No Results - No Search Results */
                 <div className="search-empty">
-                  <p>No books found matching your search.</p>
-                  <p className="search-empty-hint">Try different keywords or check your spelling.</p>
+                  <div style={{ fontSize: '64px', marginBottom: '20px' }}>📖</div>
+                  <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px' }}>
+                    This chapter seems to be missing from our library!
+                  </p>
+                  <p className="search-empty-hint">
+                    Don't worry, every great story has plot twists. Try searching with different keywords, 
+                    or maybe the book you're looking for is waiting to be discovered on another page.
+                  </p>
                 </div>
               ) : filteredResults.length === 0 && searchResults.length > 0 ? (
                 /* No Results - Filters Applied */
                 <div className="search-empty">
-                  <p>No books match your current filters.</p>
-                  <p className="search-empty-hint">Try adjusting your filter criteria or clear some filters.</p>
+                  <div style={{ fontSize: '64px', marginBottom: '20px' }}>🔍</div>
+                  <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px' }}>
+                    Your filters are being a bit too picky!
+                  </p>
+                  <p className="search-empty-hint">
+                    We found some great books, but they don't match your current filter settings. 
+                    Try loosening your criteria a bit - sometimes the best reads are the ones we least expect!
+                  </p>
                 </div>
               ) : (
                 /* Results Display */

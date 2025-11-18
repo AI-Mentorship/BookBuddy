@@ -11,19 +11,14 @@ export default function ProfilePage() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [loadingGenres, setLoadingGenres] = useState(false);
 
-    // Ensure genre preferences are loaded when profile page is visited
+    // Always fetch genre preferences from backend when profile page is visited
     useEffect(() => {
         const loadGenres = async () => {
             if (!userProfile?.userId) return;
-            
-            // Only reload if we don't have genres or if they're empty
-            if (userProfile.selectedGenres && userProfile.selectedGenres.length > 0) {
-                return; // Already have genres, no need to reload
-            }
 
             try {
                 setLoadingGenres(true);
-                // Use context method which will update the context state
+                // Always call backend to get the latest genres from database
                 await loadGenrePreferences();
             } catch (error) {
                 console.error("Failed to load genre preferences on profile page:", error);
@@ -34,7 +29,7 @@ export default function ProfilePage() {
 
         loadGenres();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userProfile?.userId]); // Only depend on userId
+    }, [userProfile?.userId]); // Reload whenever userId changes
 
     const getReaderType = (): string => {
         const count = readBooks.length;
