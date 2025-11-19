@@ -1,18 +1,50 @@
 .auth-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(26, 117, 255, 0.2);
   border-radius: 16px;
   padding: 32px;
   width: 100%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  animation: cardFadeIn 0.3s ease;
+}
+
+@keyframes cardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-card:hover {
+  border-color: rgba(26, 117, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .auth-card-heading {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 28px;
-  color: #000;
-  margin: 0 0 30px 0;
+  font-size: 32px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 50%, #1a75ff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 24px 0;
+  animation: titleShimmer 4s ease-in-out infinite;
+  letter-spacing: -1px;
+}
+
+@keyframes titleShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .auth-form {
@@ -42,7 +74,7 @@
 .auth-switch {
   text-align: center;
   margin-top: 24px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
   color: #767676;
@@ -51,7 +83,7 @@
 .auth-guest-link {
   text-align: center;
   margin-top: 16px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
 }
@@ -59,24 +91,33 @@
 .auth-link {
   background: none;
   border: none;
-  color: #0742bf;
-  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
   font-size: 14px;
   text-decoration: underline;
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 4px rgba(26, 117, 255, 0.5));
 }
 
 .auth-link:hover {
-  color: #052f8f;
+  background: linear-gradient(135deg, #4da3ff 0%, #7bb3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(26, 117, 255, 0.8));
 }
 
 .auth-separator {
   margin: 32px 0;
   border: none;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid rgba(26, 117, 255, 0.3);
+  box-shadow: 0 0 10px rgba(26, 117, 255, 0.2);
 }
 
 .auth-features {
@@ -85,11 +126,15 @@
 
 .auth-features-title {
   text-align: center;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
   font-size: 14px;
-  color: #666;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0 0 16px 0;
+  filter: drop-shadow(0 0 4px rgba(26, 117, 255, 0.5));
 }
 
 .auth-features-list {
@@ -109,24 +154,36 @@
 
 .auth-feature-check {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  background: #e3f2fd;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  color: #0742bf;
+  font-size: 12px;
+  color: #F5F5DC;
   font-weight: 700;
   margin-top: 2px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.auth-feature-check:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .auth-feature-item span:last-child {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
-  color: #333;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.5;
 }
 
@@ -164,14 +221,14 @@
 }
 
 .auth-error-icon {
-  color: #ff9800;
-  font-size: 18px;
+  color: #1a75ff;
+  font-size: 14px;
   font-weight: bold;
   flex-shrink: 0;
 }
 
 .auth-error-text {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
   color: #333;

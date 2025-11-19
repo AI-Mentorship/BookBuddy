@@ -1,21 +1,35 @@
 .my-reviews-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: transparent;
   padding-top: 70px;
+  position: relative;
 }
 
 .my-reviews-content {
   padding: 40px 24px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .my-reviews-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 32px;
-  color: #000;
-  margin: 0 0 32px 0;
+  font-size: 36px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 50%, #1a75ff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 24px 0;
+  animation: titleShimmer 4s ease-in-out infinite;
+  letter-spacing: -1px;
+}
+
+@keyframes titleShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .my-reviews-empty-state {
@@ -24,28 +38,34 @@
 }
 
 .my-reviews-empty-message {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 18px;
-  color: #666;
+  color: #F5F5DC;
   margin: 0 0 24px 0;
+  opacity: 0.8;
 }
 
 .my-reviews-browse-button {
-  padding: 14px 32px;
-  background: #0742BF;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Roboto', sans-serif;
+  padding: 10px 20px;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(26, 117, 255, 0.3);
+  color: #F5F5DC;
+  border-radius: 8px;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .my-reviews-browse-button:hover {
-  background: #052f8f;
+  background: rgba(26, 117, 255, 0.25);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .my-reviews-list {
@@ -55,19 +75,25 @@
 }
 
 .my-reviews-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(26, 117, 255, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 24px;
-  transition: box-shadow 0.2s;
+  gap: 20px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .my-reviews-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: rgba(26, 117, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .my-reviews-card-content {
@@ -77,12 +103,21 @@
 }
 
 .my-reviews-cover {
-  width: 100px;
-  height: 150px;
+  width: 80px;
+  height: 120px;
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(26, 117, 255, 0.2);
+}
+
+.my-reviews-cover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-color: rgba(26, 117, 255, 0.4);
 }
 
 .my-reviews-info {
@@ -90,24 +125,27 @@
 }
 
 .my-reviews-book-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
   font-size: 20px;
-  color: #000;
+  color: #F5F5DC;
   margin: 0 0 4px 0;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .my-reviews-book-title:hover {
-  color: #0742BF;
+  color: #4da3ff;
+  text-shadow: 0 0 10px rgba(26, 117, 255, 0.6);
 }
 
 .my-reviews-book-author {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 16px;
-  color: #666;
+  color: #F5F5DC;
   margin: 0 0 12px 0;
+  opacity: 0.8;
 }
 
 .my-reviews-rating {
@@ -117,43 +155,88 @@
 }
 
 .my-reviews-star {
-  font-size: 20px;
-  color: #E0E0E0;
+  font-size: 18px;
+  color: #F5F5DC;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  transition: all 0.2s ease;
 }
 
 .my-reviews-star-filled {
   color: #FFD700;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .my-reviews-text {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 16px;
-  color: #333;
+  color: #F5F5DC;
   line-height: 1.6;
   margin: 0 0 12px 0;
+  opacity: 0.9;
 }
 
 .my-reviews-date {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
-  color: #999;
+  color: #F5F5DC;
   margin: 0;
+  opacity: 0.7;
 }
 
 .my-reviews-delete-button {
-  background: none;
-  border: none;
-  font-size: 20px;
+  background: rgba(220, 53, 69, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  font-size: 14px;
   cursor: pointer;
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: 8px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .my-reviews-delete-button:hover {
-  background: #f5f5f5;
+  background: rgba(220, 53, 69, 0.25);
+  border-color: rgba(220, 53, 69, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+.my-reviews-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.my-reviews-edit-button {
+  padding: 8px 16px;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(26, 117, 255, 0.3);
+  color: #F5F5DC;
+  border-radius: 8px;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.my-reviews-edit-button:hover {
+  background: rgba(26, 117, 255, 0.25);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 

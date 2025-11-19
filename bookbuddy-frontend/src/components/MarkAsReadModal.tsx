@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Book } from "../services/api";
 import { useBooks } from "../context/BooksContext";
 import "../css/MarkAsReadModal.css";
@@ -16,6 +16,14 @@ export default function MarkAsReadModal({ book, onClose, mode = "create", initia
   const [rating, setRating] = useState(initialRating ?? 0);
   const [review, setReview] = useState(initialReview ?? "");
   const [error, setError] = useState("");
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Scroll modal into view when it opens
+  useEffect(() => {
+    if (modalRef.current) {
+      modalRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +51,7 @@ export default function MarkAsReadModal({ book, onClose, mode = "create", initia
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content mark-as-read-modal" onClick={(e) => e.stopPropagation()}>
+      <div ref={modalRef} className="modal-content mark-as-read-modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>
           ×
         </button>

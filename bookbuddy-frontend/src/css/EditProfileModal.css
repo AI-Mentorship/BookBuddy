@@ -4,18 +4,22 @@
 }
 
 .edit-profile-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 24px;
-  color: #000;
+  font-size: 28px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0 0 8px 0;
+  filter: drop-shadow(0 0 8px rgba(26, 117, 255, 0.6));
 }
 
 .edit-profile-description {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   margin: 0 0 24px 0;
 }
 
@@ -41,53 +45,63 @@
 }
 
 .edit-profile-label {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
   font-size: 14px;
-  color: #000;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 10px rgba(26, 117, 255, 0.3);
 }
 
 .edit-profile-input {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #E0E0E0;
+  padding: 12px 16px;
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .edit-profile-input:focus {
   outline: none;
-  border-color: #0742BF;
-  box-shadow: 0 0 0 3px rgba(7, 66, 191, 0.1);
+  border-color: rgba(26, 117, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .edit-profile-textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #E0E0E0;
+  padding: 12px 16px;
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   resize: vertical;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .edit-profile-textarea:focus {
   outline: none;
-  border-color: #0742BF;
+  border-color: rgba(26, 117, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .edit-profile-hint {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 12px;
-  color: #999;
+  color: rgba(255, 255, 255, 0.5);
   margin: 0;
 }
 
@@ -99,33 +113,45 @@
 }
 
 .edit-profile-button {
-  padding: 12px 24px;
-  border: none;
+  padding: 10px 20px;
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #F5F5DC;
 }
 
 .edit-profile-button-cancel {
-  background: white;
-  color: #666;
-  border: 1px solid #E0E0E0;
+  background: rgba(255, 255, 255, 0.05);
+  color: #F5F5DC;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .edit-profile-button-cancel:hover {
-  background: #f5f5f5;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .edit-profile-button-save {
-  background: #000;
-  color: white;
+  background: rgba(26, 117, 255, 0.2);
+  border-color: rgba(26, 117, 255, 0.4);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .edit-profile-button-save:hover {
-  background: #333;
+  background: rgba(26, 117, 255, 0.3);
+  border-color: rgba(26, 117, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .edit-profile-button:disabled {
@@ -150,7 +176,7 @@
 }
 
 .edit-profile-error-text {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 12px;
   color: #ef4444;

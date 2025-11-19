@@ -8,11 +8,10 @@
 html, body {
   height: 100%;
   width: 100%;
-  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #F5F5DC;
 }
 
 #root {
@@ -20,12 +19,25 @@ html, body {
   width: 100%;
 }
 
-/* Global Background Gradient */
+/* Global Background - Dark Futuristic */
 body {
-  background: linear-gradient(180deg, #0742BF 0%, #0a5dd6 50%, #1a75ff 100%);
+  background: #000000;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(7, 66, 191, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(26, 117, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(7, 66, 191, 0.08) 0%, transparent 50%);
   background-attachment: fixed;
+  background-size: 200% 200%;
   position: relative;
-  transition: background-color 300ms ease, color 300ms ease;
+  color: #F5F5DC;
+  animation: backgroundPulse 15s ease-in-out infinite;
+  overflow-x: hidden;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+}
+
+@keyframes backgroundPulse {
+  0%, 100% { background-position: 0% 0%, 100% 100%, 50% 50%; }
+  50% { background-position: 100% 50%, 0% 0%, 100% 100%; }
 }
 
 /* Dark Mode Base Styles */
@@ -42,29 +54,38 @@ body.dark-mode::after {
   display: none;
 }
 
-/* Subtle Wave Effects */
+/* Subtle Background Effects */
 body::before {
   content: '';
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: radial-gradient(ellipse 100% 60% at 50% 100%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(26, 117, 255, 0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: glowRotate 30s linear infinite;
+  filter: blur(80px);
 }
 
 body::after {
   content: '';
   position: fixed;
-  bottom: 0;
-  left: -10%;
-  right: -10%;
-  height: 40%;
-  background: radial-gradient(ellipse 120% 50% at 50% 100%, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+  bottom: -30%;
+  right: -30%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(7, 66, 191, 0.08) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
+  animation: glowRotate 35s linear infinite reverse;
+  filter: blur(100px);
+}
+
+@keyframes glowRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Centered Content Container System */
@@ -104,19 +125,21 @@ body::after {
   align-items: center;
 }
 
-/* Page Fade Animation - Video Matched */
+/* Page Fade Animation - Futuristic */
 .page-fade {
-  animation: pageFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: pageFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes pageFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(30px) scale(0.95);
+    filter: blur(10px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 

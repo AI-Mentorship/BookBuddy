@@ -4,12 +4,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 20px;
 }
 
@@ -23,7 +24,9 @@
 }
 
 .modal-content {
-  background: white;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(26, 117, 255, 0.2);
   border-radius: 16px;
   padding: 32px;
   max-width: 700px;
@@ -31,19 +34,21 @@
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  animation: scaleIn 0.2s ease-out;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
 }
 
 @keyframes scaleIn {
   from {
-    transform: scale(0.95);
+    transform: scale(0.9) translateY(20px);
     opacity: 0;
+    filter: blur(10px);
   }
   to {
-    transform: scale(1);
+    transform: scale(1) translateY(0);
     opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -51,24 +56,31 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  background: #f5f5f5;
-  border: none;
-  font-size: 24px;
-  color: #666;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(26, 117, 255, 0.3);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-close:hover {
-  background: #e0e0e0;
-  transform: rotate(90deg);
+  background: rgba(26, 117, 255, 0.2);
+  border-color: rgba(26, 117, 255, 0.6);
+  color: #4da3ff;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 
+    0 6px 25px rgba(26, 117, 255, 0.4),
+    0 0 30px rgba(26, 117, 255, 0.3);
 }
 
 .book-details-modal {
@@ -100,19 +112,22 @@
 }
 
 .book-details-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 24px;
-  color: #000;
+  font-size: 28px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
   line-height: 1.3;
 }
 
 .book-details-author {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 16px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
 }
 
@@ -129,18 +144,21 @@
 
 .book-details-star {
   font-size: 18px;
-  color: #E0E0E0;
+  color: #F5F5DC;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .book-details-star-filled {
   color: #FFD700;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .book-details-rating-text {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 13px;
-  color: #666;
+  color: #F5F5DC;
+  opacity: 0.9;
 }
 
 .book-details-meta {
@@ -155,19 +173,19 @@
 }
 
 .book-details-meta-label {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
   font-size: 11px;
-  color: #999;
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .book-details-meta-value {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
   font-size: 18px;
-  color: #000;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .book-details-genres {
@@ -177,19 +195,25 @@
 }
 
 .book-details-genre-chip {
-  padding: 6px 14px;
-  background: #E3F2FD;
-  color: #0742BF;
-  border-radius: 16px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
-  font-size: 12px;
+  padding: 5px 12px;
+  background: rgba(26, 117, 255, 0.1);
+  backdrop-filter: blur(8px);
+  color: #F5F5DC;
+  border: 1px solid rgba(26, 117, 255, 0.3);
+  border-radius: 12px;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  font-weight: 500;
+  font-size: 11px;
   text-transform: capitalize;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .book-details-genre-chip:hover {
-  background: #BBDEFB;
+  background: rgba(26, 117, 255, 0.2);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .book-details-actions {
@@ -200,98 +224,126 @@
 
 .book-details-button {
   flex: 1;
-  padding: 12px 20px;
-  border: none;
+  padding: 10px 18px;
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   transition: all 0.2s ease;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #F5F5DC;
 }
 
 .book-details-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .book-details-icon svg {
   width: 100%;
   height: 100%;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+}
+
+.book-details-button:hover .book-details-icon svg {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
 }
 
 .book-details-button-read {
-  background: #E0E0E0;
-  color: #666;
+  background: rgba(255, 255, 255, 0.05);
+  color: #F5F5DC;
 }
 
 .book-details-button-read:hover:not(:disabled) {
-  background: #D0D0D0;
+  background: rgba(26, 117, 255, 0.2);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .book-details-button-read:disabled {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .book-details-button-read-completed {
-  background: #3B7DFF;
-  color: white;
+  background: rgba(26, 117, 255, 0.25);
+  border-color: rgba(26, 117, 255, 0.5);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .book-details-button-read-completed:hover {
-  background: #2d5fcc;
+  background: rgba(26, 117, 255, 0.35);
+  border-color: rgba(26, 117, 255, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .book-details-button-save {
-  background: #E0E0E0;
-  color: #666;
+  background: rgba(255, 255, 255, 0.05);
+  color: #F5F5DC;
 }
 
 .book-details-button-save:hover {
-  background: #D0D0D0;
+  background: rgba(26, 117, 255, 0.2);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .book-details-button-saved {
-  background: #3B7DFF;
-  color: white;
+  background: rgba(26, 117, 255, 0.25);
+  border-color: rgba(26, 117, 255, 0.5);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .book-details-button-saved:hover {
-  background: #2d5fcc;
+  background: rgba(26, 117, 255, 0.35);
+  border-color: rgba(26, 117, 255, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .book-details-tabs {
   display: flex;
   gap: 4px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid rgba(26, 117, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .book-details-tab {
   padding: 10px 20px;
   background: none;
   border: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
   font-size: 14px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
   cursor: default;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
 }
 
 .book-details-tab-active {
-  color: #3B7DFF;
-  border-bottom-color: #3B7DFF;
+  color: #1a75ff;
+  border-bottom-color: #1a75ff;
 }
 
 .book-details-tab-content {
@@ -303,10 +355,10 @@
 }
 
 .book-details-overview-text {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 15px;
-  color: #444;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
   margin: 0;
 }
@@ -327,10 +379,10 @@
 }
 
 .book-details-description-text {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
-  color: #444;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.7;
 }
 
@@ -344,7 +396,7 @@
 
 .book-details-description-text b {
   font-weight: 600;
-  color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .book-details-description-text i {
@@ -383,7 +435,7 @@
 }
 
 .confirm-dialog-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
   font-size: 20px;
   color: #1a1a1a;
@@ -391,7 +443,7 @@
 }
 
 .confirm-dialog-message {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
   color: #666;
@@ -409,7 +461,7 @@
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;

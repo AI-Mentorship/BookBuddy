@@ -1,13 +1,16 @@
 .saved-books-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: transparent;
   padding-top: 70px;
+  position: relative;
 }
 
 .saved-books-content {
   padding: 40px 24px;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .saved-books-header {
@@ -25,19 +28,31 @@
 }
 
 .saved-books-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 32px;
-  color: #000;
+  font-size: 36px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 50%, #1a75ff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0 0 8px 0;
+  animation: titleShimmer 4s ease-in-out infinite;
+  letter-spacing: -1px;
+}
+
+@keyframes titleShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .saved-books-subtitle {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 16px;
-  color: #666;
+  color: #F5F5DC;
   margin: 0;
+  opacity: 0.9;
 }
 
 .saved-books-grid {
@@ -51,23 +66,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  background: #f5f5f5;
-  border: none;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #666;
+  color: #1a75ff;
   flex-shrink: 0;
   margin-left: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .refresh-button:hover:not(:disabled) {
-  background: #e8e8e8;
-  color: #333;
-  transform: rotate(90deg);
+  background: rgba(26, 117, 255, 0.25);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: rotate(90deg) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .refresh-button:active:not(:disabled) {
@@ -81,8 +99,14 @@
 }
 
 .refresh-button svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+}
+
+.refresh-button:hover:not(:disabled) svg {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
 }
 
 .loading-spinner-small {
@@ -100,39 +124,47 @@
 }
 
 .saved-books-error-banner {
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(26, 117, 255, 0.3);
+  border-radius: 12px;
   padding: 12px 16px;
   margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(26, 117, 255, 0.2);
 }
 
 .saved-books-error-banner p {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-size: 14px;
-  color: #856404;
+  color: #F5F5DC;
+  opacity: 0.9;
 }
 
 .saved-books-error-banner button {
   padding: 6px 12px;
-  background: #ffc107;
-  border: none;
-  border-radius: 6px;
-  font-family: 'Roboto', sans-serif;
+  background: rgba(26, 117, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(26, 117, 255, 0.4);
+  border-radius: 8px;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 500;
   font-size: 14px;
-  color: #856404;
+  color: #F5F5DC;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .saved-books-error-banner button:hover {
-  background: #ffb300;
+  background: rgba(26, 117, 255, 0.4);
+  border-color: rgba(26, 117, 255, 0.6);
+  transform: translateY(-1px);
 }
 
 .saved-books-empty-state {
@@ -141,37 +173,44 @@
 }
 
 .saved-books-empty-message {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 18px;
-  color: #666;
+  color: #F5F5DC;
   margin: 0 0 8px 0;
+  opacity: 0.9;
 }
 
 .saved-books-empty-action {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 18px;
-  color: #666;
+  color: #F5F5DC;
   margin: 0;
+  opacity: 0.8;
 }
 
 .saved-books-retry-button {
   padding: 10px 20px;
-  background: #0742BF;
-  color: white;
-  border: none;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(26, 117, 255, 0.3);
+  color: #F5F5DC;
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   margin-top: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .saved-books-retry-button:hover {
-  background: #0630a0;
+  background: rgba(26, 117, 255, 0.25);
+  border-color: rgba(26, 117, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -185,13 +224,13 @@
   }
 
   .refresh-button {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
   }
 
   .refresh-button svg {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
   }
 }
 

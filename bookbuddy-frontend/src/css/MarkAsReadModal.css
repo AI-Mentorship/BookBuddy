@@ -4,18 +4,22 @@
 }
 
 .mark-as-read-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 24px;
-  color: #000;
+  font-size: 28px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0 0 8px 0;
+  filter: drop-shadow(0 0 8px rgba(26, 117, 255, 0.6));
 }
 
 .mark-as-read-book-info {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 16px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
   margin: 0 0 32px 0;
 }
 
@@ -32,12 +36,13 @@
 }
 
 .mark-as-read-label {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
   font-size: 14px;
-  color: #000;
+  color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(26, 117, 255, 0.3);
 }
 
 .mark-as-read-required {
@@ -52,12 +57,13 @@
 .mark-as-read-star {
   background: none;
   border: none;
-  font-size: 32px;
-  color: #E0E0E0;
+  font-size: 24px;
+  color: #F5F5DC;
   cursor: pointer;
   padding: 0;
   line-height: 1;
   transition: color 0.2s, transform 0.1s;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .mark-as-read-star:hover {
@@ -66,10 +72,11 @@
 
 .mark-as-read-star-filled {
   color: #FFD700;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .mark-as-read-error {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
   color: #f44336;
@@ -78,24 +85,29 @@
 
 .mark-as-read-textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #E0E0E0;
+  padding: 12px 16px;
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   resize: vertical;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mark-as-read-textarea:focus {
   outline: none;
-  border-color: #3B7DFF;
+  border-color: rgba(26, 117, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .mark-as-read-textarea::placeholder {
-  color: #999;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .mark-as-read-actions {
@@ -106,32 +118,44 @@
 }
 
 .mark-as-read-button {
-  padding: 12px 24px;
-  border: none;
+  padding: 10px 20px;
+  border: 1px solid rgba(26, 117, 255, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  background: rgba(26, 117, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #F5F5DC;
 }
 
 .mark-as-read-button-cancel {
-  background: white;
-  color: #666;
-  border: 1px solid #E0E0E0;
+  background: rgba(255, 255, 255, 0.05);
+  color: #F5F5DC;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .mark-as-read-button-cancel:hover {
-  background: #f5f5f5;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .mark-as-read-button-submit {
-  background: #3B7DFF;
-  color: white;
+  background: rgba(26, 117, 255, 0.2);
+  border-color: rgba(26, 117, 255, 0.4);
+  color: #F5F5DC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mark-as-read-button-submit:hover {
-  background: #2d5fcc;
+  background: rgba(26, 117, 255, 0.3);
+  border-color: rgba(26, 117, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 

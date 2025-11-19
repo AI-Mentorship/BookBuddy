@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useBooks } from "../context/BooksContext";
 import { updateUser } from "../services/api";
 import Toast from "./Toast";
@@ -10,6 +10,7 @@ interface EditProfileModalProps {
 
 export default function EditProfileModal({ onClose }: EditProfileModalProps) {
   const { userProfile, updateProfile } = useBooks();
+  const modalRef = useRef<HTMLDivElement>(null);
   
   // Store initial values to detect changes
   const [initialValues, setInitialValues] = useState({
@@ -47,6 +48,13 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
     setValidationErrors({});
     setTouchedFields(new Set());
   }, [userProfile]);
+
+  // Scroll modal into view when it opens
+  useEffect(() => {
+    if (modalRef.current) {
+      modalRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
 
   const formatDateForInput = (dateString: string): string => {
     // Convert MM/DD/YYYY or YYYY-MM-DD to YYYY-MM-DD for HTML date input
@@ -280,7 +288,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content edit-profile-modal" onClick={(e) => e.stopPropagation()}>
+      <div ref={modalRef} className="modal-content edit-profile-modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>
           ×
         </button>

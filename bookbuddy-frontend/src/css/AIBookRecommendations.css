@@ -20,19 +20,29 @@
 }
 
 .ai-recommendations-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1a1a1a;
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 50%, #1a75ff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin: 0 0 4px 0;
-    font-family: 'Roboto', sans-serif;
-    letter-spacing: -0.3px;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    letter-spacing: -0.5px;
+    animation: titleShimmer 4s ease-in-out infinite;
+}
+
+@keyframes titleShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .ai-recommendations-subtitle {
     font-size: 14px;
-    color: #666;
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
     font-weight: 400;
 }
 
@@ -44,19 +54,27 @@
     width: 40px;
     height: 40px;
     padding: 0;
-    background: #f5f5f5;
-    border: none;
+    background: rgba(26, 117, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(26, 117, 255, 0.4);
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: #666;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #1a75ff;
     flex-shrink: 0;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(26, 117, 255, 0.3);
 }
 
 .refresh-button:hover:not(:disabled) {
-    background: #e8e8e8;
-    color: #333;
-    transform: rotate(90deg);
+    background: rgba(26, 117, 255, 0.3);
+    border-color: rgba(26, 117, 255, 0.7);
+    color: #4da3ff;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 
+        0 6px 25px rgba(26, 117, 255, 0.5),
+        0 0 40px rgba(26, 117, 255, 0.4);
 }
 
 .refresh-button:active:not(:disabled) {
@@ -70,17 +88,25 @@
 }
 
 .refresh-button svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
+    transition: all 0.2s ease;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+}
+
+.refresh-button:hover:not(:disabled) svg {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
 }
 
 .loading-spinner-small {
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(102, 102, 102, 0.2);
-    border-top: 2px solid #666;
+    border: 2px solid rgba(26, 117, 255, 0.2);
+    border-top: 2px solid #1a75ff;
+    border-right: 2px solid #4da3ff;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+    box-shadow: 0 0 10px rgba(26, 117, 255, 0.5);
 }
 
 @keyframes spin {
@@ -94,30 +120,32 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    background: #fff5e6;
-    border-left: 3px solid #ff9800;
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(26, 117, 255, 0.3);
+    border-radius: 8px;
     margin-bottom: 24px;
     font-size: 14px;
-    color: #856404;
-    font-family: 'Roboto', sans-serif;
+    color: #F5F5DC;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .error-retry-link {
     background: none;
     border: none;
-    color: #ff9800;
+    color: #1a75ff;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 4px;
     transition: background 0.2s;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .error-retry-link:hover:not(:disabled) {
-    background: rgba(255, 152, 0, 0.1);
+    background: rgba(26, 117, 255, 0.15);
 }
 
 .error-retry-link:disabled {
@@ -177,27 +205,31 @@
 
 .ai-recommendations-empty p {
     font-size: 16px;
-    color: #999;
+    color: rgba(255, 255, 255, 0.7);
     margin: 0 0 20px 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
 }
 
 .generate-button-empty {
-    padding: 12px 24px;
-    background: #0742bf;
-    color: white;
-    border: none;
+    padding: 10px 20px;
+    background: rgba(26, 117, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(26, 117, 255, 0.3);
+    color: #F5F5DC;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Roboto', sans-serif;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .generate-button-empty:hover:not(:disabled) {
-    background: #0635a0;
+    background: rgba(26, 117, 255, 0.25);
+    border-color: rgba(26, 117, 255, 0.5);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .generate-button-empty:disabled {

@@ -20,7 +20,7 @@ export default function BookCard({ book, onClick, showRating = false, rating }: 
         />
         {showRating && rating && (
           <div className="book-card-rating-badge">
-            <span className="book-card-rating-star">★</span>
+            <span className="book-card-rating-star filled">★</span>
             <span className="book-card-rating-value">{rating}</span>
           </div>
         )}

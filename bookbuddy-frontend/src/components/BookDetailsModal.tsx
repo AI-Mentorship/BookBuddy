@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Book } from "../services/api";
 import { useBooks } from "../context/BooksContext";
 import BookCover from "./BookCover";
@@ -20,6 +20,7 @@ export default function BookDetailsModal({
   const [read, setRead] = useState(isRead(book.id));
   const [isClosing, setIsClosing] = useState(false);
   const [showUnmarkConfirm, setShowUnmarkConfirm] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Sync state on open
@@ -42,6 +43,13 @@ export default function BookDetailsModal({
       window.removeEventListener("bookUnmarkedAsRead", handleBookUnmarked);
     };
   }, [book.id]);
+
+  // Scroll modal into view when it opens
+  useEffect(() => {
+    if (modalRef.current) {
+      modalRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
   
 
   const handleSave = () => {
@@ -86,6 +94,7 @@ export default function BookDetailsModal({
       onClick={handleClose}
     >
       <div 
+        ref={modalRef}
         className={`modal-content book-details-modal ${isClosing ? 'modal-content-closing' : ''}`} 
         onClick={(e) => e.stopPropagation()}
       >

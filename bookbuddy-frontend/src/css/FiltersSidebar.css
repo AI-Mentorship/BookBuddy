@@ -4,11 +4,14 @@
   top: 70px;
   bottom: 0;
   width: 280px;
-  background: #0742BF;
-  padding: 24px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 20px;
   overflow-y: auto;
   z-index: 100;
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slideIn {
@@ -21,11 +24,14 @@
 }
 
 .filters-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
-  font-size: 20px;
-  color: white;
-  margin: 0 0 24px 0;
+  font-size: 18px;
+  background: linear-gradient(135deg, #1a75ff 0%, #4da3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 20px 0;
 }
 
 .filters-section {
@@ -39,13 +45,22 @@
   align-items: center;
   background: none;
   border: none;
-  color: white;
-  font-family: 'Roboto', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
   font-size: 16px;
-  padding: 12px 0;
+  padding: 12px 12px;
   cursor: pointer;
   text-align: left;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filters-section-header:hover {
+  background: rgba(26, 117, 255, 0.15);
+  color: #4da3ff;
+  transform: translateX(4px);
+  box-shadow: 0 0 15px rgba(26, 117, 255, 0.2);
 }
 
 .filters-caret {
@@ -69,18 +84,33 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: white;
-  font-family: 'Roboto', sans-serif;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-weight: 400;
   font-size: 14px;
   cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filters-option:hover {
+  background: rgba(26, 117, 255, 0.15);
+  color: #4da3ff;
+  transform: translateX(6px);
+  box-shadow: 0 0 15px rgba(26, 117, 255, 0.2);
 }
 
 .filters-option input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   cursor: pointer;
-  accent-color: white;
+  accent-color: #1a75ff;
+  transition: all 0.2s ease;
+}
+
+.filters-option input[type="checkbox"]:checked {
+  filter: none;
 }
 
 .filters-option span {

@@ -124,9 +124,9 @@ export default function MyReviewsPage() {
                     <p className="my-reviews-date">
                       Reviewed on {formatDate(new Date().toISOString())}
                     </p>
-                    <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                    <div className="my-reviews-actions">
                       <button
-                        className="my-reviews-browse-button"
+                        className="my-reviews-edit-button"
                         onClick={() => handleEditReview(readBook.book, readBook.rating, readBook.review)}
                       >
                         Edit Review
